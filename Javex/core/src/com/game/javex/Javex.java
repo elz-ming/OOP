@@ -1,32 +1,36 @@
 package com.game.javex;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.game.javex.scenes.SceneManager;
+import com.game.javex.scenes.StartMenuScene;
 
+
+// This is our SIMULATION LIFECYCLE MANAGER
 public class Javex extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+	private SpriteBatch batch;
+	private SceneManager sceneManager;
 	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		sceneManager = new SceneManager();
+		sceneManager.push(new StartMenuScene(sceneManager));
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
+		sceneManager.update(Gdx.graphics.getDeltaTime());
+		sceneManager.render(batch);
 	}
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
-		img.dispose();
+		super.dispose();
 	}
 }
 
