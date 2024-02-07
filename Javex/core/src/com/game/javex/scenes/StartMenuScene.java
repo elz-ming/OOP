@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.scenes.AbstractScene;
 import com.game.javex.scenes.SceneManager;
-import com.game.javex.scenes.SceneManager.SceneType;
 
 public class StartMenuScene extends AbstractScene {
     private Stage stage;
@@ -32,7 +32,7 @@ public class StartMenuScene extends AbstractScene {
         playButton = new TextButton("Play", skin);
         exitButton = new TextButton("Exit", skin);
 
-     // Increase the button size
+        // Increase the button size
         playButton.setSize(300, 80);
         exitButton.setSize(300, 80);
 
@@ -51,6 +51,11 @@ public class StartMenuScene extends AbstractScene {
         // Initialize button styles for selection
         updateButtonStyles();
     }
+    
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
 
     private void updateButtonStyles() {
         for (int i = 0; i < menuButtons.length; i++) {
@@ -64,22 +69,7 @@ public class StartMenuScene extends AbstractScene {
         }
     }
 
-    @Override
-    public void show() {
-        // Initialize anything else for your show here if necessary
-    }
-
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        handleInput();
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-    }
-
-    private void handleInput() {
+    public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
@@ -87,40 +77,81 @@ public class StartMenuScene extends AbstractScene {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (currentButtonIndex == 0) {
                 // Play button action
-                sceneManager.changeScene(SceneManager.SceneType.PLAYING);
+//                sceneManager.set(PlayScene);
             } else if (currentButtonIndex == 1) {
                 // Exit button action
                 Gdx.app.exit();
             }
         }
     }
+    
+    public void update() {
+    	handleInput();
+    }  
 
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void pause() {
-        // Implement behavior during pause if necessary
-    }
-
-    @Override
-    public void resume() {
-        // Implement behavior during resume if necessary
-    }
-
-    @Override
-    public void hide() {
-        // Implement behavior when hiding if necessary
-    }
-
-    @Override
+	@Override
+	protected void render() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+	}
+	
+	@Override
     public void dispose() {
         // Dispose of resources (like textures, sounds) and cleanup
-        stage.dispose();
         // If you have other disposables, dispose of them here
+		stage.dispose();
     }
+	
+	// ========================= //
+	// ===== EMPTY METHODS ===== //	
+	// ========================= //
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
+	}
 
+	@Override
+	public void render(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void handleInput(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected void render(SpriteBatch sb) {
+		// TODO Auto-generated method stub
+		
+	}	
 }
