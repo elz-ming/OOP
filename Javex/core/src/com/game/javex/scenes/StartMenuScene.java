@@ -14,14 +14,15 @@ import com.game.javex.scenes.AbstractScene;
 import com.game.javex.scenes.SceneManager;
 
 public class StartMenuScene extends AbstractScene {
-    private Stage stage;
+    private static SpriteBatch spriteBatch;
+	private Stage stage;
     private Skin skin;
     private TextButton playButton, exitButton;
     private TextButton[] menuButtons;
     private int currentButtonIndex = 0;
 
     public StartMenuScene(SceneManager sceneManager) {
-        super(sceneManager);
+        super(sceneManager, spriteBatch);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
 
@@ -77,7 +78,7 @@ public class StartMenuScene extends AbstractScene {
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             if (currentButtonIndex == 0) {
                 // Play button action
-//                sceneManager.set(PlayScene);
+                sceneManager.set(new PlayScene(sceneManager)); // Assuming you have a PlayScene class
             } else if (currentButtonIndex == 1) {
                 // Exit button action
                 Gdx.app.exit();
