@@ -15,11 +15,11 @@ public class Javex extends ApplicationAdapter {
 	private SceneManager sceneManager;
 	
 	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		sceneManager = new SceneManager();
-		sceneManager.push(new StartMenuScene(sceneManager));
-	}
+	 public void create() {
+        batch = new SpriteBatch();
+        sceneManager = new SceneManager();
+        sceneManager.push(new StartMenuScene(sceneManager)); // Pass the batch here
+    }
 
 	@Override
 	public void render () {
