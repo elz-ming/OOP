@@ -8,8 +8,8 @@ public class DesktopLauncher {
     public static void main (String[] arg) {
         Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
         config.setWindowedMode(800, 480); // Set width and height
-        config.setTitle("JEVAT"); // Set the title
+        config.setTitle("Javex"); // Set the title
 
-        new Lwjgl3Application(new SceneManager(), config);
+        new Lwjgl3Application(new Javex(), config);
     }
 }
