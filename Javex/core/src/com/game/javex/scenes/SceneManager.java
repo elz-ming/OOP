@@ -30,19 +30,11 @@ public class SceneManager {
     
     public void update(float dt) {
     	currentScene = scenes.peek();
-    	
-    	if (currentScene instanceof PlayScene) {
-    		scenes.peek().update(dt);
-    	} else {
-    		scenes.peek().update();
-    	}
+    	currentScene.update(dt);
     }
     
     public void render(SpriteBatch sb) {
-    	if (currentScene instanceof PlayScene) {
-    		scenes.peek().render(sb);
-    	} else {
-    		scenes.peek().render();
-    	}
+    	currentScene = scenes.peek();
+    	currentScene.render(sb);
     }
 }
