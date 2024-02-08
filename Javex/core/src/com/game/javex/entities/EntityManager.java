@@ -1,5 +1,7 @@
 package com.game.javex.entities;
 
-public class EntityManager {
+import com.game.javex.entities.enemies.EnemyManager;
+import com.game.javex.entities.players.PlayerManager;
+import com.game.javex.entities.terrains.TerrainManager;
 
 }
