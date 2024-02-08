@@ -6,7 +6,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.game.javex.scenes.SceneManager;
+import com.game.javex.scenes.StartMenuScene;
 
+
+// This is our SIMULATION LIFECYCLE MANAGER
 public class Javex extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private SceneManager sceneManager;
@@ -23,10 +27,9 @@ public class Javex extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(1, 0, 0, 1);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+		super.render();
+		sceneManager.update(Gdx.graphics.getDeltaTime());
+		sceneManager.render(batch);
 	}
 	
 	@Override
