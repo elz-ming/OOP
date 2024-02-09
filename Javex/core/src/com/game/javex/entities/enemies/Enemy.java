@@ -2,30 +2,22 @@ package com.game.javex.entities.enemies;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-<<<<<<< Updated upstream
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-=======
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
->>>>>>> Stashed changes
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-<<<<<<< Updated upstream
-=======
 import com.badlogic.gdx.physics.box2d.*;
 
 import static com.game.javex.entities.enemies.Constants.PPM;
-
-
->>>>>>> Stashed changes
 
 public class Enemy extends ApplicationAdapter{
 	
@@ -37,12 +29,8 @@ public class Enemy extends ApplicationAdapter{
 	
 	private Box2DDebugRenderer b2dr;
 	private World world;
-<<<<<<< Updated upstream
-	private Body enemy;
-=======
 	private Body enemy, platform;
->>>>>>> Stashed changes
-	
+
 	@Override
 	public void create() {
 		float w = Gdx.graphics.getWidth();
@@ -56,12 +44,8 @@ public class Enemy extends ApplicationAdapter{
 		world = new World(new Vector2(0,-9.8f), false);
 		b2dr = new Box2DDebugRenderer();
 		
-<<<<<<< Updated upstream
-		enemy = createPlayer();
-=======
 		enemy = createBox(8,10,32,32, false);
 		platform = createBox(0,0,64,32,true);
->>>>>>> Stashed changes
 	}
 	
 	@Override 
@@ -70,12 +54,8 @@ public class Enemy extends ApplicationAdapter{
 		//Render
 //		Gdx.gl.glClearColor(0f,0f,0f,1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-<<<<<<< Updated upstream
 		b2dr.render(world, camera.combined);
-=======
 		b2dr.render(world, camera.combined.scl(PPM));
->>>>>>> Stashed changes
 	}
 	
 	@Override
@@ -93,19 +73,12 @@ public class Enemy extends ApplicationAdapter{
 	public void update(float delta) {
 		world.step(1/60f, 6, 2);
 		
-<<<<<<< Updated upstream
-	}
-	
-	public Body createPlayer() {
-		Body pBody;
-		BodyDef def = new BodyDef();
-		def.type = BodyDef.BodyType.DynamicBody;
-		def.position.set(200,200);
-=======
 		inputUpdate(delta);
 		cameraUpdate(delta);
 		
 	}
+	
+
 	public void inputUpdate(float delta) {
 		int horizontalForce = 0;
 		
@@ -140,26 +113,19 @@ public class Enemy extends ApplicationAdapter{
 		else
 			def.type = BodyDef.BodyType.DynamicBody;
 		def.position.set(x/ PPM, y/PPM);
->>>>>>> Stashed changes
 		def.fixedRotation = true;
 		pBody = world.createBody(def);
 		
 		PolygonShape shape = new PolygonShape();
-<<<<<<< Updated upstream
 		shape.setAsBox(32/2, 32/2);
-=======
 		shape.setAsBox(width/2/PPM, height/2/PPM);
->>>>>>> Stashed changes
 		
 		pBody.createFixture(shape, 1.0f);
 		shape.dispose();
 		
 		return pBody;
 	}
-<<<<<<< Updated upstream
-=======
-	
+
 	
 
->>>>>>> Stashed changes
 }
