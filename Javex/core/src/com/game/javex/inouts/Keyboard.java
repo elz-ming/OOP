@@ -4,10 +4,13 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class Keyboard implements InputProcessor {
-    private boolean isInAir = false; // Indicates if the player is in the air or not
-    private boolean moveLeft = false; // Move left
-    private boolean moveRight = false; // Move right
-    private boolean moveDown = false; // Move down or specific action
+    private boolean isInAir = false;
+    private boolean moveLeft = false;
+    private boolean moveRight = false;
+    private boolean moveDown = false;
+
+    // Indicates whether the input manager is in game mode or menu mode
+    private boolean gameMode = true; // true for game mode, false for menu mode
 
     public Keyboard() {
         // Initialize the input processor
@@ -16,44 +19,73 @@ public class Keyboard implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        switch (keycode) {
-            case Keys.UP:
-                if (!isInAir) {
-                    isInAir = true; // Indicate the start of a jump, actual jump logic to be handled elsewhere
-                    // Trigger jump here, e.g., player.jump()
-                }
-                break;
-            case Keys.LEFT:
-                moveLeft = true; // Start moving left
-                break;
-            case Keys.RIGHT:
-                moveRight = true; // Start moving right
-                break;
-            case Keys.DOWN:
-                moveDown = true; // Start ducking or specific action
-                break;
+        if (gameMode) {
+            // Game mode controls
+            switch (keycode) {
+                case Keys.UP:
+                    if (!isInAir) {
+                        isInAir = true; // Start jumping
+                        // Trigger jump here, e.g., player.jump()
+                    }
+                    break;
+                case Keys.LEFT:
+                    moveLeft = true;
+                    break;
+                case Keys.RIGHT:
+                    moveRight = true;
+                    break;
+                case Keys.DOWN:
+                    moveDown = true; // Start ducking or specific action
+                    break;
+            }
+        } else {
+            // Menu mode controls
+            switch (keycode) {
+                case Keys.UP:
+                    // Navigate up in the menu
+                    break;
+                case Keys.DOWN:
+                    // Navigate down in the menu
+                    break;
+                case Keys.ENTER:
+                    // Select a menu item
+                    break;
+                // Add other menu navigation keys as needed
+            }
         }
         return false;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        switch (keycode) {
-            case Keys.LEFT:
-                moveLeft = false; // Stop moving left
-                break;
-            case Keys.RIGHT:
-                moveRight = false; // Stop moving right
-                break;
-            case Keys.DOWN:
-                moveDown = false; // Stop ducking or specific action
-                break;
-            // Note: You might want to reset isInAir elsewhere based on your game's physics/collision detection
+        if (gameMode) {
+            // Game mode key release handling
+            switch (keycode) {
+                case Keys.LEFT:
+                    moveLeft = false;
+                    break;
+                case Keys.RIGHT:
+                    moveRight = false;
+                    break;
+                case Keys.DOWN:
+                    moveDown = false; // Stop ducking or specific action
+                    break;
+            }
+        } else {
+            // Menu mode key release handling (if needed)
         }
         return false;
     }
 
-    // Getter methods for movement flags and isInAir status
+    public void switchToGameMode() {
+        this.gameMode = true;
+    }
+
+    public void switchToMenuMode() {
+        this.gameMode = false;
+    }
+
+    // Getter methods for game mode movement flags
     public boolean isMovingLeft() {
         return moveLeft;
     }
