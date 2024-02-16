@@ -125,7 +125,4 @@ public class Enemy extends ApplicationAdapter{
 		
 		return pBody;
 	}
-
-	
-
 }
