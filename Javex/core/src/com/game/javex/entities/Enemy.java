@@ -1,4 +1,4 @@
-package com.game.javex.entities.enemies;
+package com.game.javex.entities;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

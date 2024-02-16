@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.game.javex.inouts.InoutManager;
 import com.game.javex.scenes.SceneManager;
 import com.game.javex.scenes.StartMenuScene;
 
@@ -13,24 +14,23 @@ import com.game.javex.scenes.StartMenuScene;
 public class Javex extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private SceneManager sceneManager;
+	private InoutManager inoutManager;
 	
 	@Override
 	 public void create() {
-        batch = new SpriteBatch();
         sceneManager = new SceneManager();
         sceneManager.push(new StartMenuScene(sceneManager)); // Pass the batch here
     }
 
 	@Override
 	public void render () {
-		super.render();
 		sceneManager.update(Gdx.graphics.getDeltaTime());
 		sceneManager.render(batch);
 	}
 	
 	@Override
 	public void dispose () {
-		super.dispose();
+		
 	}
 }
 
