@@ -22,12 +22,12 @@ public class Javex extends ApplicationAdapter {
     }
 
 	@Override
-	public void render () {
-		super.render();
-		sceneManager.update(Gdx.graphics.getDeltaTime());
-		sceneManager.render(batch);
+	public void render() {
+	    float delta = Gdx.graphics.getDeltaTime();
+
+	    sceneManager.update(delta);
+	    sceneManager.render(batch);
 	}
-	
 	@Override
 	public void dispose () {
 		super.dispose();

@@ -15,6 +15,7 @@ public class SceneManager {
 	// Only for pause	
 	public void push(AbstractScene scene) {
 		scenes.push(scene);
+		scene.show();
 	}
 	
 	// Only for pause

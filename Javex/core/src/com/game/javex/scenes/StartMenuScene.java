@@ -25,7 +25,7 @@ public class StartMenuScene extends AbstractScene {
         Gdx.input.setInputProcessor(stage);
 
         // Assuming you have a skin.json file in the assets directory
-        skin = new Skin(Gdx.files.internal("uiskin.json"));
+        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
         // Create buttons
         playButton = new TextButton("Play", skin);
