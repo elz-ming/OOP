@@ -2,19 +2,19 @@ package com.game.javex.scenes;
 
 import java.util.Stack;
 
-import com.game.javex.inouts.AudioManager; // Import AudioManager
+import com.game.javex.inouts.OutputManager; // Import AudioManager
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class SceneManager {
     private Stack<AbstractScene> scenes;
     private AbstractScene currentScene;
-    private AudioManager audioManager; // Declare AudioManager
+    private OutputManager audioManager; // Declare AudioManager
     
 	
-	public SceneManager(AudioManager audioManager) {
+	public SceneManager(OutputManager audioManager) {
 		scenes = new Stack<AbstractScene>();
-		audioManager = new AudioManager(); // Initialize AudioManager
+		audioManager = new OutputManager(); // Initialize AudioManager
 	}
 
 	// Only for pause	

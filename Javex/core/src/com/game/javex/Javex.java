@@ -1,12 +1,12 @@
 package com.game.javex;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.game.javex.inouts.AudioManager; // Import AudioManager
+import com.game.javex.inouts.OutputManager; // Import AudioManager
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.game.javex.inouts.InoutManager;
+import com.game.javex.inouts.InputManager;
 import com.game.javex.scenes.SceneManager;
 import com.game.javex.scenes.StartMenuScene;
 
@@ -15,13 +15,13 @@ import com.game.javex.scenes.StartMenuScene;
 public class Javex extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private SceneManager sceneManager;
-	private InoutManager inoutManager;
-	private AudioManager audioManager; // Declare audioManager at the class level
+	private InputManager inoutManager;
+//	private AudioManager audioManager; // Declare audioManager at the class level
 	
 	 @Override
 	  public void create() {
 	     batch = new SpriteBatch();
-	     audioManager = new AudioManager(); // Initialize AudioManager here
+	     audioManager = new OutputManager(); // Initialize AudioManager here
 	     sceneManager = new SceneManager(audioManager); // Assume SceneManager modified to accept AudioManager
 	     sceneManager.push(new StartMenuScene(sceneManager, audioManager)); // Pass AudioManager to your scenes if needed
 	     audioManager.playMenuMusic(); // Start playing menu music
