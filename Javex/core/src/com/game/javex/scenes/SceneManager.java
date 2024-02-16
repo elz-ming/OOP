@@ -1,36 +1,40 @@
 package com.game.javex.scenes;
 
-import com.badlogic.gdx.Game;
+import java.util.Stack;
 
-public class SceneManager extends Game {
-    public enum SceneType {
-        START_MENU,
-        PLAYING,
-        PAUSE,
-        END_LEADERBOARD
-    }
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-    @Override
-    public void create() {
-        setScreen(new StartMenuScene(this));
-    }
- // Start with the Start Menu Scene
+public class SceneManager {
+    private Stack<AbstractScene> scenes;
+    private AbstractScene currentScene;
+	
+	public SceneManager() {
+		scenes = new Stack<AbstractScene>();
+	}
+
+	// Only for pause	
+	public void push(AbstractScene scene) {
+		scenes.push(scene);
+	}
+	
+	// Only for pause
+	public void pop() {
+		scenes.pop().dispose();
+	}
+	
+	// For Menu, Play and End
+	public void set(AbstractScene scene) {
+		scenes.pop().dispose();
+		scenes.push(scene);
+	}
     
-
-    public void changeScene(SceneType sceneType) {
-        switch (sceneType) {
-            case START_MENU:
-                this.setScreen(new StartMenuScene(this));
-                break;
-            case PLAYING:
-                this.setScreen(new PlayingScene(this));
-                break;
-            case PAUSE:
-                this.setScreen(new PauseScene(this));
-                break;
-            case END_LEADERBOARD:
-                this.setScreen(new EndLeaderboardScene(this));
-                break;
-        }
+    public void update(float dt) {
+    	currentScene = scenes.peek();
+    	currentScene.update(dt);
+    }
+    
+    public void render(SpriteBatch sb) {
+    	currentScene = scenes.peek();
+    	currentScene.render(sb);
     }
 }
