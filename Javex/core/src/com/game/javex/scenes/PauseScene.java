@@ -5,19 +5,28 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import com.game.javex.inouts.*;
+
 public class PauseScene extends AbstractScene {
     private SpriteBatch sb;
+    private Stage stage;
+    private Skin skin;
+    
     private TextButton resumeButton;
     private TextButton menuButton;
-    private Skin skin;
+    
     private int currentButtonIndex = 0;
     private TextButton[] menuButtons;
 
-    public PauseScene(SceneManager sceneManager) {
-        super(sceneManager);
+    public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    	// Using universal attribute across all scenes
+    	super(sceneManager, inputManager, outputManager);
+    	
+    	// Creating own attributes specific to this scene
         sb = new SpriteBatch();
 
         // Load the skin
@@ -51,20 +60,8 @@ public class PauseScene extends AbstractScene {
         }
     }
 
-    @Override
-    public void render(SpriteBatch sb) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        sb.begin();
-        // Log the positions and sizes of the buttons
-        resumeButton.draw(sb, 1);
-        menuButton.draw(sb, 1);
-        sb.end();
-    }
-
-    @Override
-    public void handleInput(float dt) {
+    
+    public void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
             updateButtonStyles();
@@ -77,12 +74,28 @@ public class PauseScene extends AbstractScene {
                 sceneManager.pop();
             } else if (currentButtonIndex == 1) {
                 // Return to main menu
-                sceneManager.set(new StartMenuScene(sceneManager));
+                sceneManager.set(new StartMenuScene(sceneManager, inputManager, outputManager));
             }
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             // Pop the PauseScene and return to the PlayScene
             sceneManager.pop();
         }
+    }
+    
+    public void update(float dt) {
+    	handleInput();
+    }  
+    
+    @Override
+    public void render(float dt) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        sb.begin();
+        // Log the positions and sizes of the buttons
+        resumeButton.draw(sb, 1);
+        menuButton.draw(sb, 1);
+        sb.end();
     }
 
     @Override
@@ -91,39 +104,12 @@ public class PauseScene extends AbstractScene {
         skin.dispose();
     }
 
-    // Implement other required methods as needed
-    @Override
-    public void resize(int width, int height) {
-    }
-
-    @Override
-    public void pause() {
-    }
-
-    @Override
-    public void resume() {
-    }
-
-    @Override
-    public void hide() {
-    }
-
-    @Override
-    public void show() {
-    
-    	}
-
-    
-	@Override
-	protected void update(float dt) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public void render(float delta) {
-		// TODO Auto-generated method stub
-		
-	}
+	// ========================= //
+	// ===== EMPTY METHODS ===== //	
+	// ========================= //
+	@Override public void show() {}
+	@Override public void pause() {}
+	@Override public void resume() {}
+	@Override public void hide() {}
+	@Override public void resize(int width, int height) {}
 }

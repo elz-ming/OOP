@@ -2,19 +2,13 @@ package com.game.javex.scenes;
 
 import java.util.Stack;
 
-import com.game.javex.inouts.OutputManager; // Import AudioManager
-
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
 public class SceneManager {
     private Stack<AbstractScene> scenes;
     private AbstractScene currentScene;
-    private OutputManager audioManager; // Declare AudioManager
     
 	
-	public SceneManager(OutputManager audioManager) {
+	public SceneManager() {
 		scenes = new Stack<AbstractScene>();
-		audioManager = new OutputManager(); // Initialize AudioManager
 	}
 
 	// Only for pause	
@@ -32,14 +26,6 @@ public class SceneManager {
 	public void set(AbstractScene scene) {
 		scenes.pop().dispose();
 		scenes.push(scene);
-		//Audio 
-		if (scene instanceof StartMenuScene) {
-	        audioManager.playMenuMusic();
-	    } else if (scene instanceof PlayScene) {
-	        audioManager.playGameplayMusic();
-	    } //else if (scene instanceof GameOverScene) {
-	        //audioManager.playGameoverMusic();
-	    //}
 	}
     
     public void update(float dt) {
@@ -47,8 +33,8 @@ public class SceneManager {
     	currentScene.update(dt);
     }
     
-    public void render(SpriteBatch sb) {
+    public void render(float dt) {
     	currentScene = scenes.peek();
-    	currentScene.render(sb);
+    	currentScene.render(dt);
     }
 }

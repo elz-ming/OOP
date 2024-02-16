@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import com.game.javex.entities.EntityManager;
+import com.game.javex.inouts.InputManager;
+import com.game.javex.inouts.OutputManager;
 
 public class PlayScene extends AbstractScene {
 	
@@ -35,8 +37,8 @@ public class PlayScene extends AbstractScene {
 	
 	
 	
-	protected PlayScene(SceneManager sceneManager) {
-		super(sceneManager);
+	protected PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+		super(sceneManager, inputManager, outputManager);
 		entityManager = new EntityManager();
 		
 		this.spriteBatch = spriteBatch; // Assign the passed spriteBatch to the local spriteBatch.
@@ -107,7 +109,7 @@ public class PlayScene extends AbstractScene {
 	protected void handleInput(float dt) {
 	    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
 	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
-	        sceneManager.push(new PauseScene(sceneManager));
+	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	    }
 	}
 	@Override
@@ -117,7 +119,7 @@ public class PlayScene extends AbstractScene {
 	}
 
 	@Override
-	protected void render(SpriteBatch sb) {
+	protected void render(float dt) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 	}

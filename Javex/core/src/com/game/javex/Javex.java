@@ -1,47 +1,34 @@
 package com.game.javex;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.game.javex.inouts.OutputManager; // Import AudioManager
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
-import com.game.javex.inouts.InputManager;
-import com.game.javex.scenes.SceneManager;
-import com.game.javex.scenes.StartMenuScene;
+
+import com.game.javex.inouts.*;
+import com.game.javex.scenes.*;
 
 
 // This is our SIMULATION LIFECYCLE MANAGER
 public class Javex extends ApplicationAdapter {
-	private SpriteBatch batch;
 	private SceneManager sceneManager;
-	private InputManager inoutManager;
-//	private AudioManager audioManager; // Declare audioManager at the class level
+	private InputManager inputManager;
+	private OutputManager outputManager;
 	
 	 @Override
 	  public void create() {
-	     batch = new SpriteBatch();
-	     audioManager = new OutputManager(); // Initialize AudioManager here
-	     sceneManager = new SceneManager(audioManager); // Assume SceneManager modified to accept AudioManager
-	     sceneManager.push(new StartMenuScene(sceneManager, audioManager)); // Pass AudioManager to your scenes if needed
-	     audioManager.playMenuMusic(); // Start playing menu music
+		 inputManager = new InputManager();
+	     outputManager = new OutputManager(); // Initialize AudioManager here
+	     sceneManager = new SceneManager(); // Assume SceneManager modified to accept AudioManager
+	     sceneManager.push(new StartMenuScene(sceneManager, inputManager, outputManager)); // Pass AudioManager to your scenes if needed
 	 }
 
 	@Override
 	public void render() {
-	    float delta = Gdx.graphics.getDeltaTime();
-
-	    sceneManager.update(delta);
-	    sceneManager.render(batch);
+	    float dt = Gdx.graphics.getDeltaTime();
+	    sceneManager.update(dt);
+	    sceneManager.render(dt);
 	}
 	@Override
 	public void dispose () {
-		super.dispose();
-		if (batch != null) {
-            batch.dispose(); // Dispose of batch resources
-        }
-        if (audioManager != null) {
-            audioManager.dispose(); // Ensure music is stopped and resources are freed
-        }
+		outputManager.dispose();
 	}
 }
