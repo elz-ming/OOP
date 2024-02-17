@@ -2,6 +2,7 @@ package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -51,8 +52,6 @@ public class PlayScene extends AbstractScene {
 		entityManager.createTerrain(new Vector2(400 , 100), 160, 32);
 		entityManager.createTerrain(new Vector2(600 , 100), 160, 32);
 		
-		
-		
 		entityManager.createEnemy(new Vector2(600, 300), 32, 32);
 		entityManager.createEnemy(new Vector2(800, 300), 32, 32);
 		
@@ -65,6 +64,7 @@ public class PlayScene extends AbstractScene {
 		world.step(1 /60f, 6, 2);
 		
 		cameraUpdate(dt);
+		pauseListener(dt);
 		playerControlManager.update(dt);
 		entityManager.update(dt);
 	}
@@ -77,8 +77,9 @@ public class PlayScene extends AbstractScene {
         b2dr.render(world, camera.combined.scl(Utils.PPM)); 
 	}
 
-	protected void handleInput(float dt) {
-	    if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+	protected void pauseListener(float dt) {
+		int currKey = inputManager.getCurrKey();
+	    if (currKey == Keys.ESCAPE) {
 	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	    }
