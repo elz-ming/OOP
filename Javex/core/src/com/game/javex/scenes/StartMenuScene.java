@@ -5,7 +5,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
@@ -14,6 +16,7 @@ import com.game.javex.inouts.*;
 public class StartMenuScene extends AbstractScene {
 	private Stage stage;
     private Skin skin;
+    private Image backgroundImage;
     
     private TextButton playButton, exitButton, settingsButton;
     private TextButton[] menuButtons;
@@ -26,15 +29,27 @@ public class StartMenuScene extends AbstractScene {
     	// Creating own attributes specific to this scene
         stage = new Stage(new ScreenViewport());
 
+        
+        
+        backgroundImage = new Image(new Texture(Gdx.files.internal("background.png")));
+        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Set the size to fill the screen
+        stage.addActor(backgroundImage); // Add the background image to the stage
+
+        // Make sure the background is drawn first (before the buttons)
+        backgroundImage.setZIndex(0);
+
+        
         // Assuming you have a skin.json file in the assets directory
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
 
+        
         // Create buttons
         playButton = new TextButton("Play", skin);
         settingsButton = new TextButton("Settings", skin);
         exitButton = new TextButton("Exit", skin);
 
+        
         // Set the font scale for each button's label
         playButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
         settingsButton.getLabel().setFontScale(0.5f);
@@ -57,9 +72,12 @@ public class StartMenuScene extends AbstractScene {
         float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 2;
 
      // Position the buttons starting from the bottom of the screen
-        playButton.setPosition(Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
-        settingsButton.setPosition(Gdx.graphics.getWidth() / 2 - settingsButton.getWidth() / 2, startY + playButton.getHeight() + spaceBetweenButtons);
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2, startY);
+        float xOffset = 30; // Adjust this value to move the buttons further to the left
+
+     // Position the buttons starting from the bottom of the screen
+        playButton.setPosition((Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2) - xOffset, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
+        settingsButton.setPosition((Gdx.graphics.getWidth() / 2 - settingsButton.getWidth() / 2) - xOffset, startY + playButton.getHeight() + spaceBetweenButtons);
+        exitButton.setPosition((Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2) - xOffset, startY);
 
         // Add buttons to stage
         stage.addActor(playButton);
