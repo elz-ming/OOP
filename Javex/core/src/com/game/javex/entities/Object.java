@@ -1,5 +1,6 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -27,26 +28,29 @@ public class Object {
     	FixtureDef fixtureDef = new FixtureDef();
     	
     	bodyDef.type = BodyDef.BodyType.StaticBody;
-    	bodyDef.position.set(position.x /Utils.PPM, position.y /Utils.PPM);
+    	bodyDef.position.set((position.x + width /2) /Utils.PPM, (position.y + height /2) /Utils.PPM);
     	pBody = world.createBody(bodyDef);
     	
+    	
+    	
+		
     	if (isCoin) {
-    		CircleShape circle = new CircleShape();
-    		circle.setRadius(width /2 /Utils.PPM);
-    		fixtureDef.shape = circle;
+    		CircleShape shape = new CircleShape();
+    		shape.setRadius(width /2 /Utils.PPM);
     		fixtureDef.density = 0.0f;
-    		pBody.createFixture(fixtureDef);
-    		circle.dispose();
+    		fixtureDef.shape = shape;
+        	pBody.createFixture(fixtureDef);
+        	shape.dispose();
     	}
     	
     	if (isTerrain) {
     		PolygonShape shape = new PolygonShape();
     		shape.setAsBox(width /2 /Utils.PPM, height /2 /Utils.PPM);
-    		fixtureDef.shape = shape;
     		fixtureDef.density = 1.0f;
-    		pBody.createFixture(fixtureDef);
-    		shape.dispose();
-    	}
+    		fixtureDef.shape = shape;
+        	pBody.createFixture(fixtureDef);
+        	shape.dispose();
+    	}	
     	
     	return pBody;
     }

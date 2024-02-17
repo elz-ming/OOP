@@ -22,7 +22,7 @@ public class Player {
 		FixtureDef fixtureDef = new FixtureDef();
 		
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(position.x /Utils.PPM, position.y /Utils.PPM);
+		bodyDef.position.set((position.x + width /2) /Utils.PPM, (position.y + height /2) /Utils.PPM);
 		bodyDef.fixedRotation = true;
 		pBody = world.createBody(bodyDef);
 		
@@ -36,6 +36,10 @@ public class Player {
 		return pBody;
 	}
 	
+	public void update(float dt) {
+		
+	}
+	
 	public void moveLeft() {
 		body.setLinearVelocity(-5, body.getLinearVelocity().y);
 	}
@@ -45,7 +49,7 @@ public class Player {
 	}
 	
 	public void jump() {
-		body.applyForceToCenter(0, 600, true);
+		body.applyForceToCenter(0, 900, true);
 	}
 	
 	public void duck() {

@@ -46,17 +46,11 @@ public class PlayScene extends AbstractScene {
 		b2dr = new Box2DDebugRenderer();
 		
 		entityManager = new EntityManager(world);
-		entityManager.createPlayer(new Vector2(400, 300), 32, 64);
+		initialize();
+		
 		playerControlManager = new PlayerControlManager(entityManager.getPlayer(), inputManager);
 		
-		entityManager.createTerrain(new Vector2(400 , 100), 160, 32);
-		entityManager.createTerrain(new Vector2(600 , 100), 160, 32);
 		
-		entityManager.createEnemy(new Vector2(600, 300), 32, 32);
-		entityManager.createEnemy(new Vector2(800, 300), 32, 32);
-		
-		entityManager.createCoin(new Vector2(500, 100 + 16), 16);
-		entityManager.createCoin(new Vector2(700, 100 + 16), 16);
 	}
 	
 	@Override
@@ -75,6 +69,24 @@ public class PlayScene extends AbstractScene {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         b2dr.render(world, camera.combined.scl(Utils.PPM)); 
+	}
+	
+	private void initialize() {
+		entityManager.createPlayer(new Vector2(64, 32), 32, 64);
+		
+		entityManager.createTerrain(new Vector2(0, 0), 736, 32);
+		entityManager.createTerrain(new Vector2(0, 32), 32, 32);
+		entityManager.createTerrain(new Vector2(128, 32), 32, 32);
+		entityManager.createTerrain(new Vector2(320, 32), 32, 32);
+		entityManager.createTerrain(new Vector2(512, 32), 32, 32);
+		entityManager.createTerrain(new Vector2(704, 32), 32, 32);
+		
+		entityManager.createEnemy(new Vector2(192, 32), 32, 32);
+		entityManager.createEnemy(new Vector2(384, 32), 32, 32);
+		entityManager.createEnemy(new Vector2(576, 32), 64, 64);
+		
+		entityManager.createCoin(new Vector2(256, 32), 32, 32);
+		entityManager.createCoin(new Vector2(448, 32), 32, 32);
 	}
 
 	protected void pauseListener(float dt) {

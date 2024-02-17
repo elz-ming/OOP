@@ -22,7 +22,7 @@ public class Enemy {
 		FixtureDef fixtureDef = new FixtureDef();
 		
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(position.x /Utils.PPM, position.y /Utils.PPM);
+		bodyDef.position.set((position.x + width /2) /Utils.PPM, (position.y + height /2) /Utils.PPM);
 		bodyDef.fixedRotation = true;
 		pBody = world.createBody(bodyDef);
 		

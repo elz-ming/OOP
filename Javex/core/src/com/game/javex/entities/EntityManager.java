@@ -22,7 +22,6 @@ public class EntityManager {
 	
 	public void createPlayer(Vector2 position, int width, int height) {
 		this.player = new Player(world, position, width, height);
-		System.out.println("Player printed");
 	}
 	
 	public void createEnemy(Vector2 position, int width, int height) {
@@ -31,11 +30,10 @@ public class EntityManager {
 	
 	public void createTerrain(Vector2 position, int width, int height) {
 		terrains.add(new Object(world, position, width, height, false, true));
-		System.out.println("Terrain printed");
 	}
 	
-	public void createCoin(Vector2 position, int diameter) {
-		coins.add(new Object(world, position, diameter, diameter, true, false));
+	public void createCoin(Vector2 position, int width, int height) {
+		coins.add(new Object(world, position, width, height, true, false));
 	}
 	
 	
