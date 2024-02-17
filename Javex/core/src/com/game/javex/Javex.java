@@ -24,7 +24,6 @@ public class Javex extends ApplicationAdapter {
 	@Override
 	public void render() {
 	    float dt = Gdx.graphics.getDeltaTime();
-	    sceneManager.update(dt);
 	    sceneManager.render(dt);
 	}
 	@Override
