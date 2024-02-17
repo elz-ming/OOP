@@ -28,13 +28,9 @@ public class SceneManager {
 		scenes.push(scene);
 	}
     
-    public void update(float dt) {
-    	currentScene = scenes.peek();
-    	currentScene.update(dt);
-    }
-    
     public void render(float dt) {
     	currentScene = scenes.peek();
+    	currentScene.update(dt);
     	currentScene.render(dt);
     }
 }
