@@ -59,4 +59,9 @@ public class Player {
 	public Body getBody() {
 		return this.body;
 	}
+
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
 }

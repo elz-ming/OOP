@@ -17,8 +17,11 @@ public class Javex extends ApplicationAdapter {
 	  public void create() {
 		 inputManager = new InputManager();
 	     outputManager = new OutputManager(); // Initialize AudioManager here
+	     outputManager.playMusic("hadi.mp3", true);
+	     
 	     sceneManager = new SceneManager(); // Assume SceneManager modified to accept AudioManager
 	     sceneManager.push(new StartMenuScene(sceneManager, inputManager, outputManager)); // Pass AudioManager to your scenes if needed
+	     
 	 }
 
 	@Override

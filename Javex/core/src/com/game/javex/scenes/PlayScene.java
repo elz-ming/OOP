@@ -83,6 +83,14 @@ public class PlayScene extends AbstractScene {
 	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	    }
+	    
+	   else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+		   		
+            	Gdx.app.log("PauseScene", "L key pressed. Ending the game.");
+            	dispose();
+            	
+                sceneManager.set(new LeaderboardScene(sceneManager, inputManager, outputManager));
+	    }
 	}
 	
 	

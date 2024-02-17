@@ -15,7 +15,7 @@ public class StartMenuScene extends AbstractScene {
 	private Stage stage;
     private Skin skin;
     
-    private TextButton playButton, exitButton;
+    private TextButton playButton, exitButton, settingsButton;
     private TextButton[] menuButtons;
     private int currentButtonIndex = 0;
 
@@ -29,25 +29,45 @@ public class StartMenuScene extends AbstractScene {
         // Assuming you have a skin.json file in the assets directory
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
+
         // Create buttons
         playButton = new TextButton("Play", skin);
+        settingsButton = new TextButton("Settings", skin);
         exitButton = new TextButton("Exit", skin);
 
+        // Set the font scale for each button's label
+        playButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
+        settingsButton.getLabel().setFontScale(0.5f);
+        exitButton.getLabel().setFontScale(0.5f);
+        
         // Increase the button size
-        playButton.setSize(300, 80);
-        exitButton.setSize(300, 80);
+        playButton.setSize(200, 80);
+        settingsButton.setSize(200, 80);
+        exitButton.setSize(200, 80);
 
  
         // Position buttons
-        playButton.setPosition(Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2, Gdx.graphics.getHeight() / 2);
-        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2, Gdx.graphics.getHeight() / 2 - playButton.getHeight() - 60);
+        float spaceBetweenButtons = 20; // Adjust the space to your preference
+
+     // Calculate the total height that the buttons will occupy on the screen
+        float totalButtonsHeight = 3 * playButton.getHeight() + 2 * spaceBetweenButtons;
+
+     // Calculate the starting Y position for the playButton
+     // This will start drawing buttons from the bottom of the screen upward
+        float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 2;
+
+     // Position the buttons starting from the bottom of the screen
+        playButton.setPosition(Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
+        settingsButton.setPosition(Gdx.graphics.getWidth() / 2 - settingsButton.getWidth() / 2, startY + playButton.getHeight() + spaceBetweenButtons);
+        exitButton.setPosition(Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2, startY);
 
         // Add buttons to stage
         stage.addActor(playButton);
+        stage.addActor(settingsButton);
         stage.addActor(exitButton);
 
         // Create an array for navigation
-        menuButtons = new TextButton[]{playButton, exitButton};
+        menuButtons = new TextButton[]{playButton, settingsButton, exitButton};
 
         // Initialize button styles for selection
         updateButtonStyles();
@@ -67,22 +87,29 @@ public class StartMenuScene extends AbstractScene {
     }
 
     public void handleInput() {
-    	if (inputManager.getPrevKey() == Keys.UNKNOWN && 
+        if (inputManager.getPrevKey() == Keys.UNKNOWN && 
                 (inputManager.getCurrKey() == Keys.UP || inputManager.getCurrKey() == Keys.DOWN)) {
                 currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
                 inputManager.resetKeys();
             }
-    	
-    	if (inputManager.getPrevKey() == Keys.UNKNOWN && inputManager.getCurrKey() == Keys.ENTER) {
-            if (currentButtonIndex == 0) {
-                sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));
-            } else if (currentButtonIndex == 1) {
-                Gdx.app.exit();
+        
+        if (inputManager.getPrevKey() == Keys.UNKNOWN && inputManager.getCurrKey() == Keys.ENTER) {
+            switch (currentButtonIndex) {
+                case 0: // Play button
+                    sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));
+                    break;
+                case 1: // Settings button
+                    // Add your logic for the settings button here
+                    break;
+                case 2: // Exit button
+                    Gdx.app.exit();
+                    break;
             }
             inputManager.resetKeys(); // Reset keys after handling
         }
     }
+
     
     @Override
     public void resize(int width, int height) {
