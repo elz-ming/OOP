@@ -1,21 +1,19 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.game.javex.scenes.SceneManager;
+import com.game.javex.inouts.*;
 
 // This is the Scene Parent Class
 public abstract class AbstractScene implements Screen {
     protected SceneManager sceneManager;
+    protected InputManager inputManager;
+    protected OutputManager outputManager;
 
-    protected AbstractScene(SceneManager sceneManager) {
+    protected AbstractScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         this.sceneManager = sceneManager;
+        this.inputManager = inputManager;
+        this.outputManager = outputManager;
     }
 
-    // For Menu, Pause, and End Scene, there's no dt and sb
-    // For Play Scene
-    protected abstract void handleInput(float dt);
     protected abstract void update(float dt);
-    protected abstract void render(SpriteBatch sb);
-
 }

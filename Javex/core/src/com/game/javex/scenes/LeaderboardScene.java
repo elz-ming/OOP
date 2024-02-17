@@ -1,3 +1,5 @@
+package com.game.javex.scenes;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,20 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class LeaderboardScene extends AbstractScene {
+import com.game.javex.inouts.*;
 
+public class LeaderboardScene extends AbstractScene {
+	private SpriteBatch sb;
     private Stage stage;
+    
     private List<TextButton> buttons; // Array to store buttons\
     private SceneManager sceneManager;
     private float finalScore;
 
-    public LeaderboardScene(SceneManager sceneManager, String backgroundImagePath, float finalScore) {
-        super(new SpriteBatch(), backgroundImagePath);
-        this.sceneManager = sceneManager;
-        this.finalScore = finalScore;
+    public LeaderboardScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    	super(sceneManager, inputManager, outputManager);
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         buttons = new ArrayList<>(); // Initialize the list
@@ -63,7 +65,7 @@ public class LeaderboardScene extends AbstractScene {
 
     private void handleButtonClick(String label) {
         if (label.equals("Back To Menu")) {
-            sceneManager.set(new StartMenuScene(sceneManager,"R.jpg" ));
+            sceneManager.set(new StartMenuScene(sceneManager, inputManager, outputManager));
         }
     }
 
@@ -74,17 +76,18 @@ public class LeaderboardScene extends AbstractScene {
     }
 
     @Override
-    public void render() {
+    public void render(float dt) {
         // Draw the stage
-        spriteBatch.begin();
-        spriteBatch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        font.draw(spriteBatch, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
-        spriteBatch.end();
+        sb.begin();
+//        sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
+//		font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
+        sb.end();
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         stage.draw();
 
     }
-@Override
+    @Override
     public void dispose() {
         for (TextButton button : buttons) {
             button.clear(); // Clears any listeners
@@ -98,106 +101,12 @@ public class LeaderboardScene extends AbstractScene {
         stage.dispose();
     }
 
-@Override
-public void show() {
-	// TODO Auto-generated method stub
-	
+	//========================= //
+	// ===== EMPTY METHODS ===== //	
+	// ========================= //
+	@Override public void show() {}
+	@Override public void pause() {}
+	@Override public void resume() {}
+	@Override public void hide() {}
+	@Override public void resize(int width, int height) {}
 }
-
-@Override
-public void render(float delta) {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public void resize(int width, int height) {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public void pause() {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public void resume() {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public void hide() {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-public boolean keyDown(int keycode) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean keyUp(int keycode) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean keyTyped(char character) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean touchCancelled(int screenX, int screenY, int pointer, int button) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean touchDragged(int screenX, int screenY, int pointer) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean mouseMoved(int screenX, int screenY) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-public boolean scrolled(float amountX, float amountY) {
-	// TODO Auto-generated method stub
-	return false;
-}
-
-@Override
-protected void handleInput(float dt) {
-	// TODO Auto-generated method stub
-	
-}
-
-@Override
-protected void render(SpriteBatch sb) {
-	// TODO Auto-generated method stub
-	
-}
-}
-﻿

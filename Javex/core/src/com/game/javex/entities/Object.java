@@ -1,5 +1,57 @@
 package com.game.javex.entities;
 
-public class Object {
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
+import com.game.javex.tools.Utils;
+
+public class Object {
+    private boolean isCoin;
+    private boolean isTerrain;
+    private Body body;
+
+    public Object(World world, Vector2 position, int width, int height, boolean isCoin, boolean isTerrain) {
+    	this.isCoin = isCoin;
+        this.isTerrain = isTerrain;
+        this.body = createBox(world, position, width, height);
+    }
+
+    private Body createBox(World world, Vector2 position, int width, int height) {
+    	Body pBody;
+    	BodyDef bodyDef = new BodyDef();
+    	FixtureDef fixtureDef = new FixtureDef();
+    	
+    	bodyDef.type = BodyDef.BodyType.StaticBody;
+    	bodyDef.position.set(position.x /Utils.PPM, position.y /Utils.PPM);
+    	pBody = world.createBody(bodyDef);
+    	
+    	if (isCoin) {
+    		CircleShape circle = new CircleShape();
+    		circle.setRadius(width /2 /Utils.PPM);
+    		fixtureDef.shape = circle;
+    		fixtureDef.density = 0.0f;
+    		pBody.createFixture(fixtureDef);
+    		circle.dispose();
+    	}
+    	
+    	if (isTerrain) {
+    		PolygonShape shape = new PolygonShape();
+    		shape.setAsBox(width /2 /Utils.PPM, height /2 /Utils.PPM);
+    		fixtureDef.shape = shape;
+    		fixtureDef.density = 1.0f;
+    		pBody.createFixture(fixtureDef);
+    		shape.dispose();
+    	}
+    	
+    	return pBody;
+    }
+    
+    public void update(float delta) {
+        // Static objects may not need to update, but method is here for consistency
+    }
 }

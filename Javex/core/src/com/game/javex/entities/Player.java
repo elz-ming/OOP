@@ -1,6 +1,62 @@
 package com.game.javex.entities;
 
-public class Player {
-	private float stars;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
+import com.game.javex.tools.Utils;
+
+public class Player {
+	private Body body;
+	
+	public Player(World world, Vector2 position, int width, int height) {
+		this.body = createBox(world, position, width, height);
+	}
+	
+	private Body createBox(World world, Vector2 position, int width, int height) {
+		Body pBody;
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtureDef = new FixtureDef();
+		
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.position.set(position.x /Utils.PPM, position.y /Utils.PPM);
+		bodyDef.fixedRotation = true;
+		pBody = world.createBody(bodyDef);
+		
+		PolygonShape shape = new PolygonShape();
+		shape.setAsBox(width /2 /Utils.PPM, height /2 /Utils.PPM);
+		fixtureDef.shape = shape;
+		fixtureDef.density = 1.0f;
+		pBody.createFixture(fixtureDef);
+		
+		shape.dispose();
+		return pBody;
+	}
+	
+	public void moveLeft() {
+		body.setLinearVelocity(-5, body.getLinearVelocity().y);
+	}
+	
+	public void moveRight() {
+		body.setLinearVelocity(5, body.getLinearVelocity().y);
+	}
+	
+	public void jump() {
+		body.applyForceToCenter(0, 600, true);
+	}
+	
+	public void duck() {
+		
+	}
+	
+	public void stop() {
+		body.setLinearVelocity(0, body.getLinearVelocity().y);
+	}
+	
+	public Body getBody() {
+		return this.body;
+	}
 }

@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputManager implements InputProcessor {
-    
     private int currKey = Keys.UNKNOWN;
     private int prevKey = Keys.UNKNOWN;
 
@@ -18,7 +17,7 @@ public class InputManager implements InputProcessor {
     	prevKey = currKey; // Update previous key
         currKey = keycode; // Update current key
         
-        return true;
+        return false;
     }
     
     @Override
@@ -29,6 +28,11 @@ public class InputManager implements InputProcessor {
         return true;
     }
     
+    public void resetKeys() {
+    	prevKey = Keys.UNKNOWN;
+    	currKey = Keys.UNKNOWN;
+    }
+    
     public int getPrevKey() {
     	return prevKey;
     }
@@ -37,12 +41,9 @@ public class InputManager implements InputProcessor {
     	return currKey;
     }
 
-    
-
-
-    // Getter methods for game mode m
-
-    // Implement other required methods of InputProcessor with empty bodies
+    // ========================= //
+ 	// ===== EMPTY METHODS ===== //	
+ 	// ========================= //
     @Override public boolean keyTyped(char character) { return false; }
     @Override public boolean touchDown(int screenX, int screenY, int pointer, int button) { return false; }
     @Override public boolean touchUp(int screenX, int screenY, int pointer, int button) { return false; }
