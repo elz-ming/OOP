@@ -39,4 +39,12 @@ public class Enemy {
 	public void update(float dt) {
 		
 	}
+	
+	public void moveLeft() {
+		body.setLinearVelocity(-5, body.getLinearVelocity().y);
+	}
+	
+	public void moveRight() {
+		body.setLinearVelocity(5, body.getLinearVelocity().y);
+	}
 }
