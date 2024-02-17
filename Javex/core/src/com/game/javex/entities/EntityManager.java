@@ -20,12 +20,12 @@ public class EntityManager {
 		this.coins = new Array<>();
 	}
 	
-	public void createPlayer(Vector2 position, int width, int height) {
-		this.player = new Player(world, position, width, height);
+	public void createPlayer(Vector2 position) {
+		this.player = new Player(world, position);
 	}
 	
-	public void createEnemy(Vector2 position, int width, int height) {
-		enemies.add(new Enemy(world, position, width, height));
+	public void createEnemy(Vector2 position, boolean isBoss) {
+		enemies.add(new Enemy(world, position, isBoss));
 	}
 	
 	public void createTerrain(Vector2 position, int width, int height) {
@@ -40,12 +40,26 @@ public class EntityManager {
 	
 	public void update(float dt) {
 		if (player != null) {
-			player.update(dt);
+			
 		}
-//		
-//		for (Enemy enemy : enemies) {
-//			enemy.update(dt);
-//		}
+		
+		Array<Enemy> enemyToRemove = new Array<>();
+		for (Enemy enemy : enemies) {
+			if (enemy.getHealth() <= 0) {
+				world.destroyBody(enemy.getBody());
+				enemyToRemove.add(enemy);
+			}
+		}
+		enemies.removeAll(enemyToRemove, true);
+		
+		Array<Object> coinToRemove = new Array<>();
+		for (Object coin : coins) {
+			if (coin.isCollected()) {
+//				world.destroyBody(coin.getBody());
+				coinToRemove.add(coin);
+			}
+		}
+		coins.removeAll(coinToRemove, true);
 	}
 	
 	public void dispose() {
@@ -54,6 +68,10 @@ public class EntityManager {
 	
 	public Player getPlayer() {
 	    return this.player;
+	}
+	
+	public Array<Enemy> getEnemies() {
+		return this.enemies;
 	}
 
 	public void loadEntitiesFromMap(TiledMap map) {

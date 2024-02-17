@@ -15,8 +15,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import com.game.javex.entities.EntityManager;
 import com.game.javex.inouts.*;
+import com.game.javex.tools.AiControlManager;
+import com.game.javex.tools.CollisionManager;
 import com.game.javex.tools.PlayerControlManager;
-import com.game.javex.tools.Utils;
+import com.game.javex.tools.Constants;
 
 public class PlayScene extends AbstractScene {
 	private OrthographicCamera camera;
@@ -27,6 +29,8 @@ public class PlayScene extends AbstractScene {
 	
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
+	private AiControlManager aiControlManager;
+	private CollisionManager collisionManager;
 	
 	private int currentLevel = 1;
 	
@@ -49,8 +53,10 @@ public class PlayScene extends AbstractScene {
 		initialize();
 		
 		playerControlManager = new PlayerControlManager(entityManager.getPlayer(), inputManager);
+//		aiControlManager = new AiControlManager(entityManager.getEnemies());	
 		
-		
+		collisionManager = new CollisionManager();
+		world.setContactListener(collisionManager);
 	}
 	
 	@Override
@@ -68,11 +74,11 @@ public class PlayScene extends AbstractScene {
         // Clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        b2dr.render(world, camera.combined.scl(Utils.PPM)); 
+        b2dr.render(world, camera.combined.scl(Constants.PPM)); 
 	}
 	
 	private void initialize() {
-		entityManager.createPlayer(new Vector2(64, 32), 32, 64);
+		entityManager.createPlayer(new Vector2(64, 32));
 		
 		entityManager.createTerrain(new Vector2(0, 0), 736, 32);
 		entityManager.createTerrain(new Vector2(0, 32), 32, 32);
@@ -81,9 +87,9 @@ public class PlayScene extends AbstractScene {
 		entityManager.createTerrain(new Vector2(512, 32), 32, 32);
 		entityManager.createTerrain(new Vector2(704, 32), 32, 32);
 		
-		entityManager.createEnemy(new Vector2(192, 32), 32, 32);
-		entityManager.createEnemy(new Vector2(384, 32), 32, 32);
-		entityManager.createEnemy(new Vector2(576, 32), 64, 64);
+		entityManager.createEnemy(new Vector2(192, 32), false);
+		entityManager.createEnemy(new Vector2(384, 32), false);
+		entityManager.createEnemy(new Vector2(576, 32), true);
 		
 		entityManager.createCoin(new Vector2(256, 32), 32, 32);
 		entityManager.createCoin(new Vector2(448, 32), 32, 32);
@@ -101,8 +107,8 @@ public class PlayScene extends AbstractScene {
 	
 	public void cameraUpdate(float dt) {
 		Vector3 position = camera.position;
-		position.x = entityManager.getPlayer().getBody().getPosition().x *Utils.PPM;
-		position.y = entityManager.getPlayer().getBody().getPosition().y *Utils.PPM;
+		position.x = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
+		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
 		camera.position.set(position);
 		camera.update();
 	}
