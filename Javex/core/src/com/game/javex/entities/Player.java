@@ -3,40 +3,50 @@ package com.game.javex.entities;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Player extends Entity{
+public class Player{
+	private World world;
+	private Body body;
 	private int health;
 	
-	public Player(World world, Vector2 position) {
-		super(world, position, 32, 64);
+	public Player(World world) {
+		this.world = world;
+		defineEntity();
 		this.health = 3;
 	}
 	
-	protected Body createBox(World world, Vector2 position, int width, int height) {
-		Body pBody;
+	protected void defineEntity() {
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		
+		bodyDef.position.set((Constants.TILE_WIDTH /2) /Constants.PPM, (Constants.TILE_HEIGHT /2) /Constants.PPM);
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
-		pBody = world.createBody(bodyDef);
+		this.body = world.createBody(bodyDef);
 		
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(Constants.PLAYER_RADIUS /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
-//		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.COIN_BIT | Constants.TERRAIN_BIT;
-		pBody.createFixture(fixtureDef).setUserData(this);
+		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.REWARD_BIT | Constants.TERRAIN_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
+		
+		EdgeShape head = new EdgeShape();
+		head.set(new Vector2(-2 /Constants.PPM, Constants.PLAYER_RADIUS /Constants.PPM), new Vector2(2 /Constants.PPM, Constants.PLAYER_RADIUS / Constants.PPM));
+		fixtureDef.shape = head;
+		fixtureDef.filter.categoryBits = Constants.PLAYER_HEAD_BIT;
+		fixtureDef.isSensor = true;
+		this.body.createFixture(fixtureDef).setUserData(this);
 		
 		shape.dispose();
-		return pBody;
+		head.dispose();
 	}
 	
 	public void update(float dt) {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Terrain extends Entity{
+public class Terrain {
     private Body body;
 
     public Terrain(World world, Vector2 position, int width, int height) {

@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Reward extends Entity{
+public class Reward {
 	private Body body;
 	
 	public Reward(World world, Vector2 position, int width, int height) {
