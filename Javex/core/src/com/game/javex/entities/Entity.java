@@ -6,14 +6,17 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public abstract class Entity {
 	protected Body body;
-	protected int width;
-	protected int height;
+	protected Vector2 position;
+	protected World world;
 
-	public Entity(World world, Vector2 position, int width, int height) {
-		this.width = width;
-		this.height = height;
-		this.body = createBox(world, position, width, height);
+	public Entity(World world, Vector2 position) {
+		this.world = world;
+		this.position = position;
 	}
 	
-	protected abstract Body createBox(World world, Vector2 position, int width, int height);
+	protected abstract void createBody(int width, int height);
+	
+	public Body getBody() {
+		return body;
+	}
 }

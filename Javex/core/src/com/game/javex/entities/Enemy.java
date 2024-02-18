@@ -12,40 +12,43 @@ import com.game.javex.tools.Constants;
 public class Enemy extends Entity{	
 	private boolean isBoss;
 	private int health;
+	private boolean toRemove = false;
 	
-	public Enemy(World world, Vector2 position, int width, int height, boolean isBoss) {
-		super(world, position, width, height);
+	public Enemy(World world, Vector2 position, boolean isBoss) {
+		super(world, position);
 		this.isBoss = isBoss;
-		
 		if (isBoss) {
 			this.health = 3;
+			createBody(Constants.BOSS_WIDTH, Constants.BOSS_HEIGHT);
 		} else {
 			this.health = 1;
+			createBody(Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT);
 		}
 	}
 	
-	protected Body createBox(World world, Vector2 position, int width, int height) {		
-		Body pBody;
+	@Override
+	protected void createBody(int width, int height) {		
+//		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
 		
-//		Body Definition
+//		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
-		pBody = world.createBody(bodyDef);
+		this.body = world.createBody(bodyDef);
 		
-//		Fixture Definition
-		PolygonShape shape = new PolygonShape();
+//		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-		pBody.createFixture(fixtureDef).setUserData(this);
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
 		
+//		resource management
 		shape.dispose();
-		return pBody;
 	}
 	
 	public void update(float dt) {
@@ -55,23 +58,23 @@ public class Enemy extends Entity{
 		health -= 1;
 	}
 	
-	public int getHealth() {
-		return health;
-	}
-	
-	public int getHeight() {
-		return height;
-	}
-	
 	public Body getBody() {
 		return body;
 	}
-	
-	public void moveLeft() {
-		body.setLinearVelocity(-5, body.getLinearVelocity().y);
+
+	public void hitOnHead() {
+		health -= 1;
+		if (health <= 0) {
+			toRemove = true;
+		}
 	}
 	
-	public void moveRight() {
-		body.setLinearVelocity(5, body.getLinearVelocity().y);
+	public boolean getToRemove() {
+		return toRemove;
+	}
+
+	public void reverseVelocity() {
+		Vector2 currentVelocity = body.getLinearVelocity();
+        body.setLinearVelocity(-currentVelocity.x, currentVelocity.y);
 	}
 }

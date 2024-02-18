@@ -5,36 +5,39 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
 public class Reward extends Entity{
-	private Body body;
 	
-	public Reward(World world, Vector2 position, int width, int height) {
-		super(world, position, width, height);
+	public Reward(World world, Vector2 position) {
+		super(world, position);
+		createBody(Constants.COIN_WIDTH, Constants.COIN_HEIGHT);
     }
 	
-	protected Body createBox(World world, Vector2 position, int width, int height) {
-    	Body pBody;
-    	BodyDef bodyDef = new BodyDef();
-    	FixtureDef fixtureDef = new FixtureDef();
+	protected void createBody(int width, int height) {
+//		initialize bodyDef and fixtureDef
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtureDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
     	
+//		bodyDef for the entire body
     	bodyDef.type = BodyDef.BodyType.StaticBody;
     	bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
-    	pBody = world.createBody(bodyDef);
+    	bodyDef.fixedRotation = true;
+    	this.body = world.createBody(bodyDef);
     	
-		CircleShape shape = new CircleShape();
-		shape.setRadius(width /2 /Constants.PPM);
-		fixtureDef.density = 0.0f;
+//		fixtureDef for the body
+    	shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.filter.categoryBits = Constants.REWARD_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-    	pBody.createFixture(fixtureDef);
+		this.body.createFixture(fixtureDef).setUserData(this);
+		
+//		resource management
     	shape.dispose();	
-    	
-    	return pBody;
     }
 	
 	public void update(float delta) {

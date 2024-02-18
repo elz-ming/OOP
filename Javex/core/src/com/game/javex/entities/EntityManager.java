@@ -30,35 +30,42 @@ public class EntityManager implements Disposable{
 		this.player = new Player(world, position);
 	}
 	
-	public void createEnemy(Vector2 position, int width, int height) {
-		enemies.add(new Enemy(world, position, width, height, false));
+	public void createEnemy(Vector2 position) {
+		enemies.add(new Enemy(world, position, false));
 	}
 	
-	public void createBoss(Vector2 position, int width, int height) {
-		this.boss = new Enemy(world, position, width, height, true);
+	public void createBoss(Vector2 position) {
+		this.boss = new Enemy(world, position, true);
 	}
 	
 	public void createTerrain(Vector2 position, int width, int height) {
 		terrains.add(new Terrain(world, position, width, height));
 	}
 	
-	public void createCoin(Vector2 position, int width, int height) {
-		coins.add(new Reward(world, position, width, height));
+	public void createCoin(Vector2 position) {
+		coins.add(new Reward(world, position));
 	}
 
 	public void update(float dt) {
 		if (player != null) {
-			
+			player.update(dt);
 		}
 		
 		Array<Enemy> enemyToRemove = new Array<>();
 		for (Enemy enemy : enemies) {
-			if (enemy.getHealth() <= 0) {
+			if (enemy.getToRemove()) {
 				world.destroyBody(enemy.getBody());
 				enemyToRemove.add(enemy);
 			}
 		}
 		enemies.removeAll(enemyToRemove, true);
+		
+		if (boss != null) {
+            if (boss.getToRemove()) {
+                world.destroyBody(boss.getBody());
+                boss = null; // Remove the boss if it's dead
+            }
+        }
 		
 		Array<Reward> coinToRemove = new Array<>();
 		for (Reward coin : coins) {

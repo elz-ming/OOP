@@ -10,31 +10,38 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.tools.Constants;
 
 public class Terrain extends Entity{
-    private Body body;
+    private int width;
+    private int height;
 
     public Terrain(World world, Vector2 position, int width, int height) {
-    	super(world, position, width, height);
+    	super(world, position);
+    	this.width = width;
+    	this.height = height;
+    	createBody(width, height);
     }
-
-    protected Body createBox(World world, Vector2 position, int width, int height) {
-    	Body pBody;
-    	BodyDef bodyDef = new BodyDef();
-    	FixtureDef fixtureDef = new FixtureDef();
+    
+    @Override
+	protected void createBody(int width, int height) {
+//		initialize bodyDef and fixtureDef
+		BodyDef bodyDef = new BodyDef();
+		FixtureDef fixtureDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
     	
+//		bodyDef for the entire body
     	bodyDef.type = BodyDef.BodyType.StaticBody;
     	bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
-    	pBody = world.createBody(bodyDef);
+    	bodyDef.fixedRotation = true;
+    	this.body = world.createBody(bodyDef);
     	
-		PolygonShape shape = new PolygonShape();
+//		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
-		fixtureDef.density = 1.0f;
 		fixtureDef.shape = shape;
-//		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
-//		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-    	pBody.createFixture(fixtureDef);
-    	shape.dispose();	
+		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.ENEMY_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
     	
-    	return pBody;
+//		resource management
+    	shape.dispose();	
     }
     
     public void update(float delta) {

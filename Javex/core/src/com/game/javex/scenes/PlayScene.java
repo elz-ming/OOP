@@ -90,12 +90,12 @@ public class PlayScene extends Scene {
 	private void initialize() {
 		entityManager.createPlayer(new Vector2(64, 32));
 		
-		entityManager.createBoss(new Vector2(576, 32), 64, 64);
-		entityManager.createEnemy(new Vector2(192, 32), 32, 32);
-		entityManager.createEnemy(new Vector2(384, 32), 32, 32);
+		entityManager.createBoss(new Vector2(576, 32));
+		entityManager.createEnemy(new Vector2(192, 32));
+		entityManager.createEnemy(new Vector2(384, 32));
 		
-		entityManager.createCoin(new Vector2(256, 32), 32, 32);
-		entityManager.createCoin(new Vector2(448, 32), 32, 32);
+		entityManager.createCoin(new Vector2(256, 32));
+		entityManager.createCoin(new Vector2(448, 32));
 		
 		entityManager.createTerrain(new Vector2(0, 0), 736, 32);
 		entityManager.createTerrain(new Vector2(0, 32), 32, 32);
