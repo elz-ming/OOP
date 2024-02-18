@@ -35,6 +35,8 @@ public class PauseScene extends AbstractScene {
         // Create the buttons
         resumeButton = new TextButton("Resume Game", skin);
         menuButton = new TextButton("Return to Main Menu", skin);
+        
+        
 
         resumeButton.setSize(300, 80); // Use the size that fits your needs
         menuButton.setSize(300, 80); // Use the size that fits your needs
@@ -59,6 +61,7 @@ public class PauseScene extends AbstractScene {
             }
         }
     }
+    
 
     
     public void handleInput() {
@@ -68,7 +71,7 @@ public class PauseScene extends AbstractScene {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
             if (currentButtonIndex == 0) {
                 // Resume game
                 sceneManager.pop();
@@ -79,7 +82,9 @@ public class PauseScene extends AbstractScene {
         } else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             // Pop the PauseScene and return to the PlayScene
             sceneManager.pop();
+            
         }
+       
     }
     
     public void update(float dt) {

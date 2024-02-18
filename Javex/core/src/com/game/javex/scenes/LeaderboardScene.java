@@ -25,6 +25,7 @@ public class LeaderboardScene extends AbstractScene {
 
     public LeaderboardScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	super(sceneManager, inputManager, outputManager);
+    	sb = new SpriteBatch(); // Initialize the SpriteBatch
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);
         buttons = new ArrayList<>(); // Initialize the list
@@ -34,7 +35,7 @@ public class LeaderboardScene extends AbstractScene {
     }
 
     private void addButton(String label,float customX, float customY) {
-        Skin skin = new Skin(Gdx.files.internal("glassy-ui.json")); // Replace with your actual skin file
+        Skin skin = new Skin(Gdx.files.internal("rainbow-ui.json")); // Replace with your actual skin file
 // Create a button
         TextButton button = new TextButton(label, skin);
 
@@ -79,9 +80,9 @@ public class LeaderboardScene extends AbstractScene {
     public void render(float dt) {
         // Draw the stage
         sb.begin();
-//        sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         
-//		font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
+		//font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
         sb.end();
         stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
         stage.draw();
