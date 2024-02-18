@@ -81,6 +81,8 @@ public class PlayScene extends Scene {
 	public void dispose() {
 		world.dispose();
 		b2dr.dispose();
+		
+		
 	}
 	
 	public void resize(int width, int height) {

@@ -92,9 +92,7 @@ public class PauseScene extends Scene {
     @Override
     public void dispose() {
         sb.dispose();
-        skin.dispose();
-        
-        
+        skin.dispose();     
     }
 
     private void updateButtonStyles() {
@@ -122,7 +120,7 @@ public class PauseScene extends Scene {
                 sceneManager.pop();
             } else if (currentButtonIndex == 1) {
                 // Return to main menu
-            	
+            	sceneManager.pop();
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
         } 
