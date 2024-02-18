@@ -6,7 +6,6 @@ import com.badlogic.gdx.InputProcessor;
 
 public class InputManager implements InputProcessor {
     private int currKey = Keys.UNKNOWN;
-    private int prevKey = Keys.UNKNOWN;
 
     public InputManager() {
         Gdx.input.setInputProcessor(this);
@@ -14,7 +13,6 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-    	prevKey = currKey; // Update previous key
         currKey = keycode; // Update current key
         
         return false;
@@ -29,12 +27,7 @@ public class InputManager implements InputProcessor {
     }
     
     public void resetKeys() {
-    	prevKey = Keys.UNKNOWN;
     	currKey = Keys.UNKNOWN;
-    }
-    
-    public int getPrevKey() {
-    	return prevKey;
     }
     
     public int getCurrKey() {
