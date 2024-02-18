@@ -128,14 +128,13 @@ public class MenuScene extends Scene {
     }
 
     public void handleInput() {
-        if (inputManager.getPrevKey() == Keys.UNKNOWN && 
-                (inputManager.getCurrKey() == Keys.UP || inputManager.getCurrKey() == Keys.DOWN)) {
+        if (inputManager.getCurrKey() == Keys.UP || inputManager.getCurrKey() == Keys.DOWN) {
                 currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
                 inputManager.resetKeys();
             }
         
-        if (inputManager.getPrevKey() == Keys.UNKNOWN && inputManager.getCurrKey() == Keys.ENTER) {
+        if (inputManager.getCurrKey() == Keys.ENTER) {
             switch (currentButtonIndex) {
                 case 0: // Play button
                     sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));

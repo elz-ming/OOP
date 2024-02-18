@@ -1,15 +1,13 @@
 package com.game.javex.tools;
 
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.WorldManifold;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
+import com.game.javex.entities.Reward;
 import com.game.javex.tools.Constants;
 
 public class CollisionManager implements ContactListener{
@@ -24,39 +22,48 @@ public class CollisionManager implements ContactListener{
 		
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
-		System.out.println(collisionDef);
-		System.out.println(Constants.PLAYER_HEAD_BIT | Constants.ENEMY_BIT);
-		
-		
 		switch (collisionDef) {
 	
 //			Player land on enemy top
-			case Constants.PLAYER_HEAD_BIT | Constants.ENEMY_BIT:
+			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
 				System.out.println("landed on enemy head");
-	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_HEAD_BIT)
-	                ((Enemy) fixB.getUserData()).hitOnHead();
-	            else
+	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT)
 	                ((Enemy) fixA.getUserData()).hitOnHead();
+	            else
+	                ((Enemy) fixB.getUserData()).hitOnHead();
 	            break;
 				
 	            
 //	        Enemy touch player from side
 			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
+				System.out.println("touched player side");
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT)
 	                ((Player) fixA.getUserData()).hit((Enemy) fixB.getUserData());
 	            else
 	                ((Player) fixB.getUserData()).hit((Enemy) fixA.getUserData());
 	            break;
+	            
+//		    Player can jump again after touching terrain
+			case Constants.PLAYER_BIT | Constants.REWARD_BIT:
+				System.out.println("touched coin");
+                if (fixA.getFilterData().categoryBits == Constants.REWARD_BIT) {
+                    ((Reward)fixA.getUserData()).collect();
+                } else if (fixB.getFilterData().categoryBits == Constants.REWARD_BIT) {
+                    ((Reward)fixB.getUserData()).collect();
+                }
+                break;
 			
+//	        Player can jump again after touching terrain
 			case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
-                // Determine which fixture is the player
+				System.out.println("touched terrain");
                 if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                     ((Player)fixA.getUserData()).setCanJump(true);
                 } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                     ((Player)fixB.getUserData()).setCanJump(true);
                 }
                 break;
-                
+                      
+//          Enemy will move in opposite direction once touch terrain
 			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
                 // Determine which fixture is the enemy
                 if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
@@ -66,6 +73,7 @@ public class CollisionManager implements ContactListener{
                 }
                 break;
 		
+//          Enemies will move in opposite direction once touch each other
 			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
 		        // If you want enemies to interact with each other (e.g., bounce off each other)
 	            ((Enemy)fixA.getUserData()).reverseVelocity();

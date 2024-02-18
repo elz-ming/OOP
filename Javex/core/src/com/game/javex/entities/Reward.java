@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.tools.Constants;
 
 public class Reward extends Entity{
+	private boolean collected = false;
 	
 	public Reward(World world, Vector2 position) {
 		super(world, position);
@@ -44,7 +45,11 @@ public class Reward extends Entity{
         // Static objects may not need to update, but method is here for consistency
     }
 	
+	public void collect() {
+        collected = true;
+    }
+	
 	public boolean isCollected() {
-		return false;
+		return collected;
 	}
 }

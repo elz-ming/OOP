@@ -12,7 +12,7 @@ import com.game.javex.tools.Constants;
 public class Enemy extends Entity {
 	private boolean isBoss;
 	private int health;
-	private boolean toRemove = false;
+	private boolean killed = false;
 	
 	public Enemy(World world, Vector2 position, boolean isBoss) {
 		super(world, position);
@@ -32,6 +32,7 @@ public class Enemy extends Entity {
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
+		PolygonShape head = new PolygonShape();
 		
 //		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -47,8 +48,16 @@ public class Enemy extends Entity {
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
+//		fixtureDef for the head for jumping on enemies
+		head.setAsBox(width /2 /2 /Constants.PPM, 4 /Constants.PPM, new Vector2(0, height/2 /Constants.PPM), 0);
+		fixtureDef.shape = head;
+		fixtureDef.restitution = 1.0f;
+		fixtureDef.filter.categoryBits = Constants.ENEMY_HEAD_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
+		
 //		resource management
 		shape.dispose();
+		head.dispose();
 	}
 	
 	public void update(float dt) {
@@ -65,12 +74,12 @@ public class Enemy extends Entity {
 	public void hitOnHead() {
 		health -= 1;
 		if (health <= 0) {
-			toRemove = true;
+			killed = true;
 		}
 	}
 	
-	public boolean getToRemove() {
-		return toRemove;
+	public boolean getKilled() {
+		return killed;
 	}
 
 	public void reverseVelocity() {

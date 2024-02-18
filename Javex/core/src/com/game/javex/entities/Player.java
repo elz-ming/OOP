@@ -37,16 +37,8 @@ public class Player extends Entity{
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
-		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.TERRAIN_BIT;
+		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.REWARD_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
-		
-//		fixtureDef for the head for jumping on enemies
-		shape.setAsBox((width /2 -2) /Constants.PPM, 4 /Constants.PPM, new Vector2(0, height/2 /Constants.PPM), 0);
-		fixtureDef.shape = shape;
-		fixtureDef.isSensor = true;
-		fixtureDef.filter.categoryBits = Constants.PLAYER_HEAD_BIT;
-		fixtureDef.filter.maskBits = Constants.ENEMY_BIT;
-		this.body.createFixture(fixtureDef).setUserData("PlayerHead");
 		
 //		resource management
 		shape.dispose();
@@ -93,11 +85,17 @@ public class Player extends Entity{
 		
 	}
 	public void hit(Enemy enemy) {
-		// TODO Auto-generated method stub
-		
+		health -= 1;
+		if (health <= 0) {
+			System.out.println("Woi GAME OVER alr");
+		}
 	}
 
 	public void setCanJump(boolean canJump) {
         this.canJump = canJump;
     }
+	
+	public boolean getCanJump() {
+		return this.canJump;
+	}
 }
