@@ -44,9 +44,6 @@ public class Player {
 		return pBody;
 	}
 	
-	public void update(float dt) {
-		
-	}
 	
 	public void reduceHealth() {
 		health -= 1;

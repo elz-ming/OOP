@@ -49,7 +49,7 @@ public class CollisionManager implements ContactListener{
 			case Constants.PLAYER_BIT | Constants.COIN_BIT :
 				Fixture coinFixture = playerFixture == fixA ? fixB : fixA;
 				
-				coinFixture.setIsCollected();
+//				coinFixture.setIsCollected();
 				
 				break;
 				
