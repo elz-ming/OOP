@@ -9,20 +9,15 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Player {
-	private Body body;
+public class Player extends Entity{
 	private int health;
-	private int width;
-	private int height;
 	
 	public Player(World world, Vector2 position) {
-		health = 3;
-		width = 32;
-		height = 64;
-		body = createBox(world, position, width, height);
+		super(world, position, 32, 64);
+		this.health = 3;
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {
+	protected Body createBox(World world, Vector2 position, int width, int height) {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -56,18 +51,22 @@ public class Player {
 		return health;
 	}
 	
+//	TODO VARSHA
 	public void moveLeft() {
 		body.setLinearVelocity(-5, body.getLinearVelocity().y);
 	}
 	
+//	TODO VARSHA
 	public void moveRight() {
 		body.setLinearVelocity(5, body.getLinearVelocity().y);
 	}
 	
+//	TODO VARSHA
 	public void jump() {
 		body.applyForceToCenter(0, 900, true);
 	}
 	
+//	TODO VARSHA
 	public void duck() {
 		
 	}

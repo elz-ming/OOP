@@ -9,26 +9,22 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Enemy {
-	private Body body;
+public class Enemy extends Entity{	
+	private boolean isBoss;
 	private int health;
-	private int width;
-	private int height;
 	
-	public Enemy(World world, Vector2 position, boolean isBoss) {
-		if (isBoss) {
-			health = 3;
-			width = height = 64;
-		} else {
-			health = 1;
-			width = height = 32;
-		}
+	public Enemy(World world, Vector2 position, int width, int height, boolean isBoss) {
+		super(world, position, width, height);
+		this.isBoss = isBoss;
 		
-		body = createBox(world, position, width, height);
-		body.setUserData(this);
+		if (isBoss) {
+			this.health = 3;
+		} else {
+			this.health = 1;
+		}
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {		
+	protected Body createBox(World world, Vector2 position, int width, int height) {		
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();

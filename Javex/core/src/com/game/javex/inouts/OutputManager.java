@@ -5,23 +5,23 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;
 
 public class OutputManager implements Disposable{
-    private Music currMusic;
+    private Music music;
 
-    public void playMusic(String musicPath, boolean isLooping) {
-    	if (currMusic != null) {
-    		currMusic.stop();
-    		currMusic.dispose(); // Free memory resources
+    public void play(String musicPath, boolean isLooping) {
+    	if (music != null) {
+    		music.stop();
+    		music.dispose(); // Free memory resources
         }
     	
-    	currMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
-    	currMusic.setLooping(isLooping);
-    	currMusic.play();
+    	music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+    	music.setLooping(isLooping);
+    	music.play();
     }
 
     @Override
     public void dispose() {
-    	if (currMusic != null) {
-            currMusic.dispose();
+    	if (music != null) {
+            music.dispose();
         }
     }
 }

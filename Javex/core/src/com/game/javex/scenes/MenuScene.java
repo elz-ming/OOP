@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.game.javex.inouts.*;
 
-public class StartMenuScene extends AbstractScene {
+public class MenuScene extends Scene {
 	private Stage stage;
     private Skin skin;
     
@@ -19,7 +19,7 @@ public class StartMenuScene extends AbstractScene {
     private TextButton[] menuButtons;
     private int currentButtonIndex = 0;
 
-    public StartMenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         // Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
     	
@@ -53,8 +53,31 @@ public class StartMenuScene extends AbstractScene {
         updateButtonStyles();
     }
     
+    @Override
+    public void update(float dt) {
+    	handleInput();
+    }  
     
-    private void updateButtonStyles() {
+    @Override
+	public void render(float dt) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
+        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
+        stage.draw();
+	}
+	
+	@Override
+    public void dispose() {
+		stage.dispose();
+		skin.dispose();
+    }
+	
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+    }
+	
+	private void updateButtonStyles() {
         for (int i = 0; i < menuButtons.length; i++) {
             if (i == currentButtonIndex) {
                 // Highlight the selected button
@@ -83,36 +106,4 @@ public class StartMenuScene extends AbstractScene {
             inputManager.resetKeys(); // Reset keys after handling
         }
     }
-    
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-    
-    public void update(float dt) {
-    	handleInput();
-    }  
-
-	@Override
-	public void render(float dt) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-	}
-	
-	@Override
-    public void dispose() {
-		stage.dispose();
-		skin.dispose();
-    }
-	
-	// ========================= //
-	// ===== EMPTY METHODS ===== //	
-	// ========================= //
-	@Override public void show() {}
-	@Override public void pause() {}
-	@Override public void resume() {}
-	@Override public void hide() {}
 }

@@ -39,11 +39,6 @@ public class PlayerControlManager{
         // Other player control logic goes here
     }
 
-    private void jump() {
-        // Jump logic implementation
-        // This is where you'd typically apply a force or change the player's vertical velocity
-    }
-
     // Method to reset jump capability, likely to be called when the player lands
     public void resetJump() {
         canJump = true;

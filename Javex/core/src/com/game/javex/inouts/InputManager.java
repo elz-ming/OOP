@@ -28,18 +28,18 @@ public class InputManager implements InputProcessor {
         return true;
     }
     
-    public void resetKeys() {
-    	prevKey = Keys.UNKNOWN;
-    	currKey = Keys.UNKNOWN;
-    }
-    
-    public int getPrevKey() {
-    	return prevKey;
-    }
-    
-    public int getCurrKey() {
-    	return currKey;
-    }
+	    public void resetKeys() {
+	    	prevKey = Keys.UNKNOWN;
+	    	currKey = Keys.UNKNOWN;
+	    }
+	    
+	    public int getPrevKey() {
+	    	return prevKey;
+	    }
+	    
+	    public int getCurrKey() {
+	    	return currKey;
+	    }
 
     // ========================= //
  	// ===== EMPTY METHODS ===== //	

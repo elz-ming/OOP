@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import com.game.javex.inouts.*;
 
-public class PauseScene extends AbstractScene {
+public class PauseScene extends Scene {
     private SpriteBatch sb;
     private Stage stage;
     private Skin skin;
@@ -47,41 +47,8 @@ public class PauseScene extends AbstractScene {
         menuButtons = new TextButton[]{resumeButton, menuButton};
         updateButtonStyles();
     }
-
-    private void updateButtonStyles() {
-        for (int i = 0; i < menuButtons.length; i++) {
-            if (i == currentButtonIndex) {
-                // Highlight the selected button
-                menuButtons[i].setColor(Color.YELLOW);
-            } else {
-                // Other buttons are white
-                menuButtons[i].setColor(Color.WHITE);
-            }
-        }
-    }
-
     
-    public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
-            updateButtonStyles();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
-            updateButtonStyles();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            if (currentButtonIndex == 0) {
-                // Resume game
-                sceneManager.pop();
-            } else if (currentButtonIndex == 1) {
-                // Return to main menu
-                sceneManager.set(new StartMenuScene(sceneManager, inputManager, outputManager));
-            }
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            // Pop the PauseScene and return to the PlayScene
-            sceneManager.pop();
-        }
-    }
-    
+    @Override
     public void update(float dt) {
     	handleInput();
     }  
@@ -104,12 +71,36 @@ public class PauseScene extends AbstractScene {
         skin.dispose();
     }
 
-	// ========================= //
-	// ===== EMPTY METHODS ===== //	
-	// ========================= //
-	@Override public void show() {}
-	@Override public void pause() {}
-	@Override public void resume() {}
-	@Override public void hide() {}
-	@Override public void resize(int width, int height) {}
+    private void updateButtonStyles() {
+        for (int i = 0; i < menuButtons.length; i++) {
+            if (i == currentButtonIndex) {
+                // Highlight the selected button
+                menuButtons[i].setColor(Color.YELLOW);
+            } else {
+                // Other buttons are white
+                menuButtons[i].setColor(Color.WHITE);
+            }
+        }
+    }
+
+    public void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+            currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
+            updateButtonStyles();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
+            updateButtonStyles();
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            if (currentButtonIndex == 0) {
+                // Resume game
+                sceneManager.pop();
+            } else if (currentButtonIndex == 1) {
+                // Return to main menu
+                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+            }
+        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            // Pop the PauseScene and return to the PlayScene
+            sceneManager.pop();
+        }
+    }
 }

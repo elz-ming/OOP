@@ -1,9 +1,5 @@
 package com.game.javex.tools;
 
-import java.util.Spliterator.OfPrimitive;
-
-import javax.swing.plaf.basic.BasicGraphicsUtils;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -17,12 +13,14 @@ import com.game.javex.entities.Player;
 import com.game.javex.tools.Constants;
 
 public class CollisionManager implements ContactListener{
-
+	private Fixture fixA;
+	private Fixture fixB;
+	
+	
 	@Override
 	public void beginContact(Contact contact) {
-		
-		Fixture fixA = contact.getFixtureA();
-		Fixture fixB = contact.getFixtureB();
+		fixA = contact.getFixtureA();
+		fixB = contact.getFixtureB();
 		
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
@@ -46,10 +44,10 @@ public class CollisionManager implements ContactListener{
 				
 				break;
 				
-			case Constants.PLAYER_BIT | Constants.COIN_BIT :
+			case Constants.PLAYER_BIT | Constants.REWARD_BIT :
 				Fixture coinFixture = playerFixture == fixA ? fixB : fixA;
 				
-				coinFixture.setIsCollected();
+//				coinFixture.setIsCollected();
 				
 				break;
 				

@@ -20,7 +20,7 @@ import com.game.javex.tools.CollisionManager;
 import com.game.javex.tools.PlayerControlManager;
 import com.game.javex.tools.Constants;
 
-public class PlayScene extends AbstractScene {
+public class PlayScene extends Scene {
 	private OrthographicCamera camera;
 	private Viewport viewport;
 	
@@ -77,8 +77,25 @@ public class PlayScene extends AbstractScene {
         b2dr.render(world, camera.combined.scl(Constants.PPM)); 
 	}
 	
+	@Override
+	public void dispose() {
+		world.dispose();
+		b2dr.dispose();
+	}
+	
+	public void resize(int width, int height) {
+		camera.setToOrtho(false, width /2, height /2);
+	}
+
 	private void initialize() {
 		entityManager.createPlayer(new Vector2(64, 32));
+		
+		entityManager.createBoss(new Vector2(576, 32), 64, 64);
+		entityManager.createEnemy(new Vector2(192, 32), 32, 32);
+		entityManager.createEnemy(new Vector2(384, 32), 32, 32);
+		
+		entityManager.createCoin(new Vector2(256, 32), 32, 32);
+		entityManager.createCoin(new Vector2(448, 32), 32, 32);
 		
 		entityManager.createTerrain(new Vector2(0, 0), 736, 32);
 		entityManager.createTerrain(new Vector2(0, 32), 32, 32);
@@ -86,13 +103,6 @@ public class PlayScene extends AbstractScene {
 		entityManager.createTerrain(new Vector2(320, 32), 32, 32);
 		entityManager.createTerrain(new Vector2(512, 32), 32, 32);
 		entityManager.createTerrain(new Vector2(704, 32), 32, 32);
-		
-		entityManager.createEnemy(new Vector2(192, 32), false);
-		entityManager.createEnemy(new Vector2(384, 32), false);
-		entityManager.createEnemy(new Vector2(576, 32), true);
-		
-		entityManager.createCoin(new Vector2(256, 32), 32, 32);
-		entityManager.createCoin(new Vector2(448, 32), 32, 32);
 	}
 
 	protected void pauseListener(float dt) {
@@ -103,8 +113,6 @@ public class PlayScene extends AbstractScene {
 	    }
 	}
 	
-	
-	
 	public void cameraUpdate(float dt) {
 		Vector3 position = camera.position;
 		position.x = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
@@ -112,23 +120,4 @@ public class PlayScene extends AbstractScene {
 		camera.position.set(position);
 		camera.update();
 	}
-	
-	@Override
-	public void resize(int width, int height) {
-		camera.setToOrtho(false, width /2, height /2);
-	}
-
-	@Override
-	public void dispose() {
-		world.dispose();
-		b2dr.dispose();
-	}
-	
-	// ========================= //
-	// ===== EMPTY METHODS ===== //	
-	// ========================= //
-	@Override public void show() {}
-	@Override public void pause() {}
-	@Override public void resume() {}
-	@Override public void hide() {}
 }
