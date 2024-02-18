@@ -117,7 +117,7 @@ public class PlayScene extends Scene {
             	Gdx.app.log("PauseScene", "L key pressed. Ending the game.");
             	dispose();
             	
-                sceneManager.set(new LeaderboardScene(sceneManager, inputManager, outputManager));
+                sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 	}
 	

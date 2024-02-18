@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.inouts.InputManager;
 import com.game.javex.inouts.OutputManager;
 
-public class MusicSettingsScene extends AbstractScene {
+public class MusicSettingsScene extends Scene {
     private Stage stage;
     private Skin skin;
     private Slider volumeSlider;
@@ -62,13 +62,6 @@ public class MusicSettingsScene extends AbstractScene {
         stage.dispose();
         skin.dispose();
     }
-
-    // Empty methods
-    @Override public void show() {}
-    @Override public void resize(int width, int height) { stage.getViewport().update(width, height, true); }
-    @Override public void pause() {}
-    @Override public void resume() {}
-    @Override public void hide() {}
 
 	@Override
 	protected void update(float dt) {
