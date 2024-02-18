@@ -8,15 +8,22 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.Pursue;
+import com.badlogic.gdx.math.MathUtils;
 
 import com.game.javex.entities.EntityManager;
+import com.game.javex.entities.Player;
 import com.game.javex.inouts.*;
 import com.game.javex.tools.PlayerControlManager;
 import com.game.javex.tools.Utils;
+import com.game.javex.tools.AiControlManager;
+
 
 public class PlayScene extends AbstractScene {
 	private OrthographicCamera camera;
@@ -28,6 +35,7 @@ public class PlayScene extends AbstractScene {
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
 	
+	AiControlManager entity, target;
 	private int currentLevel = 1;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
@@ -46,17 +54,34 @@ public class PlayScene extends AbstractScene {
 		b2dr = new Box2DDebugRenderer();
 		
 		entityManager = new EntityManager(world);
-		entityManager.createPlayer(new Vector2(400, 300), 32, 64);
+		Body playerBody = entityManager.createPlayer(new Vector2(800, 500), 32, 64);
+		target = new AiControlManager(playerBody, 0);
+		//entityManager.createPlayer(new Vector2(800, 500), 64, 32);
+		Player player = entityManager.getPlayer();
 		playerControlManager = new PlayerControlManager(entityManager.getPlayer(), inputManager);
+		//target = new AiControlManager(body, 30);
 		
-		entityManager.createTerrain(new Vector2(400 , 100), 160, 32);
-		entityManager.createTerrain(new Vector2(600 , 100), 160, 32);
 		
-		entityManager.createEnemy(new Vector2(600, 300), 32, 32);
-		entityManager.createEnemy(new Vector2(800, 300), 32, 32);
+		entityManager.createTerrain(new Vector2(400 , 100), 1600, 32);
+		entityManager.createTerrain(new Vector2(600 , 100), 1600, 32);
+		entityManager.createTerrain(new Vector2(500,100),16,320);
+		entityManager.createTerrain(new Vector2(700,100),16,320);
+		
+		//body = entityManager.createEnemy(new Vector2(600, 300), 32, 32);
+		Body enemyBody = entityManager.createEnemy(new Vector2(600, 300), 32, 32);
+		entity = new AiControlManager(enemyBody, 0);
+		//entityManager.createEnemy(new Vector2(800, 300), 64, 32);
+		//target = new AiControlManager(enemyBody, 30);
+		
 		
 		entityManager.createCoin(new Vector2(500, 100 + 16), 16);
 		entityManager.createCoin(new Vector2(700, 100 + 16), 16);
+		
+		Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity, target)
+				.setTimeToTarget(0.01f)
+				.setArrivalTolerance(2f)
+				.setDecelerationRadius(10);
+		entity.setBehavior(arriveSB);
 	}
 	
 	@Override
@@ -67,6 +92,7 @@ public class PlayScene extends AbstractScene {
 		pauseListener(dt);
 		playerControlManager.update(dt);
 		entityManager.update(dt);
+		entity.update(dt);
 	}
 	
 	@Override
@@ -75,6 +101,7 @@ public class PlayScene extends AbstractScene {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         b2dr.render(world, camera.combined.scl(Utils.PPM)); 
+  
 	}
 
 	protected void pauseListener(float dt) {
@@ -93,6 +120,8 @@ public class PlayScene extends AbstractScene {
 		position.y = entityManager.getPlayer().getBody().getPosition().y *Utils.PPM;
 		camera.position.set(position);
 		camera.update();
+		
+		System.out.println("Player's x position: " + entityManager.getPlayer().getBody().getPosition().x);
 	}
 	
 	@Override

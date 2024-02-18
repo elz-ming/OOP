@@ -13,10 +13,11 @@ public class Player {
 	private Body body;
 	
 	public Player(World world, Vector2 position, int width, int height) {
-		this.body = createBox(world, position, width, height);
+		this.body = createBox(world, position, width, height, BodyDef.BodyType.DynamicBody, false);
+		
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {
+	private Body createBox(World world, Vector2 position, int width, int height, BodyDef.BodyType bodyType, boolean isSensor) {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -59,4 +60,8 @@ public class Player {
 	public Body getBody() {
 		return this.body;
 	}
+	
+	public void update(float dt) {
+	    
+	  }
 }

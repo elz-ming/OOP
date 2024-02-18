@@ -13,10 +13,16 @@ public class Enemy {
 	private Body body;
 	
 	public Enemy(World world, Vector2 position, int width, int height) {
-		this.body = createBox(world, position, width, height);
+		this.body = createBox(world, position, width, height, BodyDef.BodyType.DynamicBody, false);
+		
+		
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {
+    public Body getBody() {
+        return this.body;
+}
+	
+	private Body createBox(World world, Vector2 position, int width, int height, BodyDef.BodyType bodyType, boolean isSensor) {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();

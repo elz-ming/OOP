@@ -3,6 +3,7 @@ package com.game.javex.entities;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
@@ -20,13 +21,17 @@ public class EntityManager {
 		this.coins = new Array<>();
 	}
 	
-	public void createPlayer(Vector2 position, int width, int height) {
+	public Body createPlayer(Vector2 position, int width, int height) {
 		this.player = new Player(world, position, width, height);
-		System.out.println("Player printed");
+		
+		return this.player.getBody();
 	}
 	
-	public void createEnemy(Vector2 position, int width, int height) {
-		enemies.add(new Enemy(world, position, width, height));
+	public Body createEnemy(Vector2 position, int width, int height) {
+		Enemy enemy = new Enemy(world, position, width, height);
+		enemies.add(enemy);
+	    return enemy.getBody();
+		//nemies.add(new Enemy(world, position, width, height));
 	}
 	
 	public void createTerrain(Vector2 position, int width, int height) {
