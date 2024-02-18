@@ -119,6 +119,7 @@ public class StartMenuScene extends AbstractScene {
                     break;
                 case 1: // Settings button
                     // Add your logic for the settings button here
+                	sceneManager.set(new MusicSettingsScene(sceneManager, inputManager, outputManager));
                     break;
                 case 2: // Exit button
                     Gdx.app.exit();
