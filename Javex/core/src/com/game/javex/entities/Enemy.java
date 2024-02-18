@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-public class Enemy extends Entity{	
+public class Enemy {
 	private boolean isBoss;
 	private int health;
 	private boolean toRemove = false;
