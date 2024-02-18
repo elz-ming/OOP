@@ -17,7 +17,9 @@ public class SceneManager {
 	
 	// Only for pause
 	public void pop() {
-		scenes.pop().dispose();
+		if (!scenes.isEmpty()) {
+	        scenes.pop().dispose();
+	}
 	}
 	
 	// For Menu, Play and End
@@ -32,3 +34,5 @@ public class SceneManager {
     	currentScene.render(dt);
     }
 }
+
+
