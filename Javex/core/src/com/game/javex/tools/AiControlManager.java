@@ -197,11 +197,7 @@ public class AiControlManager implements Steerable<Vector2>{
 		return tagged;
 	}
 
-	@Override
-	public void setTagged(boolean tagged) {
-		// TODO Auto-generated method stub
-		this.tagged = tagged;
-	}
+	@Override public void setTagged(boolean tagged) {this.tagged = tagged;}
 	
 	public Body getBody() {
 		return body;
