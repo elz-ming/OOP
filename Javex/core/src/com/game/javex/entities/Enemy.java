@@ -13,18 +13,12 @@ public class Enemy extends Entity{
 	private boolean isBoss;
 	private int health;
 	
-	public Enemy(World world, Vector2 position, int width, int height, boolean isBoss) {
-		super(world, position, width, height);
-		this.isBoss = isBoss;
+	public Enemy(World world, Vector2 position, int width, int height) {
+		this.body = createBox(world, position, width, height, BodyDef.BodyType.DynamicBody, false);
 		
-		if (isBoss) {
-			this.health = 3;
-		} else {
-			this.health = 1;
-		}
+		
 	}
-	
-	protected Body createBox(World world, Vector2 position, int width, int height) {		
+	private Body createBox(World world, Vector2 position, int width, int height, BodyDef.BodyType bodyType, boolean isSensor) {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();

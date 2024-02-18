@@ -8,17 +8,23 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
+import com.badlogic.gdx.ai.steer.behaviors.Pursue;
+import com.badlogic.gdx.math.MathUtils;
 
 import com.game.javex.entities.EntityManager;
+import com.game.javex.entities.Player;
 import com.game.javex.inouts.*;
 import com.game.javex.tools.AiControlManager;
 import com.game.javex.tools.CollisionManager;
 import com.game.javex.tools.PlayerControlManager;
 import com.game.javex.tools.Constants;
+import com.game.javex.tools.Utils;
 
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
@@ -32,6 +38,7 @@ public class PlayScene extends Scene {
 	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
 	
+	AiControlManager entity, target;
 	private int currentLevel = 1;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
@@ -57,6 +64,27 @@ public class PlayScene extends Scene {
 		
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
+		Body playerBody = entityManager.createPlayer(new Vector2(800, 500), 32, 64);
+		target = new AiControlManager(playerBody, 0);
+		//entityManager.createPlayer(new Vector2(800, 500), 64, 32);
+		
+		//target = new AiControlManager(body, 30);
+		
+		//body = entityManager.createEnemy(new Vector2(600, 300), 32, 32);
+		Body enemyBody = entityManager.createEnemy(new Vector2(600, 300), 32, 32);
+		entity = new AiControlManager(enemyBody, 0);
+		//entityManager.createEnemy(new Vector2(800, 300), 64, 32);
+		//target = new AiControlManager(enemyBody, 30);
+		
+		
+		entityManager.createCoin(new Vector2(500, 100 + 16), 16);
+		entityManager.createCoin(new Vector2(700, 100 + 16), 16);
+		
+		Arrive<Vector2> arriveSB = new Arrive<Vector2>(entity, target)
+				.setTimeToTarget(0.01f)
+				.setArrivalTolerance(2f)
+				.setDecelerationRadius(10);
+		entity.setBehavior(arriveSB);
 	}
 	
 	@Override
@@ -67,6 +95,7 @@ public class PlayScene extends Scene {
 		pauseListener(dt);
 		playerControlManager.update(dt);
 		entityManager.update(dt);
+		entity.update(dt);
 	}
 	
 	@Override
@@ -103,6 +132,11 @@ public class PlayScene extends Scene {
 		entityManager.createTerrain(new Vector2(320, 32), 32, 32);
 		entityManager.createTerrain(new Vector2(512, 32), 32, 32);
 		entityManager.createTerrain(new Vector2(704, 32), 32, 32);
+
+		entityManager.createTerrain(new Vector2(400 , 100), 1600, 32);
+		entityManager.createTerrain(new Vector2(600 , 100), 1600, 32);
+		entityManager.createTerrain(new Vector2(500,100),16,320);
+		entityManager.createTerrain(new Vector2(700,100),16,320);
 	}
 
 	protected void pauseListener(float dt) {
@@ -119,5 +153,7 @@ public class PlayScene extends Scene {
 		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
 		camera.position.set(position);
 		camera.update();
+		
+		System.out.println("Player's x position: " + entityManager.getPlayer().getBody().getPosition().x);
 	}
 }
