@@ -12,12 +12,12 @@ import com.game.javex.tools.Constants;
 public class Player extends Entity{
 	private int health;
 	
-	public Player(World world, Vector2 position, int width, int height) {
-		this.body = createBox(world, position, width, height, BodyDef.BodyType.DynamicBody, false);
-		
+	public Player(World world, Vector2 position) {
+		super(world, position, 32, 64);
+		this.health = 3;
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height, BodyDef.BodyType bodyType, boolean isSensor) {
+	protected Body createBox(World world, Vector2 position, int width, int height) {
 		Body pBody;
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -78,8 +78,4 @@ public class Player extends Entity{
 	public Body getBody() {
 		return body;
 	}
-	
-	public void update(float dt) {
-	    
-	  }
 }

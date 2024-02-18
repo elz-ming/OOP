@@ -2,7 +2,6 @@ package com.game.javex.entities;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
@@ -27,21 +26,16 @@ public class EntityManager implements Disposable{
 		
 	}
 	
-	public void createBoss(Vector2 position, int width, int height) {
-		this.boss = new Enemy(world, position, width, height, true);
-	}
-
-	public Body createPlayer(Vector2 position, int width, int height) {
-		this.player = new Player(world, position, width, height);
-		
-		return this.player.getBody();
+	public void createPlayer(Vector2 position) {
+		this.player = new Player(world, position);
 	}
 	
-	public Body createEnemy(Vector2 position, int width, int height) {
-		Enemy enemy = new Enemy(world, position, width, height);
-		enemies.add(enemy);
-	    return enemy.getBody();
-		//enemies.add(new Enemy(world, position, width, height));
+	public void createEnemy(Vector2 position, int width, int height) {
+		enemies.add(new Enemy(world, position, width, height, false));
+	}
+	
+	public void createBoss(Vector2 position, int width, int height) {
+		this.boss = new Enemy(world, position, width, height, true);
 	}
 	
 	public void createTerrain(Vector2 position, int width, int height) {
