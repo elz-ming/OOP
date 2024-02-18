@@ -15,15 +15,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 import com.game.javex.inouts.*;
 
-public class LeaderboardScene extends AbstractScene {
+public class EndScene extends Scene {
 	private SpriteBatch sb;
     private Stage stage;
     
-    private List<TextButton> buttons; // Array to store buttons\
-    private SceneManager sceneManager;
+    private List<TextButton> buttons; // Array to store buttons
     private float finalScore;
 
-    public LeaderboardScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	super(sceneManager, inputManager, outputManager);
     	sb = new SpriteBatch(); // Initialize the SpriteBatch
         stage = new Stage(new ScreenViewport());
@@ -32,6 +31,38 @@ public class LeaderboardScene extends AbstractScene {
 
         addButton("Back To Menu",0.5f, 0.5f);
 
+    }
+    
+    @Override
+    public void update(float dt) {
+        // Update the stage
+        stage.act(Gdx.graphics.getDeltaTime());
+    }
+
+    @Override
+    public void render(float dt) {
+        // Draw the stage
+        sb.begin();
+//        sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        
+//		font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
+        sb.end();
+        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        stage.draw();
+
+    }
+    @Override
+    public void dispose() {
+        for (TextButton button : buttons) {
+            button.clear(); // Clears any listeners
+            button.remove(); // Removes the button from the stage
+            button.getSkin().dispose(); // Disposes of the button's skin
+        }
+        buttons.clear(); // Clears the list of buttons
+        // Dispose of the stage's resources
+        stage.getRoot().clearChildren();
+        System.out.println("Number of actors after clearing: " + stage.getRoot().getChildren().size);
+        stage.dispose();
     }
 
     private void addButton(String label,float customX, float customY) {
@@ -66,48 +97,7 @@ public class LeaderboardScene extends AbstractScene {
 
     private void handleButtonClick(String label) {
         if (label.equals("Back To Menu")) {
-            sceneManager.set(new StartMenuScene(sceneManager, inputManager, outputManager));
+            sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
         }
     }
-
-    @Override
-    public void update(float dt) {
-        // Update the stage
-        stage.act(Gdx.graphics.getDeltaTime());
-    }
-
-    @Override
-    public void render(float dt) {
-        // Draw the stage
-        sb.begin();
-        //sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        
-		//font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
-        sb.end();
-        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-        stage.draw();
-
-    }
-    @Override
-    public void dispose() {
-        for (TextButton button : buttons) {
-            button.clear(); // Clears any listeners
-            button.remove(); // Removes the button from the stage
-            button.getSkin().dispose(); // Disposes of the button's skin
-        }
-        buttons.clear(); // Clears the list of buttons
-        // Dispose of the stage's resources
-        stage.getRoot().clearChildren();
-        System.out.println("Number of actors after clearing: " + stage.getRoot().getChildren().size);
-        stage.dispose();
-    }
-
-	//========================= //
-	// ===== EMPTY METHODS ===== //	
-	// ========================= //
-	@Override public void show() {}
-	@Override public void pause() {}
-	@Override public void resume() {}
-	@Override public void hide() {}
-	@Override public void resize(int width, int height) {}
 }

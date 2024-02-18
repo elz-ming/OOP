@@ -1,10 +1,23 @@
 package com.game.javex.tools;
 
 public class Constants {
-	public static final float PPM = 32;
+	public static final float PPM = 100;
 	
-	public static final short PLAYER_BIT = 1;
-	public static final short ENEMY_BIT = 2;
-	public static final short COIN_BIT = 4;
+	public static final short PLAYER_BIT = 1; 
+	public static final short PLAYER_HEAD_BIT = 2; 
+	public static final short ENEMY_BIT = 4;
 	public static final short TERRAIN_BIT = 8;
+	public static final short REWARD_BIT = 16;
+	
+	public static final int PLAYER_WIDTH = 32;
+	public static final int PLAYER_HEIGHT = 64;
+	
+	public static final int ENEMY_WIDTH = 32;
+	public static final int ENEMY_HEIGHT = 32;
+	
+	public static final int BOSS_WIDTH = 64;
+	public static final int BOSS_HEIGHT = 64;
+	
+	public static final int COIN_WIDTH = 16;
+	public static final int COIN_HEIGHT = 16;
 }

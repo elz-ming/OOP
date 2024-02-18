@@ -4,34 +4,34 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;
 
-public class OutputManager implements Disposable {
-    private Music currMusic;
+public class OutputManager implements Disposable{
+    private Music music;
 
-    public void playMusic(String musicPath, boolean isLooping) {
-        if (currMusic != null) {
-            currMusic.stop();
-            currMusic.dispose(); // Free memory resources
+    public void play(String musicPath, boolean isLooping) {
+    	if (music != null) {
+    		music.stop();
+    		music.dispose(); // Free memory resources
         }
-        
-        currMusic = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
-        currMusic.setLooping(isLooping);
-        currMusic.play();
+    	
+    	music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
+    	music.setLooping(isLooping);
+    	music.play();
     }
 
     public void setVolume(float volume) {
-        if (currMusic != null) {
-            currMusic.setVolume(volume);
+        if (music != null) {
+            music.setVolume(volume);
         }
     }
 
     public float getCurrentVolume() {
-        return (currMusic != null) ? currMusic.getVolume() : 0;
+        return (music != null) ? music.getVolume() : 0;
     }
 
     @Override
     public void dispose() {
-        if (currMusic != null) {
-            currMusic.dispose();
+    	if (music != null) {
+            music.dispose();
         }
     }
 }
