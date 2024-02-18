@@ -98,13 +98,13 @@ public class AiControlManager implements Steerable<Vector2>{
 	@Override
 	public float vectorToAngle(Vector2 vector) {
 		// TODO Auto-generated method stub
-		return SteeringUtilis.vectorToAngle(vector);
+		return SteeringUtils.vectorToAngle(vector);
 	}
 
 	@Override
 	public Vector2 angleToVector(Vector2 outVector, float angle) {
 		// TODO Auto-generated method stub
-		return SteeringUtilis.angleToVector(outVector, angle);
+		return SteeringUtils.angleToVector(outVector, angle);
 	}
 
 	@Override
