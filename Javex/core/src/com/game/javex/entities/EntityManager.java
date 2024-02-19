@@ -61,6 +61,7 @@ public class EntityManager implements Disposable{
 			if (enemy.getToRemove()) {
 				world.destroyBody(enemy.getBody());
 				enemyToRemove.add(enemy);
+				enemyKilled();
 			}
 		}
 		enemies.removeAll(enemyToRemove, true);
@@ -68,7 +69,8 @@ public class EntityManager implements Disposable{
 		if (boss != null) {
             if (boss.getToRemove()) {
                 world.destroyBody(boss.getBody());
-                boss = null; // Remove the boss if it's dead
+                boss = null; 
+                enemyKilled(); // Remove the boss if it's dead
             }
         }
 		
@@ -77,6 +79,7 @@ public class EntityManager implements Disposable{
 			if (coin.isCollected()) {
 //				world.destroyBody(coin.getBody());
 				coinToRemove.add(coin);
+				 coinsCollected();
 			}
 		}
 		coins.removeAll(coinToRemove, true);

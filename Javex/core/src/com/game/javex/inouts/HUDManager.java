@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class HUDManager implements Disposable {
     private Stage stage;
+    private SpriteBatch batch;
     private Table table;
     private BitmapFont font;
     private Label enemiesKilledLabel;
@@ -25,6 +26,7 @@ public class HUDManager implements Disposable {
     public HUDManager() {
         stage = new Stage(new ScreenViewport(), new SpriteBatch()); // The HUD will have its own SpriteBatch
         font = new BitmapFont(); // Use your preferred font
+        
         table = new Table();
         table.top(); // Align the table to the top of the screen
         table.setFillParent(true); // Make the table fill the entire screen

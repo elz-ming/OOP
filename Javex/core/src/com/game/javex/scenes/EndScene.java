@@ -4,100 +4,95 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
 import com.game.javex.inouts.*;
 
+
+
 public class EndScene extends Scene {
-	private SpriteBatch sb;
+    private SpriteBatch sb;
     private Stage stage;
+    private List<TextButton> buttons;
+    private int currentButtonIndex = 0;
     
-    private List<TextButton> buttons; // Array to store buttons
-    private float finalScore;
+    
+    private Image backgroundImage;
+    
+    
 
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
-    	super(sceneManager, inputManager, outputManager);
-    	sb = new SpriteBatch(); // Initialize the SpriteBatch
+        super(sceneManager, inputManager, outputManager);
+        sb = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
-        buttons = new ArrayList<>(); // Initialize the list
+        
+        buttons = new ArrayList<>();
+        
+        Texture backgroundTexture = new Texture(Gdx.files.internal("endbackground.png"));
+        backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        addButton("Back To Menu",0.5f, 0.5f);
-
+        addButton("Back To Menu", 0.5f, 0.5f);
+        updateButtonStyles();
     }
-    
+
     @Override
     public void update(float dt) {
-        // Update the stage
         stage.act(Gdx.graphics.getDeltaTime());
+        handleInput();
     }
 
     @Override
     public void render(float dt) {
-        // Draw the stage
-        sb.begin();
-//        sb.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-//		font.draw(sb, "Final Score: " + (int) finalScore * 1000, Gdx.graphics.getWidth() / 2 - 50, Gdx.graphics.getHeight() / 2 + 100);
-        sb.end();
-        stage.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        SpriteBatch batch = new SpriteBatch();
+        batch.begin();
+        backgroundImage.draw(batch, 1);
+        batch.end();
+        
         stage.draw();
-
     }
+
     @Override
     public void dispose() {
-        for (TextButton button : buttons) {
-            button.clear(); // Clears any listeners
-            button.remove(); // Removes the button from the stage
-            button.getSkin().dispose(); // Disposes of the button's skin
-        }
-        buttons.clear(); // Clears the list of buttons
-        // Dispose of the stage's resources
-        stage.getRoot().clearChildren();
-        System.out.println("Number of actors after clearing: " + stage.getRoot().getChildren().size);
+        sb.dispose();
         stage.dispose();
     }
 
-    private void addButton(String label,float customX, float customY) {
-        Skin skin = new Skin(Gdx.files.internal("rainbow-ui.json")); // Replace with your actual skin file
-// Create a button
+    private void addButton(String label, float customX, float customY) {
+        Skin skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
         TextButton button = new TextButton(label, skin);
-
-        // Access the label inside the button and set its font size
-        Label labell = button.getLabel();
-        labell.setFontScale(0.5f); // Adjust label font size
-
         float buttonX = Gdx.graphics.getWidth() * customX - button.getWidth() * 0.5f;
-        float gapFactor = 0.4f;
-        float buttonY = Gdx.graphics.getHeight() * customY - button.getHeight() * 0.5f - buttons.size() * button.getHeight() * gapFactor;
-
+        float buttonY = Gdx.graphics.getHeight() * customY - button.getHeight() * 0.5f - buttons.size() * button.getHeight() * 0.4f;
         button.setPosition(buttonX, buttonY);
-
-
-
-        // Add click listener to the button
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                handleButtonClick(label);
-            }
-        });
-
-        // Add the button to the list and stage
         buttons.add(button);
         stage.addActor(button);
     }
 
-    private void handleButtonClick(String label) {
-        if (label.equals("Back To Menu")) {
-            sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+    private void handleInput() {
+        if (inputManager.getPrevKey() == com.badlogic.gdx.Input.Keys.UNKNOWN && inputManager.getCurrKey() == com.badlogic.gdx.Input.Keys.ENTER) {
+            if (currentButtonIndex == 0) {
+                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+            }
+            inputManager.resetKeys();
+        }
+    }
+
+    private void updateButtonStyles() {
+        for (int i = 0; i < buttons.size(); i++) {
+            if (i == currentButtonIndex) {
+                buttons.get(i).getLabel().setColor(com.badlogic.gdx.graphics.Color.YELLOW);
+            } else {
+                buttons.get(i).getLabel().setColor(com.badlogic.gdx.graphics.Color.WHITE);
+            }
         }
     }
 }
