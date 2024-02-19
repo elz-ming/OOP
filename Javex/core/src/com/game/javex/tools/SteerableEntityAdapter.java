@@ -1,4 +1,4 @@
-package com.game.javex.entities;
+package com.game.javex.tools;
 
 import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.steer.SteeringBehavior;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.game.javex.entities.Entity;
 import com.game.javex.tools.SteeringUtils;
 
 public class SteerableEntityAdapter implements Steerable<Vector2>{

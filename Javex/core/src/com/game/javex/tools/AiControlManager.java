@@ -5,7 +5,6 @@ import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.math.Vector2;
 import com.game.javex.entities.Entity;
-import com.game.javex.entities.SteerableEntityAdapter;
 
 public class AiControlManager {
 	private Entity enemy;
