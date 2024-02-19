@@ -1,5 +1,7 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,10 +10,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
+import com.game.javex.tools.SteeringUtils;
 
 public class Player extends Entity{
 	private int health;
 	private boolean canJump;
+	
 	
 	public Player(World world, Vector2 position) {
 		super(world, position);
@@ -19,7 +23,6 @@ public class Player extends Entity{
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
 		createBody(width, height);
-		this.boundingRadius = (float) Math.sqrt((width / 2) * (width / 2) + (height / 2) * (height / 2));
 	}
 	
 	@Override
@@ -47,7 +50,6 @@ public class Player extends Entity{
 		shape.dispose();
 	}
 	
-	
 	public void reduceHealth() {
 		health -= 1;
 	}
@@ -56,17 +58,14 @@ public class Player extends Entity{
 		return health;
 	}
 	
-//	TODO VARSHA
 	public void moveLeft() {
 		body.setLinearVelocity(-1, body.getLinearVelocity().y);
 	}
 	
-//	TODO VARSHA
 	public void moveRight() {
 		body.setLinearVelocity(1, body.getLinearVelocity().y);
 	}
 	
-//	TODO VARSHA
 	public void jump() {
         if (canJump) {
             body.applyLinearImpulse(new Vector2(0, 1), body.getWorldCenter(), true); // Adjust impulse as needed

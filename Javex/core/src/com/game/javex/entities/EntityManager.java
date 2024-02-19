@@ -30,12 +30,12 @@ public class EntityManager implements Disposable{
 		this.player = new Player(world, position);
 	}
 	
-	public void createEnemy(Vector2 position) {
-		enemies.add(new Enemy(world, position, false));
-	}
-	
 	public void createBoss(Vector2 position) {
 		this.boss = new Enemy(world, position, true);
+	}
+	
+	public void createEnemy(Vector2 position) {
+		enemies.add(new Enemy(world, position, false));
 	}
 	
 	public void createTerrain(Vector2 position, int width, int height) {

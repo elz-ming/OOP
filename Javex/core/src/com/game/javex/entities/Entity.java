@@ -11,7 +11,6 @@ public abstract class Entity {
 	
 	protected int width;
 	protected int height;
-	protected float boundingRadius;
 
 	public Entity(World world, Vector2 position) {
 		this.world = world;
@@ -24,7 +23,11 @@ public abstract class Entity {
 		return body;
 	}
 	
-	public float getBoundingRadius() {
-		return boundingRadius;
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
 	}
 }

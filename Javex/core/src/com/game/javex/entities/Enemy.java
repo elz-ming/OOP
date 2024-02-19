@@ -1,5 +1,8 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteeringAcceleration;
+import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
+import com.game.javex.tools.SteeringUtils;
 
 public class Enemy extends Entity {
 	private boolean isBoss;
@@ -29,7 +33,6 @@ public class Enemy extends Entity {
 		}
 		
 		createBody(width, height);
-		this.boundingRadius = (float) Math.sqrt((width / 2) * (width / 2) + (height / 2) * (height / 2));
 	}
 	
 	@Override
@@ -50,6 +53,7 @@ public class Enemy extends Entity {
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
@@ -72,10 +76,6 @@ public class Enemy extends Entity {
 	public void reduceHealth() {
 		health -= 1;
 	}
-	
-	public Body getBody() {
-		return body;
-	}
 
 	public void hitOnHead() {
 		health -= 1;
@@ -86,10 +86,5 @@ public class Enemy extends Entity {
 	
 	public boolean getKilled() {
 		return killed;
-	}
-
-	public void reverseVelocity() {
-		Vector2 currentVelocity = body.getLinearVelocity();
-        body.setLinearVelocity(-currentVelocity.x, currentVelocity.y);
 	}
 }

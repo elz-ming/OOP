@@ -47,7 +47,7 @@ import com.game.javex.inouts.*;
 			float w = Gdx.graphics.getWidth();
 			float h = Gdx.graphics.getHeight();
 			camera = new OrthographicCamera();
-			camera.setToOrtho(false, w/2, h/2);
+			camera.setToOrtho(false, w, h);
 			viewport = new FitViewport(w, h, camera);
 			
 			world = new World(new Vector2(0, -9.8f), false);

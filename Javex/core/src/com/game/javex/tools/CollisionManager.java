@@ -26,7 +26,6 @@ public class CollisionManager implements ContactListener{
 	
 //			Player land on enemy top
 			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
-				System.out.println("landed on enemy head");
 	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT)
 	                ((Enemy) fixA.getUserData()).hitOnHead();
 	            else
@@ -36,7 +35,6 @@ public class CollisionManager implements ContactListener{
 	            
 //	        Enemy touch player from side
 			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
-				System.out.println("touched player side");
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT)
 	                ((Player) fixA.getUserData()).hit((Enemy) fixB.getUserData());
 	            else
@@ -45,7 +43,6 @@ public class CollisionManager implements ContactListener{
 	            
 //		    Player can jump again after touching terrain
 			case Constants.PLAYER_BIT | Constants.REWARD_BIT:
-				System.out.println("touched coin");
                 if (fixA.getFilterData().categoryBits == Constants.REWARD_BIT) {
                     ((Reward)fixA.getUserData()).collect();
                 } else if (fixB.getFilterData().categoryBits == Constants.REWARD_BIT) {
@@ -55,30 +52,12 @@ public class CollisionManager implements ContactListener{
 			
 //	        Player can jump again after touching terrain
 			case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
-				System.out.println("touched terrain");
                 if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                     ((Player)fixA.getUserData()).setCanJump(true);
                 } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                     ((Player)fixB.getUserData()).setCanJump(true);
                 }
                 break;
-                      
-//          Enemy will move in opposite direction once touch terrain
-			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
-                // Determine which fixture is the enemy
-                if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
-                    ((Enemy)fixA.getUserData()).reverseVelocity();
-                } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
-                    ((Enemy)fixB.getUserData()).reverseVelocity();
-                }
-                break;
-		
-//          Enemies will move in opposite direction once touch each other
-			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
-		        // If you want enemies to interact with each other (e.g., bounce off each other)
-	            ((Enemy)fixA.getUserData()).reverseVelocity();
-	            ((Enemy)fixB.getUserData()).reverseVelocity();
-		        break;
 		}
 	}
 	
