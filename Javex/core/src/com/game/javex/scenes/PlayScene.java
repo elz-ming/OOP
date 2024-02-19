@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -32,11 +33,16 @@ public class PlayScene extends Scene {
 	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
 	
+	
+	
+	private HUDManager hudManager;
+	
 	private int currentLevel = 1;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
+		
 		
 		
 		// Creating own attributes specific to this scene	
@@ -45,6 +51,9 @@ public class PlayScene extends Scene {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, w/2, h/2);
 		viewport = new FitViewport(w, h, camera);
+		
+		
+		hudManager = new HUDManager();
 		
 		world = new World(new Vector2(0, -9.8f), false);
 		b2dr = new Box2DDebugRenderer();
@@ -67,6 +76,7 @@ public class PlayScene extends Scene {
 		pauseListener(dt);
 		playerControlManager.update(dt);
 		entityManager.update(dt);
+		hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 	}
 	
 	@Override
@@ -75,6 +85,9 @@ public class PlayScene extends Scene {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         b2dr.render(world, camera.combined.scl(Constants.PPM)); 
+        
+
+        hudManager.draw();
 	}
 	
 	@Override
@@ -84,7 +97,7 @@ public class PlayScene extends Scene {
 		entityManager.dispose(); // Dispose of the EntityManager if it has any disposable resources
 		camera = null; // Clear references to potentially free up memory
 		viewport = null;
-		
+		 hudManager.dispose();
 		
 	}
 	

@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 
+import com.game.javex.inouts.*;
+
 public class EntityManager implements Disposable{
 	private World world;
 	private Player player;
@@ -13,6 +15,9 @@ public class EntityManager implements Disposable{
 	private Array<Enemy> enemies;
 	private Array<Terrain> terrains;
 	private Array<Reward> coins;
+	
+	private int enemiesKilled = 0;
+	private int coinsCollected = 0;
 	
 	public EntityManager(World world) {
 		this.world = world;
@@ -84,4 +89,24 @@ public class EntityManager implements Disposable{
 	public Array<Enemy> getEnemies() {
 		return this.enemies;
 	}
+	
+
+
+	 public void enemyKilled() {
+	        enemiesKilled++;
+	    }
+
+	    // Getter method for the number of enemies killed
+	    public int getEnemiesKilled() {
+	        return enemiesKilled;
+	    }
+	    
+	 public void coinsCollected() {
+	    	coinsCollected++;
+	    }
+	 public int getCoinsCollected() {
+	        return coinsCollected;
+	    }
+	    
+	    
 }
