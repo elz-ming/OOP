@@ -11,6 +11,6 @@ public class DesktopLauncher {
         
         config.setWindowedMode(800, 400); // Set width and height
         
-        new Lwjgl3Application(new Javex(), config);
+        new Lwjgl3Application(new SimulationLifecycleManager(), config);
     }
 }

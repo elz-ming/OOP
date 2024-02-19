@@ -68,12 +68,14 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(float dt) {
-		float veloX = body.getLinearVelocity().x;
-		
-		if (veloX > -1 && veloX < 1) {
-			this.body.setLinearVelocity((veloX*1.5f), 0);
-		} else if (veloX == 0) {
-			this.body.setLinearVelocity(1, 0);
+		if (!isBoss) {
+			float veloX = body.getLinearVelocity().x;
+			
+			if (veloX > -1 && veloX < 1) {
+				this.body.setLinearVelocity((veloX*1.5f), 0);
+			} else if (veloX == 0) {
+				this.body.setLinearVelocity(1, 0);
+			}
 		}
 	}
 	
@@ -90,6 +92,10 @@ public class Enemy extends Entity {
 	
 	public boolean getKilled() {
 		return killed;
+	}
+	
+	public boolean getIsBoss() {
+		return isBoss;
 	}
 	
 	public void reverseVelocity() {

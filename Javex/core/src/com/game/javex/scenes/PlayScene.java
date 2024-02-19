@@ -36,7 +36,7 @@ import com.game.javex.inouts.*;
 		private HUDManager hudManager;
 		private EntityManager entityManager;
 		private PlayerControlManager playerControlManager;
-		private AiControlManager bossAiControlManager;
+		private AiControlManager aiControlManager;
 		private Array<AiControlManager> aiControlManagers;
 		private CollisionManager collisionManager;
 		
@@ -54,7 +54,7 @@ import com.game.javex.inouts.*;
 
 			Texture backgroundTexture = new Texture(Gdx.files.internal("playbackground.png"));
 			backgroundImage = new Image(backgroundTexture);
-			backgroundImage.setSize(w, h);
+			backgroundImage.setSize(w * 1.5f, h * 1.5f);
 			
 			camera = new OrthographicCamera();
 			camera.setToOrtho(false, w, h);
@@ -75,14 +75,7 @@ import com.game.javex.inouts.*;
 			playerControlManager = new PlayerControlManager(player, inputManager);
 			
 	//		Initialize aiControlManager and link the control to the boss
-			bossAiControlManager = new AiControlManager(boss, player);
-			
-	//		Initialize aiControlManager(s) and link the control to the each enemy
-			aiControlManagers = new Array<>();
-			for (Entity enemy : entityManager.getEnemies()) {
-	            AiControlManager aiControlManager = new AiControlManager(enemy, player);
-	    		aiControlManagers.add(aiControlManager);
-	        }
+			aiControlManager = new AiControlManager(boss, player);
 			
 	//		Initialize collisionManager to listen for collisions in the game world
 			collisionManager = new CollisionManager();
@@ -96,10 +89,7 @@ import com.game.javex.inouts.*;
 			cameraUpdate(dt);
 			pauseListener(dt);
 			playerControlManager.update(dt);
-			bossAiControlManager.update(dt);
-			for (AiControlManager aiControlManager : aiControlManagers) {
-				aiControlManager.update(dt);
-	        }
+			aiControlManager.update(dt);
 			entityManager.update(dt);
 			hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		}
@@ -148,12 +138,12 @@ import com.game.javex.inouts.*;
 			entityManager.createCoin(new Vector2(256, 32));
 			entityManager.createCoin(new Vector2(448, 32));
 			
-			entityManager.createTerrain(new Vector2(0, 0), 736, 32);
+			entityManager.createTerrain(new Vector2(0, 0), 1056, 32);
 			entityManager.createTerrain(new Vector2(0, 32), 32, 32);
 			entityManager.createTerrain(new Vector2(128, 32), 32, 32);
 			entityManager.createTerrain(new Vector2(320, 32), 32, 32);
 			entityManager.createTerrain(new Vector2(512, 32), 32, 32);
-			entityManager.createTerrain(new Vector2(704, 32), 32, 32);
+			entityManager.createTerrain(new Vector2(924, 32), 32, 32);
 		}
 	
 	protected void pauseListener(float dt) {

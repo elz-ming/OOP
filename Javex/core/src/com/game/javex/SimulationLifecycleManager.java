@@ -8,7 +8,7 @@ import com.game.javex.scenes.*;
 
 
 // This is our SIMULATION LIFECYCLE MANAGER
-public class Javex extends ApplicationAdapter {
+public class SimulationLifecycleManager extends ApplicationAdapter {
 	private SceneManager sceneManager;
 	private InputManager inputManager;
 	private OutputManager outputManager;

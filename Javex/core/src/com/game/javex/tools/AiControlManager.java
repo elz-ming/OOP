@@ -1,12 +1,9 @@
 package com.game.javex.tools;
 
 import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.SteerableAdapter;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.steer.behaviors.Seek;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.game.javex.entities.Entity;
 import com.game.javex.entities.SteerableEntityAdapter;
 
@@ -29,6 +26,15 @@ public class AiControlManager {
 	}
 	
 	public void update(float dt) {
-
+		if (seekBehavior != null) {
+			steeringOutput = seekBehavior.calculateSteering(steeringOutput);
+	        Vector2 newVelocity = steeringOutput.linear; // No need to scale by dt
+	        if(newVelocity.x > 1) {
+	            newVelocity.x = 1; // Cap speed at 1 to the right
+	        } else if(newVelocity.x < -1) {
+	            newVelocity.x = -1; // Cap speed at -1 to the left
+	        }
+	        enemy.getBody().setLinearVelocity(newVelocity.x, enemy.getBody().getLinearVelocity().y);
+	    }
     }
 }

@@ -59,16 +59,16 @@ public class Player extends Entity{
 	}
 	
 	public void moveLeft() {
-		body.setLinearVelocity(-1, body.getLinearVelocity().y);
+		body.setLinearVelocity(-2, body.getLinearVelocity().y);
 	}
 	
 	public void moveRight() {
-		body.setLinearVelocity(1, body.getLinearVelocity().y);
+		body.setLinearVelocity(2, body.getLinearVelocity().y);
 	}
 	
 	public void jump() {
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 1.5f), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }
