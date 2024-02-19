@@ -5,7 +5,12 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputManager implements InputProcessor {
-    private int currKey = Keys.UNKNOWN;
+	private boolean upKey = false;
+    private boolean downKey = false;
+    private boolean leftKey = false;
+    private boolean rightKey = false;
+    private boolean enterKey = false;
+    private boolean returnKey = false;
 
     public InputManager() {
         Gdx.input.setInputProcessor(this);
@@ -13,26 +18,62 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        currKey = keycode; // Update current key
-        
-        return false;
+    	switch (keycode) {
+	        case Keys.UP:
+	            upKey = true;
+	            break;
+	        case Keys.DOWN:
+	            downKey = true;
+	            break;
+	        case Keys.LEFT:
+	            leftKey = true;
+	            break;
+	        case Keys.RIGHT:
+	            rightKey = true;
+	            break;
+	        case Keys.ENTER:
+	        case Keys.ESCAPE: // Assuming you want SPACE to act like ENTER
+	            enterKey = true;
+	            break;
+	        case Keys.BACKSPACE:
+	            returnKey = true;
+	            break;
+	    }
+	    return false;
     }
     
     @Override
     public boolean keyUp(int keycode) {
-    	if (currKey == keycode) {
-            currKey = Keys.UNKNOWN; // Reset current key if it's the one released
-        }
-        return true;
+    	switch (keycode) {
+	        case Keys.UP:
+	            upKey = false;
+	            break;
+	        case Keys.DOWN:
+	            downKey = false;
+	            break;
+	        case Keys.LEFT:
+	            leftKey = false;
+	            break;
+	        case Keys.RIGHT:
+	            rightKey = false;
+	            break;
+	        case Keys.ENTER:
+	        case Keys.SPACE: // Assuming you want SPACE to act like ENTER
+	            enterKey = false;
+	            break;
+	        case Keys.BACKSPACE:
+	            returnKey = false;
+	            break;
+	    }
+	    return true;
     }
     
-    public void resetKeys() {
-    	currKey = Keys.UNKNOWN;
-    }
-    
-    public int getCurrKey() {
-    	return currKey;
-    }
+    public boolean isUpPressed() { return upKey; }
+    public boolean isDownPressed() { return downKey; }
+    public boolean isLeftPressed() { return leftKey; }
+    public boolean isRightPressed() { return rightKey; }
+    public boolean isEnterPressed() { return enterKey; }
+    public boolean isReturnPressed() { return returnKey; }
 
     // ========================= //
  	// ===== EMPTY METHODS ===== //	

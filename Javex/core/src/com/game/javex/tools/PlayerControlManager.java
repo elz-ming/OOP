@@ -14,17 +14,15 @@ public class PlayerControlManager{
     }
 	
 	public void update(float dt) {
-        int currKey = inputManager.getCurrKey();
-        
-        if (currKey == Keys.LEFT) {
+        if (inputManager.isLeftPressed()) {
         	player.moveLeft();
         }
         
-        if (currKey == Keys.RIGHT) {
+        if (inputManager.isRightPressed()) {
         	player.moveRight();
         }
         
-        if (currKey == Keys.UP) {
+        if (inputManager.isUpPressed()) {
             if (player.getCanJump()) { 
             	player.jump();
             }

@@ -99,11 +99,10 @@ public class EndScene extends Scene {
     }
 
     private void handleInput() {
-        if (inputManager.getCurrKey() == com.badlogic.gdx.Input.Keys.ENTER) {
+        if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
-            inputManager.resetKeys();
         }
     }
 

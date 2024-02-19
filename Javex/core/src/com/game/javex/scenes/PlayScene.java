@@ -143,8 +143,7 @@ public class PlayScene extends Scene {
 	}
 
 	protected void pauseListener(float dt) {
-		int currKey = inputManager.getCurrKey();
-	    if (currKey == Keys.ESCAPE) {
+	    if (inputManager.isReturnPressed()) {
 	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	    }

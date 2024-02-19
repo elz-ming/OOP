@@ -128,13 +128,12 @@ public class MenuScene extends Scene {
     }
 
     public void handleInput() {
-        if (inputManager.getCurrKey() == Keys.UP || inputManager.getCurrKey() == Keys.DOWN) {
+        if (inputManager.isUpPressed() || inputManager.isDownPressed()) {
                 currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
-                inputManager.resetKeys();
             }
         
-        if (inputManager.getCurrKey() == Keys.ENTER) {
+        if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
                 case 0: // Play button
                     sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));
@@ -147,7 +146,6 @@ public class MenuScene extends Scene {
                     Gdx.app.exit();
                     break;
             }
-            inputManager.resetKeys(); // Reset keys after handling
         }
     }
 }
