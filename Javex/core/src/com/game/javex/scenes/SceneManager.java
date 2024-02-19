@@ -17,7 +17,9 @@ public class SceneManager {
 	
 	// Only for pause
 	public void pop() {
-		scenes.pop().dispose();
+		if (!scenes.isEmpty()) {
+	        scenes.pop().dispose();
+	}
 	}
 	
 	// For Menu, Play and End
@@ -31,4 +33,24 @@ public class SceneManager {
     	currentScene.update(dt);
     	currentScene.render(dt);
     }
+    
+    public void popAllAndSet(Scene Scene) {
+        // Dispose of the current scene if it exists
+        if (currentScene != null) {
+            currentScene.dispose();
+        }
+
+        // Clear and dispose of all scenes in the stack
+        while (!scenes.isEmpty()) {
+        	currentScene.dispose();
+            scenes.pop().dispose();
+        }
+
+        // Set the new scene
+        scenes.push(Scene);
+        currentScene = Scene;
+    }
+
 }
+
+

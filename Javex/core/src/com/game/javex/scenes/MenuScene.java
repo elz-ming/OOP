@@ -141,7 +141,7 @@ public class MenuScene extends Scene {
                     break;
                 case 1: // Settings button
                     // Add your logic for the settings button here
-                	sceneManager.set(new MusicSettingsScene(sceneManager, inputManager, outputManager));
+                	sceneManager.set(new SettingsScene(sceneManager, inputManager, outputManager));
                     break;
                 case 2: // Exit button
                     Gdx.app.exit();
