@@ -16,7 +16,10 @@ public class Player extends Entity{
 	public Player(World world, Vector2 position) {
 		super(world, position);
 		this.health = 3;
-		createBody(Constants.PLAYER_WIDTH, Constants.PLAYER_HEIGHT);
+		this.width = Constants.PLAYER_WIDTH;
+		this.height = Constants.PLAYER_HEIGHT;
+		createBody(width, height);
+		this.boundingRadius = (float) Math.sqrt((width / 2) * (width / 2) + (height / 2) * (height / 2));
 	}
 	
 	@Override

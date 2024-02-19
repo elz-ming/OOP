@@ -1,66 +1,87 @@
 package com.game.javex.tools;
 
 import com.badlogic.gdx.ai.steer.Steerable;
+import com.badlogic.gdx.ai.steer.SteerableAdapter;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.ai.steer.SteeringBehavior;
+import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.utils.DragAndDrop.Target;
+import com.game.javex.entities.Enemy;
+import com.game.javex.entities.Player;
 
 
 
 public class AiControlManager implements Steerable<Vector2>{
+	private Enemy enemy;
+	private Body body;
+	private float boundingRadius;
 	
-	Body body;
-	boolean tagged;
-	float boundingRadius;
-	float maxLinearSpeed, maxLinearAcceleration;
-	float maxAngularSpeed, maxAngularAcceleration;
+	private Player player;
 	
-	SteeringBehavior<Vector2> behavior;
-	SteeringAcceleration<Vector2> steeringOutput;
+	private float maxLinearSpeed, maxLinearAcceleration;
+	private float maxAngularSpeed, maxAngularAcceleration;
+	private boolean tagged;
+	
+	private SteeringBehavior<Vector2> behavior;
+	private SteeringAcceleration<Vector2> steeringOutput;
 
 	
-	public AiControlManager(Body body, float boundingRadius) {
-		this.body = body;
-		this.boundingRadius = boundingRadius;
+	public AiControlManager(Enemy enemy, Player player) {
+		this.enemy = enemy;
+		this.body = enemy.getBody();
+		this.boundingRadius = enemy.getBoundingRadius();
 		
-		this.maxLinearSpeed = 500;
-		this.maxLinearAcceleration = 5000;
-		this.maxAngularSpeed = 30;
-		this.maxAngularAcceleration = 5;
-
-		this. tagged = false;
-
-		this.steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
-		this.body. setUserData(this);
+		this.player = player;
+		
+		initSteeringBehaviors();
+		this.body.setUserData(this);
+//		this.maxLinearSpeed = 500;
+//		this.maxLinearAcceleration = 5000;
+//		this.maxAngularSpeed = 30;
+//		this.maxAngularAcceleration = 5;
+//
+//		this.tagged = false;
+//
+//		this.steeringOutput = new SteeringAcceleration<Vector2>(new Vector2());
 	}
 	
-	public void update(float delta) {
+	private void initSteeringBehaviors() {
+		// Initialize the Arrive behavior to follow the player
+//		Arrive<Vector2> arrive = new Arrive<>(this, player) // 'this' refers to the AiControlManager, which is Steerable
+//	            .setTimeToTarget(0.1f)
+//	            .setArrivalTolerance(2f)
+//	            .setDecelerationRadius(10);
+//	        setBehavior(arrive);
+    }
+	
+	public void update(float dt) {
 		if(behavior != null) {
 			behavior.calculateSteering(steeringOutput);
-			applySteering(delta);
+			applySteering(dt);
 		}
 		
 	}
 	
-	private void applySteering(float delta) {
+	private void applySteering(float dt) {
 		boolean anyAccceleration = false;
 		
 		if (!steeringOutput.linear.isZero()) {
-			Vector2 force = steeringOutput.linear.scl(delta);
+			Vector2 force = steeringOutput.linear.scl(dt);
 			body.applyForceToCenter(force, true);
 			anyAccceleration = true;
 		}
 		
 		if(steeringOutput.angular != 0) {
-			body.applyTorque(steeringOutput.angular * delta, true);
+			body.applyTorque(steeringOutput.angular * dt, true);
 			anyAccceleration = true;
 		} else {
 			Vector2 linVel = getLinearVelocity();
 			if(!linVel.isZero()) {
 				float newOrientation = vectorToAngle(linVel);
-				body.setAngularVelocity((newOrientation = getAngularVelocity()) * delta);
+				body.setAngularVelocity((newOrientation = getAngularVelocity()) * dt);
 				body.setTransform(body.getPosition(), newOrientation);
 			}
 		}
@@ -77,138 +98,66 @@ public class AiControlManager implements Steerable<Vector2>{
 			}
 		}
 	}
-	@Override
-	public Vector2 getPosition() {
-		// TODO Auto-generated method stub
-		return body.getPosition();
-	}
-
-	@Override
-	public float getOrientation() {
-		// TODO Auto-generated method stub
-		return body.getAngle();
-	}
-
-	@Override
-	public void setOrientation(float orientation) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public float vectorToAngle(Vector2 vector) {
-		// TODO Auto-generated method stub
-		return SteeringUtils.vectorToAngle(vector);
-	}
-
-	@Override
-	public Vector2 angleToVector(Vector2 outVector, float angle) {
-		// TODO Auto-generated method stub
-		return SteeringUtils.angleToVector(outVector, angle);
-	}
-
-	@Override
-	public Location<Vector2> newLocation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public float getZeroLinearSpeedThreshold() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setZeroLinearSpeedThreshold(float value) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public float getMaxLinearSpeed() {
-		// TODO Auto-generated method stub
-		return maxLinearSpeed;
-	}
-
-	@Override
-	public void setMaxLinearSpeed(float maxLinearSpeed) {
-		// TODO Auto-generated method stub
-		this.maxLinearSpeed = maxLinearSpeed;
-	}
-
-	@Override
-	public float getMaxLinearAcceleration() {
-		// TODO Auto-generated method stub
-		return maxLinearAcceleration;
-	}
-
-	@Override
-	public void setMaxLinearAcceleration(float maxLinearAcceleration) {
-		// TODO Auto-generated method stub
-		this.maxLinearAcceleration = maxLinearAcceleration;
-	}
-
-	@Override
-	public float getMaxAngularSpeed() {
-		// TODO Auto-generated method stub
-		return maxAngularSpeed;
-	}
-
-	@Override
-	public void setMaxAngularSpeed(float maxAngularSpeed) {
-		// TODO Auto-generated method stub
-		this.maxAngularSpeed = maxAngularSpeed;
-	}
-
-	@Override
-	public float getMaxAngularAcceleration() {
-		// TODO Auto-generated method stub
-		return maxAngularAcceleration;
-	}
-
-	@Override
-	public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-		// TODO Auto-generated method stub
-		this.maxAngularAcceleration = maxAngularAcceleration;
-	}
-
-	@Override
-	public Vector2 getLinearVelocity() {
-		// TODO Auto-generated method stub
-		return body.getLinearVelocity();
-	}
-
-	@Override
-	public float getAngularVelocity() {
-		// TODO Auto-generated method stub
-		return body.getAngularVelocity();
-	}
-
-	@Override
-	public float getBoundingRadius() {
-		// TODO Auto-generated method stub
-		return boundingRadius;
-	}
-
-	@Override
-	public boolean isTagged() {
-		// TODO Auto-generated method stub
-		return tagged;
-	}
-
-	@Override public void setTagged(boolean tagged) {this.tagged = tagged;}
 	
-	public Body getBody() {
-		return body;
-	}
-	
-	public void setBehavior(SteeringBehavior<Vector2> behavior) {
-		this.behavior = behavior;
-	}
-	
-	public SteeringBehavior<Vector2> getBehavior(){
-		return behavior;
-	}
+	@Override
+    public Vector2 getPosition() {
+        return body.getPosition();
+    }
 
+    @Override
+    public float getOrientation() {
+        return body.getAngle();
+    }
+
+    @Override
+    public Vector2 getLinearVelocity() {
+        return body.getLinearVelocity();
+    }
+
+    @Override
+    public float getAngularVelocity() {
+        return body.getAngularVelocity();
+    }
+
+    @Override
+    public float getBoundingRadius() {
+        return boundingRadius;
+    }
+
+    @Override
+    public boolean isTagged() {
+        return tagged;
+    }
+
+    @Override
+    public void setTagged(boolean tagged) {
+        this.tagged = tagged;
+    }
+
+    // Self-created methods
+    public void setBehavior(SteeringBehavior<Vector2> behavior) {
+        this.behavior = behavior;
+    }
+    
+    public SteeringBehavior<Vector2> getBehavior() {
+        return behavior;
+    }
+
+
+	
+	// Unused or Placeholder Methods
+    @Override public void setOrientation(float orientation) {}
+    @Override public float vectorToAngle(Vector2 vector) {return SteeringUtils.vectorToAngle(vector);}
+    @Override public Vector2 angleToVector(Vector2 outVector, float angle) {return SteeringUtils.angleToVector(outVector, angle);}
+    @Override public Location<Vector2> newLocation() {return null;}
+    @Override public float getZeroLinearSpeedThreshold() {return 0;}
+    @Override public void setZeroLinearSpeedThreshold(float value) {}
+    @Override public float getMaxLinearSpeed() {return maxLinearSpeed;}
+    @Override public void setMaxLinearSpeed(float maxLinearSpeed) {this.maxLinearSpeed = maxLinearSpeed;}
+    @Override public float getMaxLinearAcceleration() {return maxLinearAcceleration;}
+    @Override public void setMaxLinearAcceleration(float maxLinearAcceleration) {this.maxLinearAcceleration = maxLinearAcceleration;}
+    @Override public float getMaxAngularSpeed() {return maxAngularSpeed;}
+    @Override public void setMaxAngularSpeed(float maxAngularSpeed) {this.maxAngularSpeed = maxAngularSpeed;}
+    @Override public float getMaxAngularAcceleration() {return maxAngularAcceleration;}
+    @Override public void setMaxAngularAcceleration(float maxAngularAcceleration) {this.maxAngularAcceleration = maxAngularAcceleration;}
 }

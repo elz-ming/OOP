@@ -19,11 +19,17 @@ public class Enemy extends Entity {
 		this.isBoss = isBoss;
 		if (isBoss) {
 			this.health = 3;
-			createBody(Constants.BOSS_WIDTH, Constants.BOSS_HEIGHT);
+			this.width = Constants.BOSS_WIDTH;
+			this.height = Constants.BOSS_HEIGHT;
+			
 		} else {
 			this.health = 1;
-			createBody(Constants.ENEMY_WIDTH, Constants.ENEMY_HEIGHT);
+			this.width = Constants.ENEMY_WIDTH;
+			this.height = Constants.ENEMY_HEIGHT;
 		}
+		
+		createBody(width, height);
+		this.boundingRadius = (float) Math.sqrt((width / 2) * (width / 2) + (height / 2) * (height / 2));
 	}
 	
 	@Override
