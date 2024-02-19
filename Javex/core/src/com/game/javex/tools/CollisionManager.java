@@ -5,10 +5,10 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
 import com.game.javex.entities.Reward;
-import com.game.javex.tools.Constants;
 
 public class CollisionManager implements ContactListener{
 	private Fixture fixA;

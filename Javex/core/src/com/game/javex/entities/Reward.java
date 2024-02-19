@@ -1,23 +1,17 @@
 package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-
-import com.game.javex.tools.Constants;
+import com.game.javex.Constants;
 
 public class Reward extends Entity{
 	private boolean collected = false;
 
 	public Reward(World world, Vector2 position) {
 		super(world, position);
-		
-		boolean collected = false;
-		
 		createBody(Constants.COIN_WIDTH, Constants.COIN_HEIGHT);
     }
 	

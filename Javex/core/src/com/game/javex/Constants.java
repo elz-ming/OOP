@@ -1,4 +1,4 @@
-package com.game.javex.tools;
+package com.game.javex;
 
 public class Constants {
 	public static final float PPM = 100;

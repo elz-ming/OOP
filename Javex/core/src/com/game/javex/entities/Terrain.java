@@ -1,18 +1,13 @@
 package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-
-import com.game.javex.tools.Constants;
+import com.game.javex.Constants;
 
 public class Terrain extends Entity{
-    private int width;
-    private int height;
-
     public Terrain(World world, Vector2 position, int width, int height) {
     	super(world, position);
     	this.width = width;

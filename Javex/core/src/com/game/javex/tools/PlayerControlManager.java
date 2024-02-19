@@ -1,7 +1,6 @@
 package com.game.javex.tools;
 
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.physics.box2d.joints.PulleyJoint;
 import com.game.javex.entities.Player;
 import com.game.javex.inouts.InputManager;
 
