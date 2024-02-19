@@ -58,6 +58,7 @@ public class EntityManager implements Disposable{
 		
 		Array<Enemy> enemyToRemove = new Array<>();
 		for (Enemy enemy : enemies) {
+			enemy.update(dt);
 			if (enemy.getKilled()) {
 				world.destroyBody(enemy.getBody());
 				enemyToRemove.add(enemy);
@@ -67,6 +68,7 @@ public class EntityManager implements Disposable{
 		enemies.removeAll(enemyToRemove, true);
 		
 		if (boss != null) {
+			boss.update(dt);
             if (boss.getKilled()) {
                 world.destroyBody(boss.getBody());
                 boss = null; 
@@ -87,6 +89,10 @@ public class EntityManager implements Disposable{
 	
 	public Player getPlayer() {
 	    return this.player;
+	}
+	
+	public Enemy getBoss() {
+	    return this.boss;
 	}
 	
 	public Array<Enemy> getEnemies() {

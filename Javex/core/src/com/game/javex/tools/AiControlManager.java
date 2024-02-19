@@ -18,11 +18,6 @@ public class AiControlManager {
 	private Seek<Vector2> seekBehavior;
     private SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
     
-    float maxLinearSpeed = 100;
-	float maxLinearAcceleration = 5000;
-	float maxAngularSpeed = 30;
-	float maxAngularAcceleration = 5;
-    
 	public AiControlManager(Entity enemy, Entity target) {
 		this.enemy = enemy;
 		this.target = target;
@@ -34,17 +29,6 @@ public class AiControlManager {
 	}
 	
 	public void update(float dt) {
-		if (seekBehavior != null) {
-			seekBehavior.setTarget(new SteerableAdapter<Vector2>() {
-	            @Override
-	            public Vector2 getPosition() {
-	                return target.getBody().getPosition(); // Get the player's current position
-	            }
-	        });
-            seekBehavior.calculateSteering(steeringOutput);
-            Vector2 newVelocity = steeringOutput.linear.scl(dt);
-            
-            enemy.getBody().setLinearVelocity(newVelocity.x, enemy.getBody().getLinearVelocity().y);
-        }
+
     }
 }

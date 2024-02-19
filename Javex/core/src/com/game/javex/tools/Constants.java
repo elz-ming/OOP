@@ -20,4 +20,6 @@ public class Constants {
 	
 	public static final int COIN_WIDTH = 16;
 	public static final int COIN_HEIGHT = 16;
+	
+	public static final int ENEMY_MAX_SPEED = 2;
 }

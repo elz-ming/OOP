@@ -1,8 +1,5 @@
 package com.game.javex.entities;
 
-import com.badlogic.gdx.ai.steer.Steerable;
-import com.badlogic.gdx.ai.steer.SteeringAcceleration;
-import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -11,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
-import com.game.javex.tools.SteeringUtils;
 
 public class Enemy extends Entity {
 	private boolean isBoss;
@@ -33,6 +29,7 @@ public class Enemy extends Entity {
 		}
 		
 		createBody(width, height);
+		this.body.setLinearVelocity(2, 0);
 	}
 	
 	@Override
@@ -71,6 +68,13 @@ public class Enemy extends Entity {
 	}
 	
 	public void update(float dt) {
+		float veloX = body.getLinearVelocity().x;
+		
+		if (veloX > -1 && veloX < 1) {
+			this.body.setLinearVelocity((veloX*1.5f), 0);
+		} else if (veloX == 0) {
+			this.body.setLinearVelocity(1, 0);
+		}
 	}
 	
 	public void reduceHealth() {
@@ -86,5 +90,10 @@ public class Enemy extends Entity {
 	
 	public boolean getKilled() {
 		return killed;
+	}
+	
+	public void reverseVelocity() {
+		Vector2 currentVelocity = body.getLinearVelocity();
+        body.setLinearVelocity(-currentVelocity.x, currentVelocity.y);
 	}
 }

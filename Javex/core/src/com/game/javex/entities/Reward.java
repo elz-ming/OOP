@@ -10,13 +10,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 import com.game.javex.tools.Constants;
 
-
-
-
 public class Reward extends Entity{
 	private boolean collected = false;
-	
-	private boolean collected;
 
 	public Reward(World world, Vector2 position) {
 		super(world, position);
@@ -60,3 +55,4 @@ public class Reward extends Entity{
 	public boolean isCollected() {
 		return collected;
 	}
+}

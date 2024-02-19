@@ -58,6 +58,23 @@ public class CollisionManager implements ContactListener{
                     ((Player)fixB.getUserData()).setCanJump(true);
                 }
                 break;
+                
+//              Enemy will move in opposite direction once touch terrain
+			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
+                // Determine which fixture is the enemy
+                if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
+                    ((Enemy)fixA.getUserData()).reverseVelocity();
+                } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
+                    ((Enemy)fixB.getUserData()).reverseVelocity();
+                }
+                break;
+    		
+//              Enemies will move in opposite direction once touch each other
+			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
+		        // If you want enemies to interact with each other (e.g., bounce off each other)
+	            ((Enemy)fixA.getUserData()).reverseVelocity();
+	            ((Enemy)fixB.getUserData()).reverseVelocity();
+		        break;
 		}
 	}
 	

@@ -100,7 +100,7 @@ public class EndScene extends Scene {
     }
 
     private void handleInput() {
-        if (inputManager.getPrevKey() == com.badlogic.gdx.Input.Keys.UNKNOWN && inputManager.getCurrKey() == com.badlogic.gdx.Input.Keys.ENTER) {
+        if (inputManager.getCurrKey() == com.badlogic.gdx.Input.Keys.ENTER) {
             if (currentButtonIndex == 0) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
