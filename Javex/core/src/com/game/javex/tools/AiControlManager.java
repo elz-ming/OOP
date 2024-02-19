@@ -38,7 +38,6 @@ public class AiControlManager {
 			seekBehavior.setTarget(new SteerableAdapter<Vector2>() {
 	            @Override
 	            public Vector2 getPosition() {
-	            	System.out.println(target.getBody().getPosition());
 	                return target.getBody().getPosition(); // Get the player's current position
 	            }
 	        });
