@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.inouts.*;
-
-
 
 public class EndScene extends Scene {
     private SpriteBatch sb;
@@ -22,21 +22,44 @@ public class EndScene extends Scene {
     private List<TextButton> buttons;
     private int currentButtonIndex = 0;
     
+    private Label enemiesKilledLabel;
+    private Label coinsCollectedLabel;
+    private Label timeLabel;
+    
+    private Skin skin;
+    private HUDManager hudManager;
     
     private Image backgroundImage;
     
-    
-
-    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUDManager hudManager) {
         super(sceneManager, inputManager, outputManager);
+        this.hudManager = hudManager; // Initialize the HUDManager reference
+
         sb = new SpriteBatch();
         stage = new Stage(new ScreenViewport());
+        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
         
+        
+
         buttons = new ArrayList<>();
-        
+
         Texture backgroundTexture = new Texture(Gdx.files.internal("endbackground.png"));
         backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        enemiesKilledLabel = new Label("Enemies Killed: " + hudManager.getEnemiesKilled(), skin);
+        coinsCollectedLabel = new Label("Coins Collected: " + hudManager.getCoinsCollected(), skin);
+        timeLabel = new Label("Time: " + hudManager.getElapsedTime(), skin);
+
+        // Add the labels to the stage
+        stage.addActor(enemiesKilledLabel);
+        stage.addActor(coinsCollectedLabel);
+        stage.addActor(timeLabel);
+
+        // Position the labels on the screen
+        enemiesKilledLabel.setPosition(50, Gdx.graphics.getHeight() - 30);
+        coinsCollectedLabel.setPosition(50, Gdx.graphics.getHeight() - 60);
+        timeLabel.setPosition(50, Gdx.graphics.getHeight() - 90);
 
         addButton("Back To Menu", 0.5f, 0.5f);
         updateButtonStyles();
@@ -53,10 +76,9 @@ public class EndScene extends Scene {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         
-        SpriteBatch batch = new SpriteBatch();
-        batch.begin();
-        backgroundImage.draw(batch, 1);
-        batch.end();
+        sb.begin();
+        backgroundImage.draw(sb, 1);
+        sb.end();
         
         stage.draw();
     }

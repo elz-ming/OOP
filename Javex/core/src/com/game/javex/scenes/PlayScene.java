@@ -62,9 +62,9 @@ public class PlayScene extends Scene {
 		b2dr = new Box2DDebugRenderer();
 		
 	
-		 Texture backgroundTexture = new Texture(Gdx.files.internal("playbackground.png"));
-	        backgroundImage = new Image(backgroundTexture);
-	        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		Texture backgroundTexture = new Texture(Gdx.files.internal("playbackground.png"));
+	    backgroundImage = new Image(backgroundTexture);
+	    backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		
 		entityManager = new EntityManager(world);
@@ -112,11 +112,12 @@ public class PlayScene extends Scene {
 	@Override
 	public void dispose() {
 		world.dispose();
-		b2dr.dispose();
-		entityManager.dispose(); // Dispose of the EntityManager if it has any disposable resources
-		camera = null; // Clear references to potentially free up memory
-		viewport = null;
-		hudManager.dispose();
+	    b2dr.dispose();
+	    entityManager.dispose();
+	    camera = null;
+	    viewport = null;
+	    hudManager.dispose();
+	   
 		
 	}
 	
@@ -153,7 +154,7 @@ public class PlayScene extends Scene {
 		   		
             	Gdx.app.log("PauseScene", "L key pressed. Ending the game.");
             	
-                sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+                sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
 	    }
 	}
 	
