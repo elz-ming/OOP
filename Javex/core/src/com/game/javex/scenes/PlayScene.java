@@ -81,6 +81,9 @@ public class PlayScene extends Scene {
 	public void dispose() {
 		world.dispose();
 		b2dr.dispose();
+		entityManager.dispose(); // Dispose of the EntityManager if it has any disposable resources
+		camera = null; // Clear references to potentially free up memory
+		viewport = null;
 		
 		
 	}

@@ -6,10 +6,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.inouts.*;
 
@@ -25,6 +28,9 @@ public class PauseScene extends Scene {
     private TextButton[] menuButtons;
     
     private Image backgroundImage;
+    
+    
+    private boolean disposed = false;
   
 
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
@@ -66,6 +72,14 @@ public class PauseScene extends Scene {
         menuButton.setSize(300, 80); // Use the size that fits your needs
         menuButton.setPosition((Gdx.graphics.getWidth() - menuButton.getWidth()) / 2 - xOffset, Gdx.graphics.getHeight() / 2 - menuButton.getHeight() / 2 - 60);
         menuButton.getLabel().setFontScale(0.41f); // Adjust the scale value to your preference
+        
+        menuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                sceneManager.popAllAndSet(new MenuScene(sceneManager, inputManager, outputManager));
+            }
+        });
+        
         stage.addActor(menuButton); // Add the menu button to the stage
         
         // Create an array of buttons for navigation
@@ -91,8 +105,13 @@ public class PauseScene extends Scene {
 
     @Override
     public void dispose() {
+    	
+    	if (!disposed) {
         sb.dispose();
         skin.dispose();     
+        
+        disposed = true;
+    	}
     }
 
     private void updateButtonStyles() {
@@ -120,8 +139,8 @@ public class PauseScene extends Scene {
                 sceneManager.pop();
             } else if (currentButtonIndex == 1) {
                 // Return to main menu
-            	sceneManager.pop();
-                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+            	
+                sceneManager.popAllAndSet(new MenuScene(sceneManager, inputManager, outputManager));
             }
         } 
         
