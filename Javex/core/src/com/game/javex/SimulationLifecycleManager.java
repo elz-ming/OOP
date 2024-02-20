@@ -25,12 +25,13 @@ public class SimulationLifecycleManager extends ApplicationAdapter {
 
 	@Override
 	public void render() {
-	    float dt = Gdx.graphics.getDeltaTime();
-	    sceneManager.render(dt);
+	    sceneManager.update(Gdx.graphics.getDeltaTime());
+	    sceneManager.render();
 	}
 	
 	@Override
 	public void dispose () {
+		sceneManager.dispose();
 		outputManager.dispose();
 	}
 }

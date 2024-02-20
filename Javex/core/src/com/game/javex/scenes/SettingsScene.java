@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class SettingsScene extends Scene {
@@ -24,14 +24,13 @@ public class SettingsScene extends Scene {
 
     public SettingsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-
-        stage = new Stage(new ScreenViewport());
-
-        backgroundImage = new Image(new Texture(Gdx.files.internal("background.png")));
-        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        stage.addActor(backgroundImage);
-        backgroundImage.setZIndex(0);
-
+        width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+    	backgroundImage.setSize(width, height); // Set the size to fill the screen
+    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+    	stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage); // Add the background image to the stage
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
         muteButton = new TextButton("Mute", skin);
@@ -62,21 +61,24 @@ public class SettingsScene extends Scene {
     @Override
     public void update(float dt) {
         handleInput();
+        stage.act(dt);
     }
 
     @Override
-    public void render(float dt) {
+    public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose();
+    	if (stage != null) {
+	        stage.dispose();
+	    }
+	    if (skin != null) {
+	        skin.dispose();
+	    }
     }
 
     public void resize(int width, int height) {
@@ -93,10 +95,12 @@ public class SettingsScene extends Scene {
         }
     }
 
-    public void handleInput() {
+    @Override
+    protected void handleInput() {
         if (inputManager.isUpPressed() || inputManager.isDownPressed()) {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         }
 
         if (inputManager.isEnterPressed()) {
@@ -113,6 +117,7 @@ public class SettingsScene extends Scene {
                     sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
                     break;
             }
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         }
     }
 }

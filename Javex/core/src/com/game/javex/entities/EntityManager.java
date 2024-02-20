@@ -1,5 +1,6 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -53,6 +54,15 @@ public class EntityManager implements Disposable{
 			player.update(dt);
 		}
 		
+		if (boss != null) {
+			boss.update(dt);
+            if (boss.getKilled()) {
+                world.destroyBody(boss.getBody());
+                boss = null; 
+                enemyKilled(); // Remove the boss if it's dead
+            }
+        }
+		
 		Array<Enemy> enemyToRemove = new Array<>();
 		for (Enemy enemy : enemies) {
 			enemy.update(dt);
@@ -64,24 +74,37 @@ public class EntityManager implements Disposable{
 		}
 		enemies.removeAll(enemyToRemove, true);
 		
-		if (boss != null) {
-			boss.update(dt);
-            if (boss.getKilled()) {
-                world.destroyBody(boss.getBody());
-                boss = null; 
-                enemyKilled(); // Remove the boss if it's dead
-            }
-        }
-		
 		Array<Reward> coinToRemove = new Array<>();
 		for (Reward coin : coins) {
 			if (coin.isCollected()) {
 				world.destroyBody(coin.getBody());
 				coinToRemove.add(coin);
-				 coinsCollected();
+				coinsCollected();
 			}
 		}
 		coins.removeAll(coinToRemove, true);
+	}
+	
+	public void render(SpriteBatch spriteBatch) {
+		if (player != null) {
+			player.render(spriteBatch);
+		}
+		
+		if (boss != null) {
+			boss.render(spriteBatch);
+		}
+		
+		for (Enemy enemy : enemies) {
+			enemy.render(spriteBatch);
+		}
+		
+		for (Reward coin : coins) {
+			coin.render(spriteBatch);
+		}
+		
+		for (Terrain terrain : terrains) {
+			terrain.render(spriteBatch);
+		}
 	}
 	
 	public Player getPlayer() {
@@ -96,8 +119,6 @@ public class EntityManager implements Disposable{
 		return this.enemies;
 	}
 	
-
-
 	 public void enemyKilled() {
 	        enemiesKilled++;
 	    }

@@ -13,10 +13,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class EndScene extends Scene {
-    private SpriteBatch sb;
     private Stage stage;
     private List<TextButton> buttons;
     private int currentButtonIndex = 0;
@@ -33,19 +33,16 @@ public class EndScene extends Scene {
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUDManager hudManager) {
         super(sceneManager, inputManager, outputManager);
         this.hudManager = hudManager; // Initialize the HUDManager reference
-
-        sb = new SpriteBatch();
-        stage = new Stage(new ScreenViewport());
+        width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END_IMG_PATH)));
+    	backgroundImage.setSize(width, height); // Set the size to fill the screen
+    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+    	stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage); // Add the background image to the stage
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
-        
-        
-
+  
         buttons = new ArrayList<>();
-
-        Texture backgroundTexture = new Texture(Gdx.files.internal("endbackground.png"));
-        backgroundImage = new Image(backgroundTexture);
-        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
         enemiesKilledLabel = new Label("Enemies Killed: " + hudManager.getEnemiesKilled(), skin);
         coinsCollectedLabel = new Label("Coins Collected: " + hudManager.getCoinsCollected(), skin);
         timeLabel = new Label("Time: " + hudManager.getElapsedTime(), skin);
@@ -66,26 +63,25 @@ public class EndScene extends Scene {
 
     @Override
     public void update(float dt) {
-        stage.act(Gdx.graphics.getDeltaTime());
         handleInput();
+        stage.act(dt);
     }
 
     @Override
-    public void render(float dt) {
+    public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        sb.begin();
-        backgroundImage.draw(sb, 1);
-        sb.end();
-        
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);       
         stage.draw();
     }
 
     @Override
     public void dispose() {
-        sb.dispose();
-        stage.dispose();
+    	if (stage != null) {
+	        stage.dispose();
+	    }
+	    if (skin != null) {
+	        skin.dispose();
+	    }
     }
 
     private void addButton(String label, float customX, float customY) {
@@ -97,12 +93,14 @@ public class EndScene extends Scene {
         buttons.add(button);
         stage.addActor(button);
     }
-
-    private void handleInput() {
+    
+    @Override
+    protected void handleInput() {
         if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         }
     }
 

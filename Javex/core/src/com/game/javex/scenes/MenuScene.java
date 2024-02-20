@@ -10,13 +10,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-
+import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class MenuScene extends Scene {
 	private Stage stage;
     private Skin skin;
-    private Image backgroundImage;
     
     private TextButton playButton, exitButton, settingsButton;
     private TextButton[] menuButtons;
@@ -25,31 +24,18 @@ public class MenuScene extends Scene {
     public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         // Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
-    	
-    	// Creating own attributes specific to this scene
-        stage = new Stage(new ScreenViewport());
-
-        
-        
-        backgroundImage = new Image(new Texture(Gdx.files.internal("background.png")));
-        backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Set the size to fill the screen
-        stage.addActor(backgroundImage); // Add the background image to the stage
-
-        // Make sure the background is drawn first (before the buttons)
-        backgroundImage.setZIndex(0);
-
-        
-        // Assuming you have a skin.json file in the assets directory
-        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
-
-
+    	width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+    	backgroundImage.setSize(width, height); // Set the size to fill the screen
+    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
         
         // Create buttons
+        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
         playButton = new TextButton("Play", skin);
         settingsButton = new TextButton("Settings", skin);
         exitButton = new TextButton("Exit", skin);
 
-        
         // Set the font scale for each button's label
         playButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
         settingsButton.getLabel().setFontScale(0.5f);
@@ -59,8 +45,7 @@ public class MenuScene extends Scene {
         playButton.setSize(200, 80);
         settingsButton.setSize(200, 80);
         exitButton.setSize(200, 80);
-
- 
+        
         // Position buttons
         float spaceBetweenButtons = 20; // Adjust the space to your preference
 
@@ -69,17 +54,19 @@ public class MenuScene extends Scene {
 
      // Calculate the starting Y position for the playButton
      // This will start drawing buttons from the bottom of the screen upward
-        float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 2;
+        float startY = (height - totalButtonsHeight) / 2;
 
      // Position the buttons starting from the bottom of the screen
         float xOffset = 30; // Adjust this value to move the buttons further to the left
 
      // Position the buttons starting from the bottom of the screen
-        playButton.setPosition((Gdx.graphics.getWidth() / 2 - playButton.getWidth() / 2) - xOffset, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
-        settingsButton.setPosition((Gdx.graphics.getWidth() / 2 - settingsButton.getWidth() / 2) - xOffset, startY + playButton.getHeight() + spaceBetweenButtons);
-        exitButton.setPosition((Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2) - xOffset, startY);
+        playButton.setPosition((width / 2 - playButton.getWidth() / 2) - xOffset, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
+        settingsButton.setPosition((width / 2 - settingsButton.getWidth() / 2) - xOffset, startY + playButton.getHeight() + spaceBetweenButtons);
+        exitButton.setPosition((width / 2 - exitButton.getWidth() / 2) - xOffset, startY);
 
         // Add buttons to stage
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage); // Add the background image to the stage
         stage.addActor(playButton);
         stage.addActor(settingsButton);
         stage.addActor(exitButton);
@@ -94,21 +81,24 @@ public class MenuScene extends Scene {
     @Override
     public void update(float dt) {
     	handleInput();
+    	stage.act(dt);
     }  
     
     @Override
-	public void render(float dt) {
+	public void render() {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
 	}
 	
 	@Override
     public void dispose() {
-		stage.dispose();
-		skin.dispose();
+		if (stage != null) {
+	        stage.dispose();
+	    }
+	    if (skin != null) {
+	        skin.dispose();
+	    }
     }
 	
     public void resize(int width, int height) {
@@ -126,12 +116,14 @@ public class MenuScene extends Scene {
             }
         }
     }
-
-    public void handleInput() {
+	
+	@Override
+    protected void handleInput() {
         if (inputManager.isUpPressed() || inputManager.isDownPressed()) {
-                currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
-                updateButtonStyles();
-            }
+            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
+            updateButtonStyles();
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+        }
         
         if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
@@ -146,6 +138,7 @@ public class MenuScene extends Scene {
                     Gdx.app.exit();
                     break;
             }
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         }
     }
 }

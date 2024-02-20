@@ -19,19 +19,22 @@ public class Enemy extends Entity {
 			this.health = 3;
 			this.width = Constants.BOSS_WIDTH;
 			this.height = Constants.BOSS_HEIGHT;
+			this.imgPath = Constants.BOSS_IMG_PATH;
 			
 		} else {
 			this.health = 1;
 			this.width = Constants.ENEMY_WIDTH;
 			this.height = Constants.ENEMY_HEIGHT;
+			this.imgPath = Constants.ENEMY_IMG_PATH;
 		}
 		
-		createBody(width, height);
+		createBody();
 		this.body.setLinearVelocity(2, 0);
+		createSprite();
 	}
 	
 	@Override
-	protected void createBody(int width, int height) {		
+	protected void createBody() {		
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -65,6 +68,7 @@ public class Enemy extends Entity {
 		head.dispose();
 	}
 	
+	@Override
 	public void update(float dt) {
 		if (!isBoss) {
 			float veloX = body.getLinearVelocity().x;
@@ -75,6 +79,9 @@ public class Enemy extends Entity {
 				this.body.setLinearVelocity(1, 0);
 			}
 		}
+		
+		Vector2 position = body.getPosition();
+		sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
 	
 	public void reduceHealth() {
@@ -95,8 +102,6 @@ public class Enemy extends Entity {
 	public boolean getIsBoss() {
 		return isBoss;
 	}
-	
-	
 	
 	public void reverseVelocity() {
 		Vector2 currentVelocity = body.getLinearVelocity();

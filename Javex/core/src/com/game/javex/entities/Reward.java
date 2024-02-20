@@ -12,10 +12,15 @@ public class Reward extends Entity{
 
 	public Reward(World world, Vector2 position) {
 		super(world, position);
-		createBody(Constants.COIN_WIDTH, Constants.COIN_HEIGHT);
+		this.width = Constants.COIN_WIDTH;;
+    	this.height = Constants.COIN_HEIGHT;;
+    	this.imgPath = Constants.COIN_IMG_PATH;
+    	
+		createBody();
+		createSprite();
     }
 	
-	protected void createBody(int width, int height) {
+	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -36,10 +41,6 @@ public class Reward extends Entity{
 		
 //		resource management
     	shape.dispose();	
-    }
-	
-	public void update(float delta) {
-        // Static objects may not need to update, but method is here for consistency
     }
 	
 	public void collect() {
