@@ -6,46 +6,44 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.game.javex.Constants;
 
-import com.game.javex.tools.Constants;
-
-public class Player {
-	private Body body;
+public class Player extends Entity{
 	private int health;
-	private int width;
-	private int height;
+	private boolean canJump;
+	
 	
 	public Player(World world, Vector2 position) {
-		health = 3;
-		width = 32;
-		height = 64;
-		body = createBox(world, position, width, height);
+		super(world, position);
+		this.health = 3;
+		this.width = Constants.PLAYER_WIDTH;
+		this.height = Constants.PLAYER_HEIGHT;
+		createBody(width, height);
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {
-		Body pBody;
+	@Override
+	protected void createBody(int width, int height) {
+//		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
 		
+//		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
-		pBody = world.createBody(bodyDef);
+		this.body = world.createBody(bodyDef);
 		
-		PolygonShape shape = new PolygonShape();
+//		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
-//		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.COIN_BIT | Constants.TERRAIN_BIT;
-		pBody.createFixture(fixtureDef).setUserData(this);
+		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.REWARD_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
 		
+//		resource management
 		shape.dispose();
-		return pBody;
-	}
-	
-	public void update(float dt) {
-		
 	}
 	
 	public void reduceHealth() {
@@ -57,26 +55,45 @@ public class Player {
 	}
 	
 	public void moveLeft() {
-		body.setLinearVelocity(-5, body.getLinearVelocity().y);
+		body.setLinearVelocity(-2, body.getLinearVelocity().y);
 	}
 	
 	public void moveRight() {
-		body.setLinearVelocity(5, body.getLinearVelocity().y);
+		body.setLinearVelocity(2, body.getLinearVelocity().y);
 	}
 	
 	public void jump() {
-		body.applyForceToCenter(0, 900, true);
-	}
+        if (canJump) {
+            body.applyLinearImpulse(new Vector2(0, 1.5f), body.getWorldCenter(), true); // Adjust impulse as needed
+            canJump = false; // Reset jump ability until player touches the ground again
+        }
+    }
 	
+//	TODO VARSHA
 	public void duck() {
 		
 	}
 	
-	public void stop() {
-		body.setLinearVelocity(0, body.getLinearVelocity().y);
-	}
-	
 	public Body getBody() {
 		return body;
+	}
+
+	public void update(float dt) {
+		// TODO Auto-generated method stub
+		
+	}
+	public void hit(Enemy enemy) {
+		health -= 1;
+		if (health <= 0) {
+			System.out.println("Woi GAME OVER alr");
+		}
+	}
+
+	public void setCanJump(boolean canJump) {
+        this.canJump = canJump;
+    }
+	
+	public boolean getCanJump() {
+		return this.canJump;
 	}
 }

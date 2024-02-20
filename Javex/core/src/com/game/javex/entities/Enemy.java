@@ -1,81 +1,103 @@
 package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.game.javex.Constants;
 
-import com.game.javex.tools.Constants;
-
-public class Enemy {
-	private Body body;
+public class Enemy extends Entity {
+	private boolean isBoss;
 	private int health;
-	private int width;
-	private int height;
+	private boolean killed = false;
 	
 	public Enemy(World world, Vector2 position, boolean isBoss) {
+		super(world, position);
+		this.isBoss = isBoss;
 		if (isBoss) {
-			health = 3;
-			width = height = 64;
+			this.health = 3;
+			this.width = Constants.BOSS_WIDTH;
+			this.height = Constants.BOSS_HEIGHT;
+			
 		} else {
-			health = 1;
-			width = height = 32;
+			this.health = 1;
+			this.width = Constants.ENEMY_WIDTH;
+			this.height = Constants.ENEMY_HEIGHT;
 		}
 		
-		body = createBox(world, position, width, height);
-		body.setUserData(this);
+		createBody(width, height);
+		this.body.setLinearVelocity(2, 0);
 	}
 	
-	private Body createBox(World world, Vector2 position, int width, int height) {		
-		Body pBody;
+	@Override
+	protected void createBody(int width, int height) {		
+//		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
+		PolygonShape shape = new PolygonShape();
+		PolygonShape head = new PolygonShape();
 		
-//		Body Definition
+//		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
-		pBody = world.createBody(bodyDef);
+		this.body = world.createBody(bodyDef);
 		
-//		Fixture Definition
-		PolygonShape shape = new PolygonShape();
+//		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
+		fixtureDef.friction = 0.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-		pBody.createFixture(fixtureDef).setUserData(this);
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
 		
+//		fixtureDef for the head for jumping on enemies
+		head.setAsBox(width /2 /2 /Constants.PPM, 4 /Constants.PPM, new Vector2(0, height/2 /Constants.PPM), 0);
+		fixtureDef.shape = head;
+		fixtureDef.restitution = 1.0f;
+		fixtureDef.filter.categoryBits = Constants.ENEMY_HEAD_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
+		
+//		resource management
 		shape.dispose();
-		return pBody;
+		head.dispose();
 	}
 	
 	public void update(float dt) {
+		if (!isBoss) {
+			float veloX = body.getLinearVelocity().x;
+			
+			if (veloX > -1 && veloX < 1) {
+				this.body.setLinearVelocity((veloX*1.5f), 0);
+			} else if (veloX == 0) {
+				this.body.setLinearVelocity(1, 0);
+			}
+		}
 	}
 	
 	public void reduceHealth() {
 		health -= 1;
 	}
-	
-	public int getHealth() {
-		return health;
+
+	public void hitOnHead() {
+		health -= 1;
+		if (health <= 0) {
+			killed = true;
+		}
 	}
 	
-	public int getHeight() {
-		return height;
+	public boolean getKilled() {
+		return killed;
 	}
 	
-	public Body getBody() {
-		return body;
+	public boolean getIsBoss() {
+		return isBoss;
 	}
 	
-	public void moveLeft() {
-		body.setLinearVelocity(-5, body.getLinearVelocity().y);
-	}
-	
-	public void moveRight() {
-		body.setLinearVelocity(5, body.getLinearVelocity().y);
+	public void reverseVelocity() {
+		Vector2 currentVelocity = body.getLinearVelocity();
+        body.setLinearVelocity(-currentVelocity.x, currentVelocity.y);
 	}
 }

@@ -1,121 +1,104 @@
 package com.game.javex.tools;
 
-import java.util.Spliterator.OfPrimitive;
-
-import javax.swing.plaf.basic.BasicGraphicsUtils;
-
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.WorldManifold;
+import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
-import com.game.javex.tools.Constants;
+import com.game.javex.entities.Reward;
 
 public class CollisionManager implements ContactListener{
-
+	private Fixture fixA;
+	private Fixture fixB;
+	
+	
 	@Override
 	public void beginContact(Contact contact) {
-		
-		Fixture fixA = contact.getFixtureA();
-		Fixture fixB = contact.getFixtureB();
+		fixA = contact.getFixtureA();
+		fixB = contact.getFixtureB();
 		
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
-		Fixture playerFixture = fixA.getUserData() instanceof Player ? fixA : fixB;
-		
 		switch (collisionDef) {
-			case Constants.PLAYER_BIT | Constants.ENEMY_BIT :
+	
+//			Player land on enemy top
+			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
+	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT)
+	                ((Enemy) fixA.getUserData()).hitOnHead();
+	            else
+	                ((Enemy) fixB.getUserData()).hitOnHead();
+	            break;
 				
-				Fixture enemyFixture = playerFixture == fixA ? fixB : fixA;
-				
-				if (attackEnemy(playerFixture.getBody(), enemyFixture.getBody(), contact)) {
-					Enemy enemy = (Enemy)enemyFixture.getUserData();
-					enemy.reduceHealth();
-				}
-				
-				if (attackPlayer(playerFixture.getBody(), enemyFixture.getBody(), contact)) {
-					Player player = (Player)playerFixture.getUserData();
-					player.reduceHealth();
-					System.out.println(player.getHealth());
-				}
-				
-				break;
-				
-			case Constants.PLAYER_BIT | Constants.COIN_BIT :
-				Fixture coinFixture = playerFixture == fixA ? fixB : fixA;
-				
-				coinFixture.setIsCollected();
-				
-				break;
-				
-				
-			case Constants.PLAYER_BIT | Constants.TERRAIN_BIT : 
-				Fixture terrainFixture = playerFixture == fixA ? fixB : fixA;
-				
-				break;
+	            
+//	        Enemy touch player from side
+			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
+	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT)
+	                ((Player) fixA.getUserData()).hit((Enemy) fixB.getUserData());
+	            else
+	                ((Player) fixB.getUserData()).hit((Enemy) fixA.getUserData());
+	            break;
+	            
+//		    Player can jump again after touching terrain
+			case Constants.PLAYER_BIT | Constants.REWARD_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.REWARD_BIT) {
+                    ((Reward)fixA.getUserData()).collect();
+                } else if (fixB.getFilterData().categoryBits == Constants.REWARD_BIT) {
+                    ((Reward)fixB.getUserData()).collect();
+                }
+                break;
+			
+//	        Player can jump again after touching terrain
+			case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                    ((Player)fixA.getUserData()).setCanJump(true);
+                } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                    ((Player)fixB.getUserData()).setCanJump(true);
+                }
+                break;
+                
+//              Enemy will move in opposite direction once touch terrain
+			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
+                // Determine which fixture is the enemy
+                if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
+                	Enemy enemy = (Enemy)fixA.getUserData();
+                	if(!enemy.getIsBoss()) {
+                		enemy.reverseVelocity();
+                	}
+                } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
+                	Enemy enemy = (Enemy)fixB.getUserData();
+                	if(!enemy.getIsBoss()) {
+                		enemy.reverseVelocity();
+                	}
+                }             
+                break;
+    		
+//              Enemies will move in opposite direction once touch each other
+			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
+		        // If you want enemies to interact with each other (e.g., bounce off each other)
+	            ((Enemy)fixA.getUserData()).reverseVelocity();
+	            ((Enemy)fixB.getUserData()).reverseVelocity();
+		        break;
 		}
-		
 	}
 	
-	private boolean attackEnemy(Body player, Body enemy, Contact contact) {
-		Vector2 playerPosition = player.getPosition();
-		Vector2 enemyPosition = enemy.getPosition();
-		
-		float playerBottom = Math.round(playerPosition.y - 32 /Constants.PPM);
-		float enemyTop = Math.round(enemyPosition.y + 16 /Constants.PPM); 
-		
-		if (playerBottom >= enemyTop) {
-			WorldManifold worldManifold = contact.getWorldManifold();
-			for (Vector2 point : worldManifold.getPoints()) {
-				if (point.y >= enemyTop && player.getLinearVelocity().y < 0) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	private boolean attackPlayer(Body player, Body enemy, Contact contact) {
-		Vector2 playerPosition = player.getPosition();
-		Vector2 enemyPosition = enemy.getPosition();
-		
-		float playerLeft = Math.round(playerPosition.x - 16 /Constants.PPM);
-		float playerRight = Math.round(playerPosition.x + 16 /Constants.PPM);
-		float enemyLeft = Math.round(enemyPosition.x - 16 /Constants.PPM); 
-		float enemyRight = Math.round(enemyPosition.x + 16 /Constants.PPM); 
-		
-		if (playerRight >= enemyLeft) {
-			WorldManifold worldManifold = contact.getWorldManifold();
-			for (Vector2 point : worldManifold.getPoints()) {
-				if (point.x >= enemyLeft && (enemy.getLinearVelocity().x < 0 || player.getLinearVelocity().x > 0)) {
-					return true;
-				}
-			}
-		}
-		
-		if (playerLeft <= enemyRight) {
-			WorldManifold worldManifold = contact.getWorldManifold();
-			for (Vector2 point : worldManifold.getPoints()) {
-				if (point.x <= enemyRight && (enemy.getLinearVelocity().x > 0 || player.getLinearVelocity().x <0)) {
-					return true;
-				}
-			}
-		}
-		
-		
-		return false;
+	@Override 
+	public void endContact(Contact contact) {
+		if ((fixA.getFilterData().categoryBits == Constants.PLAYER_BIT && fixB.getFilterData().categoryBits == Constants.TERRAIN_BIT) ||
+			(fixB.getFilterData().categoryBits == Constants.PLAYER_BIT && fixA.getFilterData().categoryBits == Constants.TERRAIN_BIT)) {
+			if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+				((Player)fixA.getUserData()).setCanJump(false);
+			} else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+				((Player)fixB.getUserData()).setCanJump(false);
+            }
+	    }
 	}
 	
 	// ========================= //
 	// ===== EMPTY METHODS ===== //	
 	// ========================= //
-	@Override public void endContact(Contact contact) {}
 	@Override public void preSolve(Contact contact, Manifold oldManifold) {}
 	@Override public void postSolve(Contact contact, ContactImpulse impulse) {}
-	
 }
