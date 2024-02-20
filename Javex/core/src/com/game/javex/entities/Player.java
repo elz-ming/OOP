@@ -1,5 +1,8 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,17 +15,20 @@ public class Player extends Entity{
 	private int health;
 	private boolean canJump;
 	
-	
 	public Player(World world, Vector2 position) {
 		super(world, position);
 		this.health = 3;
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
-		createBody(width, height);
+		this.imgPath = Constants.PLAYER_IMG_PATH;
+		System.out.println(imgPath);
+				
+		createBody();
+		createSprite();
 	}
 	
 	@Override
-	protected void createBody(int width, int height) {
+	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -69,24 +75,8 @@ public class Player extends Entity{
         }
     }
 	
-//	TODO VARSHA
-	public void duck() {
-		
-	}
-	
-	public Body getBody() {
-		return body;
-	}
-
-	public void update(float dt) {
-		// TODO Auto-generated method stub
-		
-	}
 	public void hit(Enemy enemy) {
 		health -= 1;
-		if (health <= 0) {
-			System.out.println("Woi GAME OVER alr");
-		}
 	}
 
 	public void setCanJump(boolean canJump) {

@@ -22,4 +22,14 @@ public class Constants {
 	public static final int COIN_HEIGHT = 16;
 	
 	public static final int ENEMY_MAX_SPEED = 2;
+	
+	public static final String MENU_IMG_PATH = "image_background/menu.png";
+	public static final String PLAY_IMG_PATH = "image_background/play.png";
+	public static final String END_IMG_PATH = "image_background/end.png";
+	
+	public static final String PLAYER_IMG_PATH = "image_entity/player.png"; 
+	public static final String ENEMY_IMG_PATH = "image_entity/enemy.png";
+	public static final String BOSS_IMG_PATH = "image_entity/boss.png";
+	public static final String COIN_IMG_PATH = "image_entity/coin.png";
+	public static final String TERRAIN_IMG_PATH = "image_entity/terrain.png"; 
 }
