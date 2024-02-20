@@ -80,14 +80,23 @@ public class PlayScene extends Scene {
 	
 	@Override
 	protected void update(float dt) {
-		world.step(1 /60f, 6, 2);
+		world.step(1 / 60f, 6, 2);
+
+	    cameraUpdate(dt);
+	    pauseListener(dt);
+	    playerControlManager.update(dt);
+	    aiControlManager.update(dt);
+	    entityManager.update(dt);
+	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		
-		cameraUpdate(dt);
-		pauseListener(dt);
-		playerControlManager.update(dt);
-		aiControlManager.update(dt);
-		entityManager.update(dt);
-		hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
+		
+	    if (entityManager.getTotalEnemies() == 0) { // end logic to be improved in the future
+	        Gdx.app.log("PlayScene", "All enemies killed. Transitioning to end scene.");
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
+	    } else {
+	        Gdx.app.log("PlayScene", "Enemies killed: " + entityManager.getEnemiesKilled() + " / Total enemies: " + (entityManager.getEnemies().size + (entityManager.getBoss() != null ? 1 : 0)));
+	    }
+
 	}
 	
 	@Override
@@ -148,13 +157,9 @@ public class PlayScene extends Scene {
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	    }
 	    
-	   else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-		   		
-	        	Gdx.app.log("PauseScene", "L key pressed. Ending the game.");
-	            	
-	                sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
+	  
 		    }
-		}
+		
 	
 	public void cameraUpdate(float dt) {
 		Vector3 position = camera.position;

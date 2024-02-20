@@ -113,6 +113,11 @@ public class EntityManager implements Disposable{
 	 public int getCoinsCollected() {
 	        return coinsCollected;
 	    }
+	 
+	 public int getTotalEnemies() {
+		    return enemies.size + (boss != null ? 1 : 0);
+		    
+		}
 	    
 	    
 }
