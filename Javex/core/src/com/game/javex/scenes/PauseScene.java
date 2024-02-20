@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class PauseScene extends Scene {
@@ -27,24 +28,16 @@ public class PauseScene extends Scene {
     private TextButton[] menuButtons;
     
     private Image backgroundImage;
-    
-    
-    private boolean disposed = false;
-  
 
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
     	
-    	// Creating own attributes specific to this scene
-        sb = new SpriteBatch();
-
         // Load the skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
         
-        
         stage = new Stage(new ScreenViewport());
-        backgroundImage = new Image(new Texture(Gdx.files.internal("background.png")));
+        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
         backgroundImage.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Set the size to fill the screen
         stage.addActor(backgroundImage); // Add the background image to the stage
 
@@ -54,11 +47,6 @@ public class PauseScene extends Scene {
         // Create the buttons
         resumeButton = new TextButton("Resume Game", skin);
         menuButton = new TextButton("Return to Main Menu", skin);
-  
-
-      
-        
-
         float xOffset = 50; // Adjust this value to move the buttons further to the left
 
         resumeButton = new TextButton("Resume Game", skin);
@@ -75,7 +63,7 @@ public class PauseScene extends Scene {
         menuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                sceneManager.popAllAndSet(new MenuScene(sceneManager, inputManager, outputManager));
+                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
         });
         
@@ -90,27 +78,25 @@ public class PauseScene extends Scene {
     @Override
     public void update(float dt) {
     	handleInput();
+        stage.act(dt);
     }  
     
     @Override
-    public void render(float dt) {
+    public void render() {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
     }
 
 
     @Override
     public void dispose() {
-    	
-    	if (!disposed) {
-        sb.dispose();
-        skin.dispose();     
-        
-        disposed = true;
-    	}
+    	if (stage != null) {
+	        stage.dispose();
+	    }
+	    if (skin != null) {
+	        skin.dispose();
+	    }
     }
 
     private void updateButtonStyles() {
@@ -125,22 +111,23 @@ public class PauseScene extends Scene {
         }
     }
 
-    public void handleInput() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
+    @Override
+    protected void handleInput() {
+        if (inputManager.isUpPressed()) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
             updateButtonStyles();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+        } else if (inputManager.isDownPressed()) {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
-        } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+        } else if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
-                // Resume game
                 sceneManager.pop();
             } else if (currentButtonIndex == 1) {
-                // Return to main menu
-            	
-                sceneManager.popAllAndSet(new MenuScene(sceneManager, inputManager, outputManager));
+                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         } 
         
     }

@@ -29,6 +29,8 @@ public class PlayScene extends Scene {
 	
 	private World world;
 	private Box2DDebugRenderer b2dr;
+	private SpriteBatch sceneBatch;
+	private SpriteBatch entityBatch;
 	
 	private HUDManager hudManager;
 	private EntityManager entityManager;
@@ -36,30 +38,26 @@ public class PlayScene extends Scene {
 	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
 	
-	private Image backgroundImage;
- 
-	private int currentLevel = 1;
-	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
-
-		// Creating own attributes specific to this scene	
-		float w = Gdx.graphics.getWidth();
-		float h = Gdx.graphics.getHeight();
-
-		Texture backgroundTexture = new Texture(Gdx.files.internal("playbackground.png"));
-		backgroundImage = new Image(backgroundTexture);
-		backgroundImage.setSize(w * 1.5f, h * 1.5f);
-		
+		width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+    	backgroundImage.setSize(width, height); // Set the size to fill the screen
+    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+	
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, w, h);
-		viewport = new FitViewport(w, h, camera);
+		camera.setToOrtho(false, width, height);
+		viewport = new FitViewport(width, height, camera);
 
 		hudManager = new HUDManager();
 		
 		world = new World(new Vector2(0, -9.8f), false);
 		b2dr = new Box2DDebugRenderer();
+		sceneBatch = new SpriteBatch();
+		entityBatch = new SpriteBatch();
+		
 		
 //		Initialize entityManager and create relevant entities in the game world
 		entityManager = new EntityManager(world);
@@ -80,31 +78,41 @@ public class PlayScene extends Scene {
 	
 	@Override
 	protected void update(float dt) {
-		world.step(1 /60f, 6, 2);
+		handleInput();
+		world.step(1 / 60f, 6, 2);
+
+	    cameraUpdate(dt);
+	    playerControlManager.update(dt);
+	    aiControlManager.update(dt);
+	    entityManager.update(dt);
+	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		
-		cameraUpdate(dt);
-		pauseListener(dt);
-		playerControlManager.update(dt);
-		aiControlManager.update(dt);
-		entityManager.update(dt);
-		hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
+	    if (entityManager.getTotalEnemies() == 0) { // end logic to be improved in the future
+	        Gdx.app.log("PlayScene", "All enemies killed. Transitioning to end scene.");
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
+	    }
 	}
 	
 	@Override
-	public void render(float dt) {
+	public void render() {
         // Clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		SpriteBatch batch = new SpriteBatch();
-		batch.begin();
-		backgroundImage.draw(batch, 1);
-		batch.end();
+        sceneBatch.begin();
+			backgroundImage.draw(sceneBatch, 1);
+		sceneBatch.end();
 		
-		if (b2dr != null && world != null && camera != null) {
-			b2dr.render(world, camera.combined.scl(Constants.PPM));
-		}
-
+		entityBatch.setProjectionMatrix(camera.combined);
+		entityBatch.begin();
+			entityManager.render(entityBatch);
+		entityBatch.end();
+		
+////		For debug purposes
+//		if (b2dr != null && world != null && camera != null) {
+//			b2dr.render(world, camera.combined.scl(Constants.PPM));
+//		}
+	
 		if (hudManager != null) {
 			hudManager.draw();
 		}
@@ -142,19 +150,15 @@ public class PlayScene extends Scene {
 		entityManager.createTerrain(new Vector2(924, 32), 32, 32);
 	}
 
-	protected void pauseListener(float dt) {
+	@Override
+	protected void handleInput() {
 	    if (inputManager.isReturnPressed()) {
 	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
-	    }
-	    
-	   else if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
-		   		
-	        	Gdx.app.log("PauseScene", "L key pressed. Ending the game.");
-	            	
-	                sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
-		    }
-		}
+	        try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
+	    } 
+	}
+		
 	
 	public void cameraUpdate(float dt) {
 		Vector3 position = camera.position;

@@ -12,11 +12,13 @@ public class Terrain extends Entity{
     	super(world, position);
     	this.width = width;
     	this.height = height;
-    	createBody(width, height);
+    	this.imgPath = Constants.TERRAIN_IMG_PATH;
+    	createBody();
+    	createSprite();
     }
     
     @Override
-	protected void createBody(int width, int height) {
+	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
@@ -37,9 +39,5 @@ public class Terrain extends Entity{
     	
 //		resource management
     	shape.dispose();	
-    }
-    
-    public void update(float delta) {
-        // Static objects may not need to update, but method is here for consistency
     }
 }
