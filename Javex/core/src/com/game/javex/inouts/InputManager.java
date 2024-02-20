@@ -32,10 +32,10 @@ public class InputManager implements InputProcessor {
 	            rightKey = true;
 	            break;
 	        case Keys.ENTER:
-	        case Keys.ESCAPE: // Assuming you want SPACE to act like ENTER
+	        case Keys.SPACE: // Assuming you want SPACE to act like ENTER
 	            enterKey = true;
 	            break;
-	        case Keys.BACKSPACE:
+	        case Keys.ESCAPE:
 	            returnKey = true;
 	            break;
 	    }
