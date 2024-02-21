@@ -21,7 +21,6 @@ public class Player extends Entity{
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
 		this.imgPath = Constants.PLAYER_IMG_PATH;
-		System.out.println(imgPath);
 				
 		createBody();
 		createSprite();
