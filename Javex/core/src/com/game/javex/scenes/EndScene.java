@@ -20,13 +20,9 @@ public class EndScene extends Scene {
     private Label enemiesKilledLabel;
     private Label coinsCollectedLabel;
     private Label timeLabel;
-    
-    private HUDManager hudManager;
-    
-    
+
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUDManager hudManager) {
         super(sceneManager, inputManager, outputManager);
-        this.hudManager = hudManager; // Initialize the HUDManager reference
         width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END_IMG_PATH)));

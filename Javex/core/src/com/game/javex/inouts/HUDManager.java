@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 public class HUDManager implements Disposable {
     private Stage stage;
     private Table table;
-    private BitmapFont font;
     private Label enemiesKilledLabel;
     private Label coinsCollectedLabel;
     private Label timeLabel;
@@ -76,10 +75,6 @@ public class HUDManager implements Disposable {
         return timeLabel.getStyle();
     }
 
-    
-    
-    
-    
     public void update(int enemiesKilled, int coinsCollected) {
         this.enemiesKilled = enemiesKilled;
         this.coinsCollected = coinsCollected;
