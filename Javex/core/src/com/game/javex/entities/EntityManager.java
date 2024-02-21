@@ -4,9 +4,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 
-public class EntityManager implements Disposable{
+public class EntityManager {
 	private World world;
 	private Player player;
 	private Enemy boss;
@@ -24,9 +23,22 @@ public class EntityManager implements Disposable{
 		this.coins = new Array<>();
 	}
 	
-	@Override
-	public void dispose() {
+	public void initialize() {
+		createPlayer(new Vector2(64, 32));
 		
+		createBoss(new Vector2(576, 32));
+		createEnemy(new Vector2(192, 32));
+		createEnemy(new Vector2(384, 32));
+		
+		createCoin(new Vector2(256, 32));
+		createCoin(new Vector2(448, 32));
+		
+		createTerrain(new Vector2(0, 0), 1056, 32);
+		createTerrain(new Vector2(0, 32), 32, 32);
+		createTerrain(new Vector2(128, 32), 32, 32);
+		createTerrain(new Vector2(320, 32), 32, 32);
+		createTerrain(new Vector2(512, 32), 32, 32);
+		createTerrain(new Vector2(924, 32), 32, 32);
 	}
 	
 	public void createPlayer(Vector2 position) {

@@ -55,17 +55,17 @@ public class Player extends Entity{
 		return health;
 	}
 	
-	public void moveLeft() {
+	public void moveLeft(float delta) {
 		body.setLinearVelocity(-2, body.getLinearVelocity().y);
 	}
 	
-	public void moveRight() {
+	public void moveRight(float delta) {
 		body.setLinearVelocity(2, body.getLinearVelocity().y);
 	}
 	
-	public void jump() {
+	public void jump(float delta) {
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1.5f), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 1), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }

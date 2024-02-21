@@ -13,32 +13,40 @@ import com.game.javex.entities.Reward;
 public class CollisionManager implements ContactListener{
 	private Fixture fixA;
 	private Fixture fixB;
-	
+	private int collisionDef;
 	
 	@Override
 	public void beginContact(Contact contact) {
 		fixA = contact.getFixtureA();
 		fixB = contact.getFixtureB();
 		
-		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
 		switch (collisionDef) {
 	
 //			Player land on enemy top
 			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
-	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT)
-	                ((Enemy) fixA.getUserData()).hitOnHead();
-	            else
+	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT) {
+	            	((Enemy) fixA.getUserData()).hitOnHead();
+	            	((Player) fixB.getUserData()).setCanJump(true);
+	            }
+	            else {
 	                ((Enemy) fixB.getUserData()).hitOnHead();
+	            	((Player) fixA.getUserData()).setCanJump(true);
+	            }
 	            break;
 				
 	            
 //	        Enemy touch player from side
 			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
-	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT)
+	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
 	                ((Player) fixA.getUserData()).hit((Enemy) fixB.getUserData());
-	            else
+	            	((Player) fixA.getUserData()).setCanJump(true);
+	            }
+	            else {
 	                ((Player) fixB.getUserData()).hit((Enemy) fixA.getUserData());
+	            	((Player) fixB.getUserData()).setCanJump(true);
+	            }
 	            break;
 	            
 //		    Player can jump again after touching terrain

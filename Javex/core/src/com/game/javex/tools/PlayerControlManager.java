@@ -3,7 +3,7 @@ package com.game.javex.tools;
 import com.game.javex.entities.Player;
 import com.game.javex.inouts.InputManager;
 
-public class PlayerControlManager{
+public class PlayerControlManager {
 	private Player player;
 	private final InputManager inputManager;
 	
@@ -12,19 +12,17 @@ public class PlayerControlManager{
         this.inputManager = inputManager;
     }
 	
-	public void update(float dt) {
+	public void update(float delta) {
         if (inputManager.isLeftPressed()) {
-        	player.moveLeft();
+        	player.moveLeft(delta);
         }
         
         if (inputManager.isRightPressed()) {
-        	player.moveRight();
+        	player.moveRight(delta);
         }
         
         if (inputManager.isUpPressed()) {
-            if (player.getCanJump()) { 
-            	player.jump();
-            }
+        	player.jump(delta);
         }
     }
 }

@@ -9,7 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
@@ -17,37 +19,46 @@ import com.game.javex.entities.Player;
 import com.game.javex.inouts.*;
 import com.game.javex.tools.AiControlManager;
 import com.game.javex.tools.CollisionManager;
+import com.game.javex.tools.HUD;
 import com.game.javex.tools.PlayerControlManager;
 
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
 	private World world;
-	private SpriteBatch sceneBatch, entityBatch;
+	private SpriteBatch batch;
+//	//	For debug purposes
 //	private Box2DDebugRenderer b2dr;
 	
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
 	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
-	private HUDManager hudManager;
+	private HUD hudManager;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
 		width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
-    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+    	
+    	// Set background
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.PLAY_IMG_PATH)));
     	backgroundImage.setSize(width, height); // Set the size to fill the screen
     	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
-	
+    	
+    	//Initialize HUD
+    	hudManager = new HUD();
+    	
+    	// Add buttons to stage
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage); // Add the background image to the stage
+        stage.addActor(hudManager.getTable());
+        
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
-
-		hudManager = new HUDManager();
 		
 		world = new World(new Vector2(0, -9.8f), false);
-		sceneBatch = new SpriteBatch();
-		entityBatch = new SpriteBatch();
+		batch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
 		entityManager = new EntityManager(world);
@@ -64,7 +75,8 @@ public class PlayScene extends Scene {
 //		Initialize collisionManager to listen for collisions in the game world
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
-		
+
+//	//	For debug purposes
 //		b2dr = new Box2DDebugRenderer();
 	}
 	
@@ -89,19 +101,12 @@ public class PlayScene extends Scene {
         // Clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        sceneBatch.begin();
-			backgroundImage.draw(sceneBatch, 1);
-		sceneBatch.end();
+        stage.draw();
 		
-		entityBatch.setProjectionMatrix(camera.combined);
-		entityBatch.begin();
-			entityManager.render(entityBatch);
-		entityBatch.end();
-	
-		if (hudManager != null) {
-			hudManager.draw();
-		}
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+			entityManager.render(batch);
+		batch.end();
 		
 //	//	For debug purposes
 //		if (b2dr != null && world != null && camera != null) {
@@ -119,29 +124,26 @@ public class PlayScene extends Scene {
 	
 	@Override
 	public void dispose() {
-		world.dispose();
-		entityManager.dispose();
-		camera = null;
-		hudManager.dispose();
-//		b2dr.dispose();
+		if (world != null) {
+	        world.dispose();
+	    }
+		
+		if (stage != null) {
+	        stage.dispose();
+	    }
+		
+	    if (batch != null) {
+	    	batch.dispose();
+	    }
+		
+	    camera = null;
+//		if (b2dr != null) {
+//	        b2dr.dispose();
+//	    }
 	}
 
 	private void initialize() {
-		entityManager.createPlayer(new Vector2(64, 32));
-		
-		entityManager.createBoss(new Vector2(576, 32));
-		entityManager.createEnemy(new Vector2(192, 32));
-		entityManager.createEnemy(new Vector2(384, 32));
-		
-		entityManager.createCoin(new Vector2(256, 32));
-		entityManager.createCoin(new Vector2(448, 32));
-		
-		entityManager.createTerrain(new Vector2(0, 0), 1056, 32);
-		entityManager.createTerrain(new Vector2(0, 32), 32, 32);
-		entityManager.createTerrain(new Vector2(128, 32), 32, 32);
-		entityManager.createTerrain(new Vector2(320, 32), 32, 32);
-		entityManager.createTerrain(new Vector2(512, 32), 32, 32);
-		entityManager.createTerrain(new Vector2(924, 32), 32, 32);
+		entityManager.initialize();
 	}
 
 	

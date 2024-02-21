@@ -29,7 +29,7 @@ public class Enemy extends Entity {
 		}
 		
 		createBody();
-		this.body.setLinearVelocity(2, 0);
+		this.body.setLinearVelocity(1, 0);
 		createSprite();
 	}
 	
@@ -73,8 +73,8 @@ public class Enemy extends Entity {
 		if (!isBoss) {
 			float veloX = body.getLinearVelocity().x;
 			
-			if (veloX > -1 && veloX < 1) {
-				this.body.setLinearVelocity((veloX*1.5f), 0);
+			if (veloX > -0.5 && veloX < 0.5) {
+				this.body.setLinearVelocity((veloX*1.1f), 0);
 			} else if (veloX == 0) {
 				this.body.setLinearVelocity(1, 0);
 			}

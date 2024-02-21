@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
+import com.game.javex.tools.HUD;
 
 public class EndScene extends Scene {
     private List<TextButton> buttons;
@@ -21,7 +22,7 @@ public class EndScene extends Scene {
     private Label coinsCollectedLabel;
     private Label timeLabel;
 
-    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUDManager hudManager) {
+    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUD hudManager) {
         super(sceneManager, inputManager, outputManager);
         width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();

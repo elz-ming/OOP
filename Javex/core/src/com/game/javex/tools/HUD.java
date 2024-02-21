@@ -1,19 +1,15 @@
-package com.game.javex.inouts;
+package com.game.javex.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
-public class HUDManager implements Disposable {
-    private Stage stage;
+public class HUD implements Disposable {
     private Table table;
     private Label enemiesKilledLabel;
     private Label coinsCollectedLabel;
@@ -24,8 +20,7 @@ public class HUDManager implements Disposable {
     private int coinsCollected;
     private long startTime;
 
-    public HUDManager() {
-    	 stage = new Stage(new ScreenViewport(), new SpriteBatch());
+    public HUD() {
          skin = new Skin(Gdx.files.internal("rainbow-ui.json")); // Load the skin
 
          // Create custom label styles with your desired font color
@@ -46,7 +41,6 @@ public class HUDManager implements Disposable {
          table.add(coinsCollectedLabel).expandX().padTop(10).padBottom(10);
          table.add(timeLabel).expandX().padTop(10).padBottom(10);
 
-         stage.addActor(table);
          startTime = TimeUtils.millis();
     }
 
@@ -84,20 +78,15 @@ public class HUDManager implements Disposable {
         long elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000;
         timeLabel.setText("Time: " + elapsedTime);
     }
-
-    public void draw() {
-        stage.act(); // Update the stage
-        stage.draw(); // Draw the stage
+    
+    public Table getTable() {
+    	return table;
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
-        skin.dispose(); // Dispose of the skin
-        // Make sure to dispose of the stage's own SpriteBatch
-        ((SpriteBatch)stage.getBatch()).dispose();
+    	if (skin != null) {
+	        skin.dispose();
+	    }
     }
-    
-    
-  
 }
