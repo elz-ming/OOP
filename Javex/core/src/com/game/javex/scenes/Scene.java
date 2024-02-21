@@ -1,5 +1,8 @@
 package com.game.javex.scenes;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,9 +31,36 @@ public abstract class Scene implements Disposable{
         this.inputManager = inputManager;
         this.outputManager = outputManager;
     }
-
-    protected abstract void update(float dt);
-    protected abstract void render();
+    
+    public void update(float delta) {
+    	handleInput();
+    	stage.act(delta);
+    }  
+    
+	public void render() {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw();
+	}
+	
+    public void dispose() {
+    	if (stage != null) {
+	        stage.dispose();
+	    }
+	    if (skin != null) {
+	        skin.dispose();
+	    }
+    }
+    
+    protected void updateButtonStyles() {
+        for (int i = 0; i < menuButtons.length; i++) {
+            if (i == currentButtonIndex) {
+                menuButtons[i].setColor(Color.YELLOW);
+            } else {
+                menuButtons[i].setColor(Color.WHITE);
+            }
+        }
+    }
+    
     protected abstract void handleInput();
-//    protected abstract void resize(float dt);
 }

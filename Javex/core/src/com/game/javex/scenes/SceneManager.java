@@ -36,7 +36,7 @@ public class SceneManager {
     public void render() {
     	scenes.peek().render();
     }
-    
+
     public void dispose() {
     	while (!scenes.isEmpty()) {
             scenes.pop().dispose();

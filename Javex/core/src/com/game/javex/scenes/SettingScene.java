@@ -1,8 +1,6 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -49,43 +47,6 @@ public class SettingScene extends Scene {
         menuButtons = new TextButton[]{muteButton, backButton};
 
         updateButtonStyles();
-    }
-
-    @Override
-    public void update(float dt) {
-        handleInput();
-        stage.act(dt);
-    }
-
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
-
-    @Override
-    public void dispose() {
-    	if (stage != null) {
-	        stage.dispose();
-	    }
-	    if (skin != null) {
-	        skin.dispose();
-	    }
-    }
-
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    private void updateButtonStyles() {
-        for (int i = 0; i < menuButtons.length; i++) {
-            if (i == currentButtonIndex) {
-                menuButtons[i].setColor(Color.YELLOW);
-            } else {
-                menuButtons[i].setColor(Color.WHITE);
-            }
-        }
     }
 
     @Override

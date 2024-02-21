@@ -14,7 +14,7 @@ public class SimulationLifecycleManager extends ApplicationAdapter {
 	private OutputManager outputManager;
 	
 	 @Override
-	  public void create() {
+	 public void create() {
 		 inputManager = new InputManager();
 	     outputManager = new OutputManager(); // Initialize AudioManager here
 	     outputManager.play("hadi.mp3", true);

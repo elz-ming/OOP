@@ -1,10 +1,7 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -60,44 +57,7 @@ public class PauseScene extends Scene {
         
         // Create an array of buttons for navigation
         menuButtons = new TextButton[]{resumeButton, menuButton};
-        updateButtonStyles();
-       
-    }
-    
-    @Override
-    public void update(float dt) {
-    	handleInput();
-        stage.act(dt);
-    }  
-    
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
-
-
-    @Override
-    public void dispose() {
-    	if (stage != null) {
-	        stage.dispose();
-	    }
-	    if (skin != null) {
-	        skin.dispose();
-	    }
-    }
-
-    private void updateButtonStyles() {
-        for (int i = 0; i < menuButtons.length; i++) {
-            if (i == currentButtonIndex) {
-                // Highlight the selected button
-                menuButtons[i].setColor(Color.YELLOW);
-            } else {
-                // Other buttons are white
-                menuButtons[i].setColor(Color.WHITE);
-            }
-        }
+        updateButtonStyles();   
     }
 
     @Override
@@ -118,6 +78,5 @@ public class PauseScene extends Scene {
             }
             try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         } 
-        
     }
 }

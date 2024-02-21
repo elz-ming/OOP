@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -55,28 +54,15 @@ public class EndScene extends Scene {
         addButton("Back To Menu", 0.5f, 0.5f);
         updateButtonStyles();
     }
-
+    
     @Override
-    public void update(float dt) {
-        handleInput();
-        stage.act(dt);
-    }
-
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);       
-        stage.draw();
-    }
-
-    @Override
-    public void dispose() {
-    	if (stage != null) {
-	        stage.dispose();
-	    }
-	    if (skin != null) {
-	        skin.dispose();
-	    }
+    protected void handleInput() {
+        if (inputManager.isEnterPressed()) {
+            if (currentButtonIndex == 0) {
+                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+            }
+            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+        }
     }
 
     private void addButton(String label, float customX, float customY) {
@@ -90,16 +76,7 @@ public class EndScene extends Scene {
     }
     
     @Override
-    protected void handleInput() {
-        if (inputManager.isEnterPressed()) {
-            if (currentButtonIndex == 0) {
-                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
-            }
-            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
-        }
-    }
-
-    private void updateButtonStyles() {
+    protected void updateButtonStyles() {
         for (int i = 0; i < buttons.size(); i++) {
             if (i == currentButtonIndex) {
                 buttons.get(i).getLabel().setColor(com.badlogic.gdx.graphics.Color.YELLOW);

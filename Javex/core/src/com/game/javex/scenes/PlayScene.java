@@ -7,11 +7,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+//import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
@@ -23,18 +21,15 @@ import com.game.javex.tools.PlayerControlManager;
 
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
-	private Viewport viewport;
-	
 	private World world;
-	private Box2DDebugRenderer b2dr;
-	private SpriteBatch sceneBatch;
-	private SpriteBatch entityBatch;
+	private SpriteBatch sceneBatch, entityBatch;
+//	private Box2DDebugRenderer b2dr;
 	
-	private HUDManager hudManager;
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
 	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
+	private HUDManager hudManager;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
 		// Using universal attribute across all scenes
@@ -47,15 +42,12 @@ public class PlayScene extends Scene {
 	
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
-		viewport = new FitViewport(width, height, camera);
 
 		hudManager = new HUDManager();
 		
 		world = new World(new Vector2(0, -9.8f), false);
-		b2dr = new Box2DDebugRenderer();
 		sceneBatch = new SpriteBatch();
 		entityBatch = new SpriteBatch();
-		
 		
 //		Initialize entityManager and create relevant entities in the game world
 		entityManager = new EntityManager(world);
@@ -72,14 +64,16 @@ public class PlayScene extends Scene {
 //		Initialize collisionManager to listen for collisions in the game world
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
+		
+//		b2dr = new Box2DDebugRenderer();
 	}
 	
 	@Override
-	protected void update(float dt) {
+	public void update(float dt) {
 		handleInput();
 		world.step(1 / 60f, 6, 2);
 
-	    cameraUpdate(dt);
+	    cameraUpdate();
 	    playerControlManager.update(dt);
 	    aiControlManager.update(dt);
 	    entityManager.update(dt);
@@ -104,29 +98,32 @@ public class PlayScene extends Scene {
 		entityBatch.begin();
 			entityManager.render(entityBatch);
 		entityBatch.end();
-		
-////		For debug purposes
-//		if (b2dr != null && world != null && camera != null) {
-//			b2dr.render(world, camera.combined.scl(Constants.PPM));
-//		}
 	
 		if (hudManager != null) {
 			hudManager.draw();
 		}
+		
+//	//	For debug purposes
+//		if (b2dr != null && world != null && camera != null) {
+//			b2dr.render(world, camera.combined.scl(Constants.PPM));
+//		}
+	}
+	
+	@Override
+	protected void handleInput() {
+	    if (inputManager.isReturnPressed()) {
+	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
+	        try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
+	    } 
 	}
 	
 	@Override
 	public void dispose() {
 		world.dispose();
-		b2dr.dispose();
 		entityManager.dispose();
 		camera = null;
-		viewport = null;
 		hudManager.dispose();
-	}
-	
-	public void resize(int width, int height) {
-		camera.setToOrtho(false, width /2, height /2);
+//		b2dr.dispose();
 	}
 
 	private void initialize() {
@@ -147,16 +144,8 @@ public class PlayScene extends Scene {
 		entityManager.createTerrain(new Vector2(924, 32), 32, 32);
 	}
 
-	@Override
-	protected void handleInput() {
-	    if (inputManager.isReturnPressed()) {
-	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
-	        try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
-	    } 
-	}
-		
 	
-	public void cameraUpdate(float dt) {
+	private void cameraUpdate() {
 		Vector3 position = camera.position;
 		position.x = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
 		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
