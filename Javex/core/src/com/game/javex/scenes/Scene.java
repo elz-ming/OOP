@@ -1,7 +1,9 @@
 package com.game.javex.scenes;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Disposable;
 import com.game.javex.inouts.*;
 
@@ -13,7 +15,13 @@ public abstract class Scene implements Disposable{
     
     protected float width;
     protected float height;
+    
+    protected Stage stage;
+    protected Skin skin;
     protected Image backgroundImage;
+    
+    protected TextButton[] menuButtons;
+    protected int currentButtonIndex = 0;
 
     protected Scene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         this.sceneManager = sceneManager;

@@ -14,7 +14,6 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class HUDManager implements Disposable {
     private Stage stage;
-    private SpriteBatch batch;
     private Table table;
     private BitmapFont font;
     private Label enemiesKilledLabel;

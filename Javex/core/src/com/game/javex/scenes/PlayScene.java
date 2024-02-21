@@ -1,8 +1,6 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -88,7 +86,6 @@ public class PlayScene extends Scene {
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		
 	    if (entityManager.getTotalEnemies() == 0) { // end logic to be improved in the future
-	        Gdx.app.log("PlayScene", "All enemies killed. Transitioning to end scene.");
 	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
 	    }
 	}
@@ -153,7 +150,6 @@ public class PlayScene extends Scene {
 	@Override
 	protected void handleInput() {
 	    if (inputManager.isReturnPressed()) {
-	        Gdx.app.log("PlayScene", "ESC key pressed. Pausing the game.");
 	        sceneManager.push(new PauseScene(sceneManager, inputManager, outputManager));
 	        try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
 	    } 

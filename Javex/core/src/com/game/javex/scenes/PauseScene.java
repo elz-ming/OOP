@@ -1,7 +1,6 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,17 +16,7 @@ import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class PauseScene extends Scene {
-    private SpriteBatch sb;
-    private Stage stage;
-    private Skin skin;
-    
-    private TextButton resumeButton;
-    private TextButton menuButton;
-    
-    private int currentButtonIndex = 0;
-    private TextButton[] menuButtons;
-    
-    private Image backgroundImage;
+    private TextButton resumeButton, menuButton;
 
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes

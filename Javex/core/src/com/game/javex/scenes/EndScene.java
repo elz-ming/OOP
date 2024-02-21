@@ -6,7 +6,6 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,18 +16,14 @@ import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class EndScene extends Scene {
-    private Stage stage;
     private List<TextButton> buttons;
-    private int currentButtonIndex = 0;
     
     private Label enemiesKilledLabel;
     private Label coinsCollectedLabel;
     private Label timeLabel;
     
-    private Skin skin;
     private HUDManager hudManager;
     
-    private Image backgroundImage;
     
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUDManager hudManager) {
         super(sceneManager, inputManager, outputManager);
