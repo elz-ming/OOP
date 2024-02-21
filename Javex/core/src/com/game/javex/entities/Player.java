@@ -22,7 +22,6 @@ public class Player extends Entity{
 		createSprite();
 	}
 	
-	@Override
 	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
@@ -65,7 +64,7 @@ public class Player extends Entity{
 	
 	public void jump(float delta) {
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 1.0f), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }
@@ -75,10 +74,6 @@ public class Player extends Entity{
 	}
 
 	public void setCanJump(boolean canJump) {
-        this.canJump = canJump;
+		this.canJump = canJump;
     }
-	
-	public boolean getCanJump() {
-		return this.canJump;
-	}
 }

@@ -103,7 +103,7 @@ public class Enemy extends Entity {
 		return isBoss;
 	}
 	
-	public void reverseVelocity() {
+	public void moveOpposite() {
 		Vector2 currentVelocity = body.getLinearVelocity();
         body.setLinearVelocity(-currentVelocity.x, currentVelocity.y);
 	}

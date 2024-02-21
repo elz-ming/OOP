@@ -24,8 +24,6 @@ public abstract class Entity {
 		this.position = position;
 	}
 	
-	protected abstract void createBody();
-	
 	protected void createSprite() {
         position = body.getPosition();
         this.sprite = new Sprite(new Texture(Gdx.files.internal(imgPath)));
@@ -33,7 +31,7 @@ public abstract class Entity {
         this.sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
 	
-	protected void update(float dt) {
+	public void update(float delta) {
 		position = body.getPosition();
 		sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
@@ -61,4 +59,6 @@ public abstract class Entity {
 	public int getHeight() {
 		return height;
 	}
+	
+	protected abstract void createBody();
 }

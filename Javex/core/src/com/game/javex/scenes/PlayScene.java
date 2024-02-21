@@ -25,7 +25,7 @@ import com.game.javex.tools.PlayerControlManager;
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
 	private World world;
-	private SpriteBatch batch;
+	private SpriteBatch spriteBatch;
 //	//	For debug purposes
 //	private Box2DDebugRenderer b2dr;
 	
@@ -38,6 +38,8 @@ public class PlayScene extends Scene {
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
+
+		outputManager.play("audio/menu.mp3", true);
 		width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
@@ -58,7 +60,7 @@ public class PlayScene extends Scene {
 		camera.setToOrtho(false, width, height);
 		
 		world = new World(new Vector2(0, -9.8f), false);
-		batch = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
 		entityManager = new EntityManager(world);
@@ -91,8 +93,8 @@ public class PlayScene extends Scene {
 	    entityManager.update(dt);
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		
-	    if (entityManager.getTotalEnemies() == 0) { // end logic to be improved in the future
-	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager, hudManager));
+	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) { // end logic to be improved in the future
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 	}
 	
@@ -103,10 +105,10 @@ public class PlayScene extends Scene {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
 		
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
-			entityManager.render(batch);
-		batch.end();
+        spriteBatch.setProjectionMatrix(camera.combined);
+        spriteBatch.begin();
+			entityManager.render(spriteBatch);
+		spriteBatch.end();
 		
 //	//	For debug purposes
 //		if (b2dr != null && world != null && camera != null) {
@@ -132,11 +134,12 @@ public class PlayScene extends Scene {
 	        stage.dispose();
 	    }
 		
-	    if (batch != null) {
-	    	batch.dispose();
+	    if (spriteBatch != null) {
+	    	spriteBatch.dispose();
 	    }
 		
 	    camera = null;
+	    
 //		if (b2dr != null) {
 //	        b2dr.dispose();
 //	    }

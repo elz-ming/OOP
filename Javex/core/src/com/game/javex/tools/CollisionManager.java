@@ -73,12 +73,12 @@ public class CollisionManager implements ContactListener{
                 if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
                 	Enemy enemy = (Enemy)fixA.getUserData();
                 	if(!enemy.getIsBoss()) {
-                		enemy.reverseVelocity();
+                		enemy.moveOpposite();
                 	}
                 } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
                 	Enemy enemy = (Enemy)fixB.getUserData();
                 	if(!enemy.getIsBoss()) {
-                		enemy.reverseVelocity();
+                		enemy.moveOpposite();
                 	}
                 }             
                 break;
@@ -86,8 +86,8 @@ public class CollisionManager implements ContactListener{
 //              Enemies will move in opposite direction once touch each other
 			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
 		        // If you want enemies to interact with each other (e.g., bounce off each other)
-	            ((Enemy)fixA.getUserData()).reverseVelocity();
-	            ((Enemy)fixB.getUserData()).reverseVelocity();
+	            ((Enemy)fixA.getUserData()).moveOpposite();
+	            ((Enemy)fixB.getUserData()).moveOpposite();
 		        break;
 		}
 	}

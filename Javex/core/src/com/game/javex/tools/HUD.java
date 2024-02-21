@@ -2,7 +2,6 @@ package com.game.javex.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -16,8 +15,6 @@ public class HUD implements Disposable {
     private Label timeLabel;
     private Skin skin;
 
-    private int enemiesKilled;
-    private int coinsCollected;
     private long startTime;
 
     public HUD() {
@@ -44,36 +41,9 @@ public class HUD implements Disposable {
          startTime = TimeUtils.millis();
     }
 
-    
-    public int getEnemiesKilled() {
-        return enemiesKilled;
-    }
-
-    public int getCoinsCollected() {
-        return coinsCollected;
-    }
-
-    public long getElapsedTime() {
-        return TimeUtils.timeSinceMillis(startTime) / 1000;
-    }
-    
-    public Label.LabelStyle getEnemiesKilledLabelStyle() {
-        return enemiesKilledLabel.getStyle();
-    }
-
-    public Label.LabelStyle getCoinsCollectedLabelStyle() {
-        return coinsCollectedLabel.getStyle();
-    }
-
-    public Label.LabelStyle getTimeLabelStyle() {
-        return timeLabel.getStyle();
-    }
-
     public void update(int enemiesKilled, int coinsCollected) {
-        this.enemiesKilled = enemiesKilled;
-        this.coinsCollected = coinsCollected;
-        enemiesKilledLabel.setText("Enemies Killed: " + this.enemiesKilled);
-        coinsCollectedLabel.setText("Coins Collected: " + this.coinsCollected);
+        enemiesKilledLabel.setText("Enemies Killed: " + enemiesKilled);
+        coinsCollectedLabel.setText("Coins Collected: " + coinsCollected);
 
         long elapsedTime = TimeUtils.timeSinceMillis(startTime) / 1000;
         timeLabel.setText("Time: " + elapsedTime);

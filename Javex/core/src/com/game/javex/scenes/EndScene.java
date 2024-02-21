@@ -1,54 +1,51 @@
 package com.game.javex.scenes;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
-import com.game.javex.tools.HUD;
 
 public class EndScene extends Scene {
-    private List<TextButton> buttons;
-    
-    private Label enemiesKilledLabel;
-    private Label coinsCollectedLabel;
-    private Label timeLabel;
+    private TextButton homeButton;
 
-    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, HUD hudManager) {
+    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
+        outputManager.play("audio/menu.mp3", true);
         width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
+    	
+    	// Set background
     	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END_IMG_PATH)));
     	backgroundImage.setSize(width, height); // Set the size to fill the screen
     	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+    	
+    	// Set skin
+    	skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
+    	
+    	// Create buttons
+        homeButton = new TextButton("Home", skin);
+        
+     // Set the font scale for each button's label
+        homeButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
+        
+     // Increase the button size
+        homeButton.setSize(200, 80);
+        
+     // Position the buttons starting from the bottom of the screen
+        homeButton.setPosition((width / 2 - homeButton.getWidth() / 2),  2 * (homeButton.getHeight()));
+    	
     	stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
-        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
+        stage.addActor(homeButton);
   
-        buttons = new ArrayList<>();
-        enemiesKilledLabel = new Label("Enemies Killed: " + hudManager.getEnemiesKilled(), skin);
-        coinsCollectedLabel = new Label("Coins Collected: " + hudManager.getCoinsCollected(), skin);
-        timeLabel = new Label("Time: " + hudManager.getElapsedTime(), skin);
+     // Create an array for navigation
+        menuButtons = new TextButton[]{homeButton};
 
-        // Add the labels to the stage
-        stage.addActor(enemiesKilledLabel);
-        stage.addActor(coinsCollectedLabel);
-        stage.addActor(timeLabel);
-
-        // Position the labels on the screen
-        enemiesKilledLabel.setPosition(50, Gdx.graphics.getHeight() - 30);
-        coinsCollectedLabel.setPosition(50, Gdx.graphics.getHeight() - 60);
-        timeLabel.setPosition(50, Gdx.graphics.getHeight() - 90);
-
-        addButton("Back To Menu", 0.5f, 0.5f);
         updateButtonStyles();
     }
     
@@ -59,27 +56,6 @@ public class EndScene extends Scene {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
             try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
-        }
-    }
-
-    private void addButton(String label, float customX, float customY) {
-        Skin skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
-        TextButton button = new TextButton(label, skin);
-        float buttonX = Gdx.graphics.getWidth() * customX - button.getWidth() * 0.5f;
-        float buttonY = Gdx.graphics.getHeight() * customY - button.getHeight() * 0.5f - buttons.size() * button.getHeight() * 0.4f;
-        button.setPosition(buttonX, buttonY);
-        buttons.add(button);
-        stage.addActor(button);
-    }
-    
-    @Override
-    protected void updateButtonStyles() {
-        for (int i = 0; i < buttons.size(); i++) {
-            if (i == currentButtonIndex) {
-                buttons.get(i).getLabel().setColor(com.badlogic.gdx.graphics.Color.YELLOW);
-            } else {
-                buttons.get(i).getLabel().setColor(com.badlogic.gdx.graphics.Color.WHITE);
-            }
         }
     }
 }

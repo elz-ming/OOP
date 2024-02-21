@@ -16,6 +16,7 @@ public class MenuScene extends Scene {
     public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         // Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
+    	outputManager.play("audio/menu.mp3", true);
     	width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	

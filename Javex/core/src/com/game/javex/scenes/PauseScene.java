@@ -18,6 +18,9 @@ public class PauseScene extends Scene {
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
+    	outputManager.setMuted(true);
+    	width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
     	
         // Load the skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
@@ -73,6 +76,7 @@ public class PauseScene extends Scene {
         } else if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.pop();
+                outputManager.setMuted(false);
             } else if (currentButtonIndex == 1) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
