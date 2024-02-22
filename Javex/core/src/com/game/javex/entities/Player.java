@@ -1,10 +1,6 @@
 package com.game.javex.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -21,13 +17,11 @@ public class Player extends Entity{
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
 		this.imgPath = Constants.PLAYER_IMG_PATH;
-		System.out.println(imgPath);
 				
 		createBody();
 		createSprite();
 	}
 	
-	@Override
 	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
@@ -60,17 +54,17 @@ public class Player extends Entity{
 		return health;
 	}
 	
-	public void moveLeft() {
+	public void moveLeft(float delta) {
 		body.setLinearVelocity(-2, body.getLinearVelocity().y);
 	}
 	
-	public void moveRight() {
+	public void moveRight(float delta) {
 		body.setLinearVelocity(2, body.getLinearVelocity().y);
 	}
 	
-	public void jump() {
+	public void jump(float delta) {
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1.5f), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 1.0f), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }
@@ -80,10 +74,6 @@ public class Player extends Entity{
 	}
 
 	public void setCanJump(boolean canJump) {
-        this.canJump = canJump;
+		this.canJump = canJump;
     }
-	
-	public boolean getCanJump() {
-		return this.canJump;
-	}
 }

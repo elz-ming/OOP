@@ -5,11 +5,11 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;
 
 public class OutputManager implements Disposable {
-    private Music music;
-    private boolean isMuted;
+    private Music music;    private float volume;
+    private boolean muted;
 
     public OutputManager() {
-        isMuted = false;
+        muted = false;
     }
 
     public void play(String musicPath, boolean isLooping) {
@@ -17,28 +17,30 @@ public class OutputManager implements Disposable {
             music.stop();
             music.dispose();
         }
-
+        
         music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         music.setLooping(isLooping);
+        music.setVolume(0.2f);
         music.play();
     }
 
     public void setVolume(float volume) {
+    	this.volume = volume;
         if (music != null) {
             music.setVolume(volume);
         }
     }
 
-    public float getCurrentVolume() {
-        return (music != null) ? music.getVolume() : 0;
+    public float getVolume() {
+        return volume;
     }
 
     public boolean isMuted() {
-        return isMuted;
+        return muted;
     }
 
     public void setMuted(boolean muted) {
-        isMuted = muted;
+        this.muted = muted;
         if (music != null) {
             music.setVolume(muted ? 0 : 1); // Set volume to 0 if muted, 1 otherwise
         }

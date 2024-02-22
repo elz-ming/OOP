@@ -1,11 +1,7 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -17,21 +13,14 @@ import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class PauseScene extends Scene {
-    private SpriteBatch sb;
-    private Stage stage;
-    private Skin skin;
-    
-    private TextButton resumeButton;
-    private TextButton menuButton;
-    
-    private int currentButtonIndex = 0;
-    private TextButton[] menuButtons;
-    
-    private Image backgroundImage;
+    private TextButton resumeButton, menuButton;
 
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
+    	outputManager.setMuted(true);
+    	width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
     	
         // Load the skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
@@ -71,44 +60,7 @@ public class PauseScene extends Scene {
         
         // Create an array of buttons for navigation
         menuButtons = new TextButton[]{resumeButton, menuButton};
-        updateButtonStyles();
-       
-    }
-    
-    @Override
-    public void update(float dt) {
-    	handleInput();
-        stage.act(dt);
-    }  
-    
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
-
-
-    @Override
-    public void dispose() {
-    	if (stage != null) {
-	        stage.dispose();
-	    }
-	    if (skin != null) {
-	        skin.dispose();
-	    }
-    }
-
-    private void updateButtonStyles() {
-        for (int i = 0; i < menuButtons.length; i++) {
-            if (i == currentButtonIndex) {
-                // Highlight the selected button
-                menuButtons[i].setColor(Color.YELLOW);
-            } else {
-                // Other buttons are white
-                menuButtons[i].setColor(Color.WHITE);
-            }
-        }
+        updateButtonStyles();   
     }
 
     @Override
@@ -124,11 +76,11 @@ public class PauseScene extends Scene {
         } else if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.pop();
+                outputManager.setMuted(false);
             } else if (currentButtonIndex == 1) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
             try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         } 
-        
     }
 }

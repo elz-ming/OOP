@@ -9,7 +9,8 @@ import com.game.javex.entities.Entity;
 public class SteerableEntityAdapter implements Steerable<Vector2>{
 	private Body body;
 	private float boundingRadius;
-    private float maxLinearSpeed, maxLinearAcceleration, maxAngularSpeed, maxAngularAcceleration;
+    private float maxLinearSpeed;
+    private float maxLinearAcceleration;
     private boolean tagged;
     
     public SteerableEntityAdapter(Entity entity) {
@@ -20,8 +21,6 @@ public class SteerableEntityAdapter implements Steerable<Vector2>{
         
         this.maxLinearSpeed = 100; // Adjust as necessary
         this.maxLinearAcceleration = 5000; // Adjust as necessary
-        this.maxAngularSpeed = 30; // Adjust as necessary
-        this.maxAngularAcceleration = 5; // Adjust as necessary
     }
     
     @Override 
@@ -78,26 +77,6 @@ public class SteerableEntityAdapter implements Steerable<Vector2>{
     public void setMaxLinearAcceleration(float maxLinearAcceleration) {
         this.maxLinearAcceleration = maxLinearAcceleration;
     }
-
-    @Override
-    public float getMaxAngularSpeed() {
-        return maxAngularSpeed;
-    }
-
-    @Override
-    public void setMaxAngularSpeed(float maxAngularSpeed) {
-        this.maxAngularSpeed = maxAngularSpeed;
-    }
-
-    @Override
-    public float getMaxAngularAcceleration() {
-        return maxAngularAcceleration;
-    }
-
-    @Override
-    public void setMaxAngularAcceleration(float maxAngularAcceleration) {
-        this.maxAngularAcceleration = maxAngularAcceleration;
-    }
     
 //	Implemented from Steerable<Vector2>
 	@Override public void setOrientation(float orientation) {}
@@ -106,4 +85,8 @@ public class SteerableEntityAdapter implements Steerable<Vector2>{
 	@Override public void setZeroLinearSpeedThreshold(float value) {}
 	@Override public float vectorToAngle(Vector2 vector) {return 0;}
 	@Override public Vector2 angleToVector(Vector2 outVector, float angle) {return null;}
+	@Override public float getMaxAngularSpeed() {return 0;}
+	@Override public void setMaxAngularSpeed(float maxAngularSpeed) {}
+	@Override public float getMaxAngularAcceleration() {return 0;}
+	@Override public void setMaxAngularAcceleration(float maxAngularAcceleration) {}
 }

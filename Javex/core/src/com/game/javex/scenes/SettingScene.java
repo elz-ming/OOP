@@ -1,9 +1,6 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -13,16 +10,10 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
-public class SettingsScene extends Scene {
-    private Stage stage;
-    private Skin skin;
-    private Image backgroundImage;
-
+public class SettingScene extends Scene {
     private TextButton muteButton, backButton;
-    private TextButton[] menuButtons;
-    private int currentButtonIndex = 0;
 
-    public SettingsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    public SettingScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
         width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
@@ -56,43 +47,6 @@ public class SettingsScene extends Scene {
         menuButtons = new TextButton[]{muteButton, backButton};
 
         updateButtonStyles();
-    }
-
-    @Override
-    public void update(float dt) {
-        handleInput();
-        stage.act(dt);
-    }
-
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
-    }
-
-    @Override
-    public void dispose() {
-    	if (stage != null) {
-	        stage.dispose();
-	    }
-	    if (skin != null) {
-	        skin.dispose();
-	    }
-    }
-
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    private void updateButtonStyles() {
-        for (int i = 0; i < menuButtons.length; i++) {
-            if (i == currentButtonIndex) {
-                menuButtons[i].setColor(Color.YELLOW);
-            } else {
-                menuButtons[i].setColor(Color.WHITE);
-            }
-        }
     }
 
     @Override
