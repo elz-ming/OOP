@@ -17,9 +17,10 @@ public class OutputManager implements Disposable {
             music.stop();
             music.dispose();
         }
-
+        
         music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         music.setLooping(isLooping);
+        music.setVolume(0.2f);
         music.play();
     }
 
