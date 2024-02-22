@@ -30,20 +30,20 @@ public class EndScene extends Scene {
     	// Create buttons
         homeButton = new TextButton("Home", skin);
         
-     // Set the font scale for each button's label
+        // Set the font scale for each button's label
         homeButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
         
-     // Increase the button size
+        // Increase the button size
         homeButton.setSize(200, 80);
         
-     // Position the buttons starting from the bottom of the screen
+        // Position the buttons starting from the bottom of the screen
         homeButton.setPosition((width / 2 - homeButton.getWidth() / 2),  2 * (homeButton.getHeight()));
     	
     	stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
         stage.addActor(homeButton);
   
-     // Create an array for navigation
+        // Create an array for navigation
         menuButtons = new TextButton[]{homeButton};
 
         updateButtonStyles();
