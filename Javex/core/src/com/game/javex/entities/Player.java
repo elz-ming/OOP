@@ -19,7 +19,8 @@ public class Player extends Entity{
 		this.imgPath = Constants.PLAYER_IMG_PATH;
 				
 		createBody();
-		createSprite();
+		//createSprite();
+		initAnimation("MC.png", 2, 1, 0.3f); // Adjust the parameters as needed
 	}
 	
 	protected void createBody() {
