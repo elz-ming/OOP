@@ -49,6 +49,31 @@ public class EndScene extends Scene {
         updateButtonStyles();
     }
     
+    
+    
+    
+    
+    @Override
+    public void resize(int width, int height) {
+        // Update the stage's viewport to the new resolution
+        stage.getViewport().update(width, height, true);
+
+        // Update the position and size of elements based on the new resolution
+        this.width = width;
+        this.height = height;
+
+        // Update the background image size
+        backgroundImage.setSize(width, height);
+
+        // Recalculate button position to center it vertically
+        homeButton.setPosition((width / 2 - homeButton.getWidth() / 2),  (height / 2 - homeButton.getHeight() / 2));
+    }
+
+
+
+    
+    
+    
     @Override
     protected void handleInput() {
         if (inputManager.isEnterPressed()) {

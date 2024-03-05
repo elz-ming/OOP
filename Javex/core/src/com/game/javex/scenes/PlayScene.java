@@ -124,6 +124,8 @@ public class PlayScene extends Scene {
 	    } 
 	}
 	
+	
+	
 	@Override
 	public void dispose() {
 		if (world != null) {
@@ -148,6 +150,27 @@ public class PlayScene extends Scene {
 	private void initialize() {
 		entityManager.initialize();
 	}
+	
+	
+	@Override
+	public void resize(int width, int height) {
+	    // Update the stage's viewport to the new resolution
+	    stage.getViewport().update(width, height, true);
+	    
+	    // Update the camera's viewport
+	    camera.setToOrtho(false, width, height);
+	    
+	    // Update the position and size of elements based on the new resolution
+	    this.width = width;
+	    this.height = height;
+	    
+	    // Update the background image size
+	    backgroundImage.setSize(width, height);
+	    
+	    // Update HUD
+	    hudManager.resize(width, height);
+	}
+
 
 	
 	private void cameraUpdate() {

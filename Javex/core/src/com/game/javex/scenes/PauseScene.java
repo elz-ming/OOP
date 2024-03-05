@@ -62,6 +62,29 @@ public class PauseScene extends Scene {
         menuButtons = new TextButton[]{resumeButton, menuButton};
         updateButtonStyles();   
     }
+    
+    
+    
+    @Override
+    public void resize(int width, int height) {
+        // Update the stage's viewport to the new resolution
+        stage.getViewport().update(width, height, true);
+
+        // Update the position and size of elements based on the new resolution
+        this.width = width;
+        this.height = height;
+
+        // Update the background image size
+        backgroundImage.setSize(width, height);
+
+        // Recalculate button positions
+        float xOffset = 50; // Adjust this value to move the buttons further to the left
+
+        resumeButton.setPosition((width - resumeButton.getWidth()) / 2 - xOffset, height / 2 + resumeButton.getHeight() / 2 + 10);
+        menuButton.setPosition((width - menuButton.getWidth()) / 2 - xOffset, height / 2 - menuButton.getHeight() / 2 - 60);
+    }
+
+
 
     @Override
     protected void handleInput() {

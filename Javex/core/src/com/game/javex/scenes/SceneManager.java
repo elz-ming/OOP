@@ -37,6 +37,13 @@ public class SceneManager {
     	scenes.peek().render();
     }
 
+    
+    public void resize(int width, int height) {
+        if (!scenes.isEmpty()) {
+            scenes.peek().resize(width, height);
+        }
+    }
+    
     public void dispose() {
     	while (!scenes.isEmpty()) {
             scenes.pop().dispose();

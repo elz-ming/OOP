@@ -27,6 +27,13 @@ public class SimulationLifecycleManager extends ApplicationAdapter{
 	    sceneManager.render();
 	}
 	
+	
+	@Override
+    public void resize(int width, int height) {
+        sceneManager.resize(width, height);
+    }
+	
+	
 	@Override
 	public void dispose () {
 		sceneManager.dispose();

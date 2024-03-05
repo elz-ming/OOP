@@ -75,6 +75,31 @@ public class MenuScene extends Scene {
         updateButtonStyles();
     }
     
+    
+    @Override
+    public void resize(int width, int height) {
+        // Update the stage's viewport to the new resolution
+        stage.getViewport().update(width, height, true);
+
+        // Update the position and size of elements based on the new resolution
+        this.width = width;
+        this.height = height;
+        
+        // Update the background image size
+        backgroundImage.setSize(width, height);
+
+        // Recalculate button positions
+        float spaceBetweenButtons = 20; // Adjust the space to your preference
+        float totalButtonsHeight = 3 * playButton.getHeight() + 2 * spaceBetweenButtons;
+        float startY = (height - totalButtonsHeight) / 2;
+        float xOffset = 30; // Adjust this value to move the buttons further to the left
+        playButton.setPosition((width / 2 - playButton.getWidth() / 2) - xOffset, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
+        settingButton.setPosition((width / 2 - settingButton.getWidth() / 2) - xOffset, startY + playButton.getHeight() + spaceBetweenButtons);
+        exitButton.setPosition((width / 2 - exitButton.getWidth() / 2) - xOffset, startY);
+    }
+
+    
+    
     @Override
     protected void handleInput() {
         if (inputManager.isUpPressed() || inputManager.isDownPressed()) {

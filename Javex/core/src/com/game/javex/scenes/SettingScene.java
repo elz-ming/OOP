@@ -48,6 +48,31 @@ public class SettingScene extends Scene {
 
         updateButtonStyles();
     }
+    
+    
+    
+    @Override
+    public void resize(int width, int height) {
+        // Update the stage's viewport to the new resolution
+        stage.getViewport().update(width, height, true);
+
+        // Update the position and size of elements based on the new resolution
+        this.width = width;
+        this.height = height;
+
+        
+        backgroundImage.setSize(width, height);
+        // Recalculate button positions
+        float spaceBetweenButtons = 20; // Adjust the space to your preference
+        float totalButtonsHeight = 2 * muteButton.getHeight() + spaceBetweenButtons;
+        float startY = (height - totalButtonsHeight) / 2;
+        float xOffset = 30;
+
+        muteButton.setPosition((width / 2 - muteButton.getWidth() / 2) - xOffset, startY + muteButton.getHeight() + spaceBetweenButtons);
+        backButton.setPosition((width / 2 - backButton.getWidth() / 2) - xOffset, startY);
+    }
+
+
 
     @Override
     protected void handleInput() {
