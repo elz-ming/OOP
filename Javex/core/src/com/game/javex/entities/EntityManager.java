@@ -4,15 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Disposable;
 
-public class EntityManager implements Disposable{
+public class EntityManager {
 	private World world;
 	private Player player;
 	private Enemy boss;
 	private Array<Enemy> enemies;
-	private Array<Terrain> terrains;
 	private Array<Reward> coins;
+	private Array<Terrain> terrains;
 	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
@@ -24,9 +23,22 @@ public class EntityManager implements Disposable{
 		this.coins = new Array<>();
 	}
 	
-	@Override
-	public void dispose() {
+	public void initialize() {
+		createPlayer(new Vector2(64, 32));
 		
+		createBoss(new Vector2(576, 32));
+		createEnemy(new Vector2(192, 32));
+		createEnemy(new Vector2(384, 32));
+		
+		createCoin(new Vector2(256, 32));
+		createCoin(new Vector2(448, 32));
+		
+		createTerrain(new Vector2(0, 0), 1056, 32);
+		createTerrain(new Vector2(0, 32), 32, 32);
+		createTerrain(new Vector2(128, 32), 32, 32);
+		createTerrain(new Vector2(320, 32), 32, 32);
+		createTerrain(new Vector2(512, 32), 32, 32);
+		createTerrain(new Vector2(924, 32), 32, 32);
 	}
 	
 	public void createPlayer(Vector2 position) {
@@ -41,21 +53,21 @@ public class EntityManager implements Disposable{
 		enemies.add(new Enemy(world, position, false));
 	}
 	
-	public void createTerrain(Vector2 position, int width, int height) {
-		terrains.add(new Terrain(world, position, width, height));
-	}
-	
 	public void createCoin(Vector2 position) {
 		coins.add(new Reward(world, position));
 	}
+	
+	public void createTerrain(Vector2 position, int width, int height) {
+		terrains.add(new Terrain(world, position, width, height));
+	}
 
-	public void update(float dt) {
+	public void update(float delta) {
 		if (player != null) {
-			player.update(dt);
+			player.update(delta);
 		}
 		
 		if (boss != null) {
-			boss.update(dt);
+			boss.update(delta);
             if (boss.getKilled()) {
                 world.destroyBody(boss.getBody());
                 boss = null; 
@@ -65,7 +77,7 @@ public class EntityManager implements Disposable{
 		
 		Array<Enemy> enemyToRemove = new Array<>();
 		for (Enemy enemy : enemies) {
-			enemy.update(dt);
+			enemy.update(delta);
 			if (enemy.getKilled()) {
 				world.destroyBody(enemy.getBody());
 				enemyToRemove.add(enemy);
@@ -119,26 +131,27 @@ public class EntityManager implements Disposable{
 		return this.enemies;
 	}
 	
-	 public void enemyKilled() {
-	        enemiesKilled++;
-	    }
+	public void enemyKilled() {
+	    enemiesKilled++;
+	}
 
-	    // Getter method for the number of enemies killed
-	    public int getEnemiesKilled() {
-	        return enemiesKilled;
-	    }
+    public int getEnemiesKilled() {
+        return enemiesKilled;
+    }
+    
+    public int getTotalEnemies() {
+		return enemies.size + (boss != null ? 1 : 0);
+	 } 
 	    
-	 public void coinsCollected() {
-	    	coinsCollected++;
-	    }
-	 public int getCoinsCollected() {
-	        return coinsCollected;
-	    }
+	public void coinsCollected() {
+	    coinsCollected++;
+	}
 	 
-	 public int getTotalEnemies() {
-		    return enemies.size + (boss != null ? 1 : 0);
-		    
-		}
-	    
-	    
+	public int getCoinsCollected() {
+	    return coinsCollected;
+	}
+	 
+	 public int getTotalCoins() {
+		return coins.size;
+	 } 
 }

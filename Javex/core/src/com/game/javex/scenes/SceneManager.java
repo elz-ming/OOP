@@ -29,14 +29,14 @@ public class SceneManager {
 		scenes.push(scene);
 	}
 	
-	public void update(float dt) {
-    	scenes.peek().update(dt);
+	public void update(float delta) {
+    	scenes.peek().update(delta);
     }
     
     public void render() {
     	scenes.peek().render();
     }
-    
+
     public void dispose() {
     	while (!scenes.isEmpty()) {
             scenes.pop().dispose();
