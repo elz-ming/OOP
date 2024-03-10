@@ -75,11 +75,6 @@ public class EndScene extends Scene {
         homeButton.setPosition((width - homeButton.getWidth()) / 2, (height - homeButton.getHeight()) / 2);
     }
 
-
-
-
-    
-    
     
     @Override
     protected void handleInput() {

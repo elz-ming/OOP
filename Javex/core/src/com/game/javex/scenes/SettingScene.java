@@ -53,24 +53,32 @@ public class SettingScene extends Scene {
     
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport to the new resolution
         stage.getViewport().update(width, height, true);
-
-        // Update the position and size of elements based on the new resolution
         this.width = width;
         this.height = height;
 
-        
         backgroundImage.setSize(width, height);
-        // Recalculate button positions
-        float spaceBetweenButtons = 20; // Adjust the space to your preference
-        float totalButtonsHeight = 2 * muteButton.getHeight() + spaceBetweenButtons;
-        float startY = (height - totalButtonsHeight) / 2;
-        float xOffset = 30;
 
-        muteButton.setPosition((width / 2 - muteButton.getWidth() / 2) - xOffset, startY + muteButton.getHeight() + spaceBetweenButtons);
-        backButton.setPosition((width / 2 - backButton.getWidth() / 2) - xOffset, startY);
+        // Recalculate button sizes and positions based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float totalButtonsHeight = 2 * buttonHeight + spaceBetweenButtons;
+        float startY = (height - totalButtonsHeight) / 2;
+
+        muteButton.setSize(buttonWidth, buttonHeight);
+        backButton.setSize(buttonWidth, buttonHeight);
+
+        // Adjust the font scale based on the button size
+        float fontScale = buttonHeight / 120f; // Adjust if needed
+        muteButton.getLabel().setFontScale(fontScale);
+        backButton.getLabel().setFontScale(fontScale);
+
+        // Center the buttons
+        muteButton.setPosition((width - muteButton.getWidth()) / 2, startY + muteButton.getHeight() + spaceBetweenButtons);
+        backButton.setPosition((width - backButton.getWidth()) / 2, startY);
     }
+
 
 
 
