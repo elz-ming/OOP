@@ -85,18 +85,35 @@ public class WorldSelectionScene extends Scene {
         
         backgroundImage.setSize(width, height);
 
-        float buttonSpacing = 20;
-        float totalHeight = 3 * world1Button.getHeight() + 2 * buttonSpacing;
+        // Recalculate button sizes and positions based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float totalHeight = 3 * buttonHeight + 2 * spaceBetweenButtons;
         float startY = (height - totalHeight) / 2;
-        float xOffset = 30;
 
-        world1Button.setPosition((width / 2 - world1Button.getWidth() / 2) - xOffset, startY + 2 * (world1Button.getHeight() + buttonSpacing));
-        world2Button.setPosition((width / 2 - world2Button.getWidth() / 2) - xOffset, startY + world1Button.getHeight() + buttonSpacing);
-        world3Button.setPosition((width / 2 - world3Button.getWidth() / 2) - xOffset, startY);
+        world1Button.setSize(buttonWidth, buttonHeight);
+        world2Button.setSize(buttonWidth, buttonHeight);
+        world3Button.setSize(buttonWidth, buttonHeight);
 
-        informationLabel.setSize(width, height);
-        informationLabel.setAlignment(Align.center);
+        // Adjust the font scale based on the button size
+        float fontScale = buttonHeight / 120f; // Adjust if needed
+        world1Button.getLabel().setFontScale(fontScale);
+        world2Button.getLabel().setFontScale(fontScale);
+        world3Button.getLabel().setFontScale(fontScale);
+
+        // Center the buttons
+        world1Button.setPosition((width - world1Button.getWidth()) / 2, startY + 2 * (world1Button.getHeight() + spaceBetweenButtons));
+        world2Button.setPosition((width - world2Button.getWidth()) / 2, startY + world1Button.getHeight() + spaceBetweenButtons);
+        world3Button.setPosition((width - world3Button.getWidth()) / 2, startY);
+
+        // Update the information label size and position
+        if (worldSelected) {
+            informationLabel.pack();
+            informationLabel.setPosition((width - informationLabel.getWidth()) / 2, (height - informationLabel.getHeight()) / 2);
+        }
     }
+
 
     @Override
     protected void handleInput() {

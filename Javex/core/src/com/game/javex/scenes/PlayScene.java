@@ -39,7 +39,7 @@ public class PlayScene extends Scene {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
 
-		outputManager.play("audio/menu.mp3", true);
+		outputManager.play("audio/earth.mp3", true);
 		width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	

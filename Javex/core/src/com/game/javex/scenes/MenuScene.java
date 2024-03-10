@@ -78,25 +78,35 @@ public class MenuScene extends Scene {
     
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport to the new resolution
         stage.getViewport().update(width, height, true);
-
-        // Update the position and size of elements based on the new resolution
         this.width = width;
         this.height = height;
-        
-        // Update the background image size
+
         backgroundImage.setSize(width, height);
 
-        // Recalculate button positions
-        float spaceBetweenButtons = 20; // Adjust the space to your preference
-        float totalButtonsHeight = 3 * playButton.getHeight() + 2 * spaceBetweenButtons;
+        // Recalculate button sizes and positions based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float totalButtonsHeight = 3 * buttonHeight + 2 * spaceBetweenButtons;
         float startY = (height - totalButtonsHeight) / 2;
-        float xOffset = 30; // Adjust this value to move the buttons further to the left
-        playButton.setPosition((width / 2 - playButton.getWidth() / 2) - xOffset, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
-        settingButton.setPosition((width / 2 - settingButton.getWidth() / 2) - xOffset, startY + playButton.getHeight() + spaceBetweenButtons);
-        exitButton.setPosition((width / 2 - exitButton.getWidth() / 2) - xOffset, startY);
+
+        playButton.setSize(buttonWidth, buttonHeight);
+        settingButton.setSize(buttonWidth, buttonHeight);
+        exitButton.setSize(buttonWidth, buttonHeight);
+
+        // Adjust the font scale based on the button size
+        float fontScale = buttonHeight / 120f; // Adjust if needed
+        playButton.getLabel().setFontScale(fontScale);
+        settingButton.getLabel().setFontScale(fontScale);
+        exitButton.getLabel().setFontScale(fontScale);
+
+        // Center the buttons
+        playButton.setPosition((width - playButton.getWidth()) / 2, startY + 2 * (playButton.getHeight() + spaceBetweenButtons));
+        settingButton.setPosition((width - settingButton.getWidth()) / 2, startY + playButton.getHeight() + spaceBetweenButtons);
+        exitButton.setPosition((width - exitButton.getWidth()) / 2, startY);
     }
+
 
     
     
