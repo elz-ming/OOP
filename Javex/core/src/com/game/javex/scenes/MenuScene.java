@@ -111,7 +111,7 @@ public class MenuScene extends Scene {
         if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
                 case 0: // Play button
-                    sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));
+                    sceneManager.set(new WorldSelectionScene(sceneManager, inputManager, outputManager));
                     break;
                 case 1: // Settings button
                     // Add your logic for the settings button here
