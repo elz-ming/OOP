@@ -17,6 +17,7 @@ public class WorldSelectionScene extends Scene {
     private TextButton world1Button, world2Button, world3Button;
     private Label informationLabel;
     private String[] worldInformation;
+    private String selectedWorld;
     private int currentInfoIndex = 0;
     private boolean worldSelected = false;
 
@@ -131,6 +132,7 @@ public class WorldSelectionScene extends Scene {
                 world3Button.remove();
                 switch (currentButtonIndex) {
                     case 0: // Earth
+                    	selectedWorld = "Earth";
                         worldInformation = new String[]{
                             "Earth is the third planet from the Sun.",
                             "It is the only known planet to support life.",
@@ -138,6 +140,7 @@ public class WorldSelectionScene extends Scene {
                         };
                         break;
                     case 1: // Mars
+                    	selectedWorld = "Mars";
                         worldInformation = new String[]{
                             "Mars is known as the Red Planet.",
                             "It has the largest volcano in the solar system, Olympus Mons.",
@@ -145,6 +148,7 @@ public class WorldSelectionScene extends Scene {
                         };
                         break;
                     case 2: // Venus
+                    	selectedWorld = "Venus";
                         worldInformation = new String[]{
                             "Venus is the second planet from the Sun.",
                             "It is the hottest planet in the solar system.",
@@ -166,7 +170,7 @@ public class WorldSelectionScene extends Scene {
                     informationLabel.setPosition((width - informationLabel.getWidth()) / 2, (height - informationLabel.getHeight()) / 2);
                     currentInfoIndex++;
                 } else {
-                    sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager));
+                    sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager, selectedWorld));
                 }
                 try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
             }
