@@ -15,7 +15,7 @@ public class EndScene extends Scene {
 
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-        outputManager.play("audio/menu.mp3", true);
+        outputManager.play("audio/end.mp3", true);
         width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
@@ -55,24 +55,26 @@ public class EndScene extends Scene {
     
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport to the new resolution
         stage.getViewport().update(width, height, true);
-
-        // Update the position and size of elements based on the new resolution
         this.width = width;
         this.height = height;
 
-        // Update the background image size
         backgroundImage.setSize(width, height);
 
-        // Recalculate button position to center it vertically
-        homeButton.setPosition((width / 2 - homeButton.getWidth() / 2),  (height / 2 - homeButton.getHeight() / 2));
+        // Recalculate button size and position based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+
+        homeButton.setSize(buttonWidth, buttonHeight);
+
+        // Adjust the font scale based on the button size
+        float fontScale = buttonHeight / 120f; // Adjust if needed
+        homeButton.getLabel().setFontScale(fontScale);
+
+        // Center the button
+        homeButton.setPosition((width - homeButton.getWidth()) / 2, (height - homeButton.getHeight()) / 2);
     }
 
-
-
-    
-    
     
     @Override
     protected void handleInput() {

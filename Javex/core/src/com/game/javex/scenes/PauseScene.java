@@ -67,21 +67,29 @@ public class PauseScene extends Scene {
     
     @Override
     public void resize(int width, int height) {
-        // Update the stage's viewport to the new resolution
         stage.getViewport().update(width, height, true);
-
-        // Update the position and size of elements based on the new resolution
         this.width = width;
         this.height = height;
 
-        // Update the background image size
         backgroundImage.setSize(width, height);
 
-        // Recalculate button positions
-        float xOffset = 50; // Adjust this value to move the buttons further to the left
+        // Recalculate button sizes and positions based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float startY = height / 2 - buttonHeight / 2;
 
-        resumeButton.setPosition((width - resumeButton.getWidth()) / 2 - xOffset, height / 2 + resumeButton.getHeight() / 2 + 10);
-        menuButton.setPosition((width - menuButton.getWidth()) / 2 - xOffset, height / 2 - menuButton.getHeight() / 2 - 60);
+        resumeButton.setSize(buttonWidth, buttonHeight);
+        menuButton.setSize(buttonWidth, buttonHeight);
+
+        // Adjust the font scale based on the button size to make the text smaller
+        float fontScale = buttonHeight / 140f; // Adjust if needed
+        resumeButton.getLabel().setFontScale(fontScale);
+        menuButton.getLabel().setFontScale(fontScale);
+
+        // Center the buttons and position them vertically
+        resumeButton.setPosition((width - resumeButton.getWidth()) / 2, startY + spaceBetweenButtons / 2 + buttonHeight);
+        menuButton.setPosition((width - menuButton.getWidth()) / 2, startY - spaceBetweenButtons / 2 - buttonHeight);
     }
 
 

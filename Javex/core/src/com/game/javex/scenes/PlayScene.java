@@ -35,11 +35,11 @@ public class PlayScene extends Scene {
 	private CollisionManager collisionManager;
 	private HUD hudManager;
 	
-	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
 
-		outputManager.play("audio/menu.mp3", true);
+		outputManager.play("audio/earth.mp3", true);
 		width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
@@ -59,7 +59,23 @@ public class PlayScene extends Scene {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);
 		
-		world = new World(new Vector2(0, -9.8f), false);
+		Vector2 gravity;
+	    switch (selectedWorld) {
+	        case "Earth":
+	            gravity = new Vector2(0, -9.8f);
+	            break;
+	        case "Mars":
+	            gravity = new Vector2(0, -3.7f);
+	            break;
+	        case "Venus":
+	            gravity = new Vector2(0, -1.9f);
+	            break;
+	        default:
+	            gravity = new Vector2(0, -9.8f); // Default to Earth's gravity
+	            break;
+	    }
+	    world = new World(gravity, false);
+	    
 		spriteBatch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
