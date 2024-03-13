@@ -21,6 +21,10 @@ public class PlayerControlManager {
         	player.moveRight(delta);
         }
         
+        if (!inputManager.isLeftPressed() && !inputManager.isRightPressed()) {
+        	player.slowDown(delta);
+        }
+        
         if (inputManager.isUpPressed()) {
         	player.jump(delta);
         }

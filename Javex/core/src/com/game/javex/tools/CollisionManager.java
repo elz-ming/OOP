@@ -49,7 +49,7 @@ public class CollisionManager implements ContactListener{
 	            }
 	            break;
 	            
-//		    Player can jump again after touching terrain
+//		    Player collect rewards
 			case Constants.PLAYER_BIT | Constants.REWARD_BIT:
                 if (fixA.getFilterData().categoryBits == Constants.REWARD_BIT) {
                     ((Reward)fixA.getUserData()).collect();
@@ -59,10 +59,10 @@ public class CollisionManager implements ContactListener{
                 break;
 			
 //	        Player can jump again after touching terrain
-			case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+			case Constants.PLAYER_BOTTOM_BIT | Constants.TERRAIN_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BOTTOM_BIT) {
                     ((Player)fixA.getUserData()).setCanJump(true);
-                } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BOTTOM_BIT) {
                     ((Player)fixB.getUserData()).setCanJump(true);
                 }
                 break;
