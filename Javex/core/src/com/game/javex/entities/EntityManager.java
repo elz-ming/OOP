@@ -32,7 +32,7 @@ public class EntityManager {
 	public void initialize() {
 		createPlayer(new Vector2(64, 320));
 		
-		createBoss(new Vector2(3002, 64));
+		createBoss(new Vector2(3002, 32));
 		
 //		createEnemy(new Vector2(192, 32));
 //		createEnemy(new Vector2(384, 32));

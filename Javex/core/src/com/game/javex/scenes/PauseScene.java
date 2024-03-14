@@ -1,4 +1,4 @@
-package com.game.javex.scenes;
+	package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -62,8 +62,6 @@ public class PauseScene extends Scene {
         menuButtons = new TextButton[]{resumeButton, menuButton};
         updateButtonStyles();   
     }
-    
-    
     
     @Override
     public void resize(int width, int height) {

@@ -17,7 +17,7 @@ public class Enemy extends Entity {
 		super(world, position);
 		this.isBoss = isBoss;
 		if (isBoss) {
-			this.health = 3;
+			this.health = 1;
 			this.width = Constants.BOSS_WIDTH;
 			this.height = Constants.BOSS_HEIGHT;
 			this.imgPath = Constants.BOSS_IMG_PATH;
@@ -42,7 +42,7 @@ public class Enemy extends Entity {
 		EdgeShape head = new EdgeShape();
 		
 //		bodyDef for the entire body
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
 		this.body = world.createBody(bodyDef);

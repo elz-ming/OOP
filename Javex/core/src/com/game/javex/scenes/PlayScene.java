@@ -10,7 +10,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 //import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -39,7 +38,7 @@ public class PlayScene extends Scene {
 	private OrthogonalTiledMapRenderer renderer;
 	
 //	//	For debug purposes
-	private Box2DDebugRenderer b2dr;
+//	private Box2DDebugRenderer b2dr;
 	
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
@@ -47,9 +46,12 @@ public class PlayScene extends Scene {
 	private CollisionManager collisionManager;
 	private HUD hudManager;
 	
+	private Stage frontStage;
 	private Vector2 gravity;
 	private String audioPath;
 	private String backgroundImagePath;
+	private float cameraZoomValue;
+	private int countdownTimer;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
@@ -63,24 +65,31 @@ public class PlayScene extends Scene {
             gravity = new Vector2(0, -15f);
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
+            cameraZoomValue = 0.4f;
+            countdownTimer = 45;
             break;
             
         case "Mars":
             gravity = new Vector2(0, -10f);
             audioPath = Constants.MARS_AUDIO_PATH;
             backgroundImagePath = Constants.MARS_IMG_PATH;
+            cameraZoomValue = 0.5f;
+            countdownTimer = 30;
             break;
             
         case "Venus":
-            gravity = new Vector2(0, -2f);
+            gravity = new Vector2(0, -4.5f);
             audioPath = Constants.VENUS_AUDIO_PATH;
             backgroundImagePath = Constants.VENUS_IMG_PATH;
+            cameraZoomValue = 0.6f;
+            countdownTimer = 15;
             break;
             
         default:
             gravity = new Vector2(0, -10f); // Default to Earth's gravity
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
+            countdownTimer = 45;
             break;
     	}
     	
@@ -93,12 +102,14 @@ public class PlayScene extends Scene {
     	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
     	
     	//Initialize HUD
-    	hudManager = new HUD();
+    	hudManager = new HUD(countdownTimer);
     	
     	// Add buttons to stage
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
-        stage.addActor(hudManager.getTable());
+        
+        frontStage = new Stage(new ScreenViewport());
+        frontStage.addActor(hudManager.getTable());
         
 		camera = new OrthographicCamera();
 		port = new FitViewport(Constants.V_WIDTH /Constants.PPM, Constants.V_HEIGHT /Constants.PPM, camera);
@@ -108,7 +119,7 @@ public class PlayScene extends Scene {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera.position.set(port.getWorldWidth() / 2, port.getWorldHeight() / 2, 0);
-		camera.zoom = 1.2f;
+		camera.zoom = cameraZoomValue;
 		world = new World(gravity, true);
 	    
 		spriteBatch = new SpriteBatch();
@@ -129,8 +140,8 @@ public class PlayScene extends Scene {
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
 
-//	//	For debug purposes
-		b2dr = new Box2DDebugRenderer();
+////	//	For debug purposes
+//		b2dr = new Box2DDebugRenderer();
 	}
 	
 	@Override
@@ -163,10 +174,12 @@ public class PlayScene extends Scene {
 			entityManager.render(spriteBatch);
 		spriteBatch.end();
 		
-	//	For debug purposes
-		if (b2dr != null && world != null && camera != null) {
-			b2dr.render(world, camera.combined.scl(Constants.PPM));
-		}
+		
+		frontStage.draw();
+//	//	For debug purposes
+//		if (b2dr != null && world != null && camera != null) {
+//			b2dr.render(world, camera.combined.scl(Constants.PPM));
+//		}
 	}
 	
 	@Override
