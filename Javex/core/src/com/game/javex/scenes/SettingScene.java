@@ -16,12 +16,12 @@ public class SettingScene extends Scene {
     public SettingScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
         width = Gdx.graphics.getWidth();
-    	height = Gdx.graphics.getHeight();
-    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
-    	backgroundImage.setSize(width, height); // Set the size to fill the screen
-    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
-    	stage = new Stage(new ScreenViewport());
-        stage.addActor(backgroundImage); // Add the background image to the stage
+        height = Gdx.graphics.getHeight();
+        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+        backgroundImage.setSize(width, height);
+        backgroundImage.setZIndex(0);
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage);
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
         muteButton = new TextButton("Mute", skin);
@@ -47,10 +47,9 @@ public class SettingScene extends Scene {
         menuButtons = new TextButton[]{muteButton, backButton};
 
         updateButtonStyles();
+        updateMuteButtonText(); // Update the mute button text initially
     }
-    
-    
-    
+
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -59,52 +58,68 @@ public class SettingScene extends Scene {
 
         backgroundImage.setSize(width, height);
 
-        // Recalculate button sizes and positions based on the new resolution
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
-        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float buttonWidth = width * 0.4f;
+        float buttonHeight = height * 0.15f;
+        float spaceBetweenButtons = height * 0.06f;
         float totalButtonsHeight = 2 * buttonHeight + spaceBetweenButtons;
         float startY = (height - totalButtonsHeight) / 2;
 
         muteButton.setSize(buttonWidth, buttonHeight);
         backButton.setSize(buttonWidth, buttonHeight);
 
-        // Adjust the font scale based on the button size
-        float fontScale = buttonHeight / 120f; // Adjust if needed
+        float fontScale = buttonHeight / 120f;
         muteButton.getLabel().setFontScale(fontScale);
         backButton.getLabel().setFontScale(fontScale);
 
-        // Center the buttons
         muteButton.setPosition((width - muteButton.getWidth()) / 2, startY + muteButton.getHeight() + spaceBetweenButtons);
         backButton.setPosition((width - backButton.getWidth()) / 2, startY);
     }
 
-
-
-
     @Override
     protected void handleInput() {
-        if (inputManager.isUpPressed() || inputManager.isDownPressed()) {
-            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
+        if (inputManager.isUpPressed()) {
+            currentButtonIndex = (currentButtonIndex + menuButtons.length - 1) % menuButtons.length; // Move up one button
             updateButtonStyles();
-            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } else if (inputManager.isDownPressed()) {
+            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length; // Move down one button
+            updateButtonStyles();
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
         if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
                 case 0: // Mute button
                     outputManager.setMuted(!outputManager.isMuted());
-                    if (outputManager.isMuted()) {
-                        muteButton.setText("Muted");
-                    } else {
-                        muteButton.setText("Mute");
-                    }
+                    updateMuteButtonText(); // Update the mute button text
                     break;
                 case 1: // Back button
                     sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
                     break;
             }
-            try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    // Helper method to update the mute button text based on the mute status
+    private void updateMuteButtonText() {
+        if (outputManager.isMuted()) {
+            muteButton.setText("Muted");
+        } else {
+            muteButton.setText("Mute");
         }
     }
 }

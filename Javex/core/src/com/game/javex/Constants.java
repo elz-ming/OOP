@@ -1,6 +1,10 @@
 package com.game.javex;
 
 public class Constants {
+	
+	public static boolean muted = false;
+	
+	
 	public static final int V_WIDTH = 1920;
 	public static final int V_HEIGHT = 1080;
 	public static final float PPM = 100;
