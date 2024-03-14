@@ -17,7 +17,7 @@ public class HUD implements Disposable {
 
     private long startTime;
 
-    public HUD() {
+    public HUD(int countdownTimer) {
         skin = new Skin(Gdx.files.internal("rainbow-ui.json")); // Load the skin
 
         // Create custom label styles with your desired font color

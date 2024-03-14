@@ -1,12 +1,17 @@
 package com.game.javex.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class EntityManager {
 	private World world;
+	private TiledMap map;
 	private Player player;
 	private Enemy boss;
 	private Array<Enemy> enemies;
@@ -16,29 +21,68 @@ public class EntityManager {
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
-	public EntityManager(World world) {
+	public EntityManager(World world, TiledMap map) {
 		this.world = world;
+		this.map = map;
 		this.enemies = new Array<>();
 		this.terrains = new Array<>();
 		this.coins = new Array<>();
 	}
 	
 	public void initialize() {
-		createPlayer(new Vector2(64, 32));
+		createPlayer(new Vector2(64, 320));
 		
-		createBoss(new Vector2(576, 32));
-		createEnemy(new Vector2(192, 32));
-		createEnemy(new Vector2(384, 32));
+		createBoss(new Vector2(3002, 32));
 		
-		createCoin(new Vector2(256, 32));
-		createCoin(new Vector2(448, 32));
+//		createEnemy(new Vector2(192, 32));
+//		createEnemy(new Vector2(384, 32));
+//		
+//		createCoin(new Vector2(256, 32));
+//		createCoin(new Vector2(448, 32));
 		
-		createTerrain(new Vector2(0, 0), 1056, 32);
-		createTerrain(new Vector2(0, 32), 32, 32);
-		createTerrain(new Vector2(128, 32), 32, 32);
-		createTerrain(new Vector2(320, 32), 32, 32);
-		createTerrain(new Vector2(512, 32), 32, 32);
-		createTerrain(new Vector2(924, 32), 32, 32);
+//		Render Common Objects
+		for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createTerrain(position, width, height);
+        }
+		
+//		Render Earth
+		for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createTerrain(position, width, height);
+        }
+		
+//		Render Mars
+		for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createTerrain(position, width, height);
+        }
+		
+//		Render Venus
+		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createTerrain(position, width, height);
+        }
 	}
 	
 	public void createPlayer(Vector2 position) {
@@ -75,26 +119,26 @@ public class EntityManager {
             }
         }
 		
-		Array<Enemy> enemyToRemove = new Array<>();
-		for (Enemy enemy : enemies) {
-			enemy.update(delta);
-			if (enemy.getKilled()) {
-				world.destroyBody(enemy.getBody());
-				enemyToRemove.add(enemy);
-				enemyKilled();
-			}
-		}
-		enemies.removeAll(enemyToRemove, true);
-		
-		Array<Reward> coinToRemove = new Array<>();
-		for (Reward coin : coins) {
-			if (coin.isCollected()) {
-				world.destroyBody(coin.getBody());
-				coinToRemove.add(coin);
-				coinsCollected();
-			}
-		}
-		coins.removeAll(coinToRemove, true);
+//		Array<Enemy> enemyToRemove = new Array<>();
+//		for (Enemy enemy : enemies) {
+//			enemy.update(delta);
+//			if (enemy.getKilled()) {
+//				world.destroyBody(enemy.getBody());
+//				enemyToRemove.add(enemy);
+//				enemyKilled();
+//			}
+//		}
+//		enemies.removeAll(enemyToRemove, true);
+//		
+//		Array<Reward> coinToRemove = new Array<>();
+//		for (Reward coin : coins) {
+//			if (coin.isCollected()) {
+//				world.destroyBody(coin.getBody());
+//				coinToRemove.add(coin);
+//				coinsCollected();
+//			}
+//		}
+//		coins.removeAll(coinToRemove, true);
 	}
 	
 	public void render(SpriteBatch spriteBatch) {
@@ -105,14 +149,14 @@ public class EntityManager {
 		if (boss != null) {
 			boss.render(spriteBatch);
 		}
-		
-		for (Enemy enemy : enemies) {
-			enemy.render(spriteBatch);
-		}
-		
-		for (Reward coin : coins) {
-			coin.render(spriteBatch);
-		}
+//		
+//		for (Enemy enemy : enemies) {
+//			enemy.render(spriteBatch);
+//		}
+//		
+//		for (Reward coin : coins) {
+//			coin.render(spriteBatch);
+//		}
 		
 		for (Terrain terrain : terrains) {
 			terrain.render(spriteBatch);

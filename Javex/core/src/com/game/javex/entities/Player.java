@@ -2,6 +2,7 @@ package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,7 +20,8 @@ public class Player extends Entity{
 		this.imgPath = Constants.PLAYER_IMG_PATH;
 				
 		createBody();
-		createSprite();
+		//createSprite();
+		initAnimation("MC.png", 2, 1, 0.3f); // Adjust the parameters as needed
 	}
 	
 	protected void createBody() {
@@ -27,6 +29,7 @@ public class Player extends Entity{
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
+		EdgeShape bottom = new EdgeShape();
 		
 //		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -37,13 +40,22 @@ public class Player extends Entity{
 //		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.density = 1.0f;
+		fixtureDef.density = 4.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
 		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.REWARD_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
+//		fixtureDef for the bottom for jumping on terrain
+		bottom.set(new Vector2(-(width-1) /2 /Constants.PPM, -height /2 /Constants.PPM), 
+				   new Vector2((width-1) /2 /Constants.PPM, -height /2 /Constants.PPM)
+		);
+		fixtureDef.shape = bottom;
+		fixtureDef.filter.categoryBits = Constants.PLAYER_BOTTOM_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
+		
 //		resource management
 		shape.dispose();
+		bottom.dispose();
 	}
 	
 	public void reduceHealth() {
@@ -55,16 +67,27 @@ public class Player extends Entity{
 	}
 	
 	public void moveLeft(float delta) {
-		body.setLinearVelocity(-2, body.getLinearVelocity().y);
+		body.setLinearDamping(0f);
+		if (body.getLinearVelocity().x >= -2) {
+			body.applyLinearImpulse(new Vector2(-0.1f, 0), body.getWorldCenter(), true);
+		}
 	}
 	
 	public void moveRight(float delta) {
-		body.setLinearVelocity(2, body.getLinearVelocity().y);
+		body.setLinearDamping(0f);
+		if (body.getLinearVelocity().x <= 2) {
+			body.applyLinearImpulse(new Vector2(0.1f, 0), body.getWorldCenter(), true);
+		}
+	}
+	
+	public void slowDown(float delta) {
+		body.setLinearDamping(1.0f);
 	}
 	
 	public void jump(float delta) {
+		body.setLinearDamping(0f);
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1.0f), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 0.5f), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }
