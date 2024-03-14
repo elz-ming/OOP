@@ -27,6 +27,14 @@ public class OutputManager implements Disposable {
         updateVolume();
         music.play();
     }
+    public void pauseMusic() {
+
+        music.pause();
+    }
+    public void resumeMusic() {
+
+        music.play();
+    }
 
     public void setVolume(float volume) {
         this.volume = volume;
@@ -57,5 +65,9 @@ public class OutputManager implements Disposable {
         if (music != null) {
             music.dispose();
         }
+    }
+    public void toggleMute() {
+        muted = !muted;
+        updateVolume(); // Update volume based on the new mute state
     }
 }

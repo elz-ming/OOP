@@ -12,61 +12,66 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
-public class InstructionsScene extends Scene {
-    private TextButton backButton;
 
-    public InstructionsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
-        super(sceneManager, inputManager, outputManager);
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
-        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
-        backgroundImage.setSize(width, height);
-        backgroundImage.setZIndex(0);
-        stage = new Stage(new ScreenViewport());
-        stage.addActor(backgroundImage);
-        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
-        backButton = new TextButton("Back", skin);
-        backButton.getLabel().setFontScale(0.5f);
-        backButton.setSize(200, 80);
+    public class InstructionsScene extends Scene {
+        private TextButton backButton;
 
-        float spaceBetweenButtons = 20;
-        float totalButtonsHeight = backButton.getHeight() + spaceBetweenButtons;
-        float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; // Adjusted startY value
+        public InstructionsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+            super(sceneManager, inputManager, outputManager);
+            width = Gdx.graphics.getWidth();
+            height = Gdx.graphics.getHeight();
+            backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+            backgroundImage.setSize(width, height);
+            backgroundImage.setZIndex(0);
+            stage = new Stage(new ScreenViewport());
+            stage.addActor(backgroundImage);
+            skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
-        backButton.setPosition((Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2), startY - backButton.getHeight() - 10); // Adjusted button position
+            backButton = new TextButton("Back", skin);
+            backButton.getLabel().setFontScale(0.5f);
+            backButton.setSize(200, 80);
 
-        stage.addActor(backButton);
+            float spaceBetweenButtons = 20;
+            float totalButtonsHeight = backButton.getHeight() + spaceBetweenButtons;
+            float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; // Adjusted startY value
 
-        menuButtons = new TextButton[]{backButton};
+            backButton.setPosition((Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2), startY - backButton.getHeight() - 10); // Adjusted button position
 
-     // Add instructions labels encapsulated in a box
-        Table instructionsTable = new Table();
-        instructionsTable.center();
-        instructionsTable.padTop(20); // Adjusted padding to make the box smaller
-        instructionsTable.setBackground(skin.getDrawable("white")); // Set background color to white
+            stage.addActor(backButton);
 
-        Label instructionLabel1 = new Label("Use Up/Down arrow keys to move", skin);
-        Label instructionLabel2 = new Label("Press Enter to proceed", skin);
-        Label instructionLabel3 = new Label("Press Escape to pause", skin);
+            menuButtons = new TextButton[]{backButton};
 
-        instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
-        instructionLabel2.setFontScale(1.5f);
-        instructionLabel3.setFontScale(1.5f);
+            // Add instructions labels encapsulated in a box
+            Table instructionsTable = new Table();
+            instructionsTable.center();
+            instructionsTable.padTop(20); // Adjusted padding to make the box smaller
 
-        instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
-        instructionsTable.add(instructionLabel2).padBottom(5).row();
-        instructionsTable.add(instructionLabel3).padBottom(5).row();
+            // Set the background image for the box
+            Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
+            instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
 
-        // Set the size of the instructions table
-        float tableWidth = width * 0.5f; // Adjust the width of the table as needed
-        float tableHeight = height * 0.2f; // Adjust the height of the table as needed
-        instructionsTable.setSize(tableWidth, tableHeight);
-        instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
+            Label instructionLabel1 = new Label("Use Up/Down arrow keys to move", skin);
+            Label instructionLabel2 = new Label("Press Enter to proceed", skin);
+            Label instructionLabel3 = new Label("Press Escape to pause", skin);
 
-        stage.addActor(instructionsTable);
+            instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
+            instructionLabel2.setFontScale(1.5f);
+            instructionLabel3.setFontScale(1.5f);
 
-        updateButtonStyles();
+            instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
+            instructionsTable.add(instructionLabel2).padBottom(5).row();
+            instructionsTable.add(instructionLabel3).padBottom(5).row();
+
+            // Set the size of the instructions table
+            float tableWidth = width * 0.6f; // Adjust the width of the table as needed
+            float tableHeight = height * 0.3f; // Adjust the height of the table as needed
+            instructionsTable.setSize(tableWidth, tableHeight);
+            instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
+
+            stage.addActor(instructionsTable);
+
+            updateButtonStyles();
     }
 
     @Override

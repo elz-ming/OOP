@@ -5,16 +5,21 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+
 
 public class WorldSelectionScene extends Scene {
     private TextButton world1Button, world2Button, world3Button;
+    private Table informationTable;
     private Label informationLabel;
     private String[] worldInformation;
     private String selectedWorld;
@@ -25,13 +30,13 @@ public class WorldSelectionScene extends Scene {
         super(sceneManager, inputManager, outputManager);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
-        
-        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+
+        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.WORLDSELECTION_IMG_PATH)));
         backgroundImage.setSize(width, height);
         backgroundImage.setZIndex(0);
 
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
-        
+
         world1Button = new TextButton("Earth", skin);
         world2Button = new TextButton("Mars", skin);
         world3Button = new TextButton("Venus", skin);
@@ -39,7 +44,7 @@ public class WorldSelectionScene extends Scene {
         world1Button.setSize(200, 80);
         world2Button.setSize(200, 80);
         world3Button.setSize(200, 80);
-        
+
         world1Button.getLabel().setFontScale(0.5f);
         world2Button.getLabel().setFontScale(0.5f);
         world3Button.getLabel().setFontScale(0.5f);
@@ -61,30 +66,37 @@ public class WorldSelectionScene extends Scene {
 
         menuButtons = new TextButton[]{world1Button, world2Button, world3Button};
 
-        informationLabel = new Label("", skin, "default");
-        informationLabel.setAlignment(Align.center);
-        informationLabel.getStyle().background = skin.newDrawable("white", Color.LIGHT_GRAY);
-        informationLabel.setColor(Color.WHITE);
+        informationTable = new Table();
+        informationTable.setVisible(false);
 
+        informationTable.center(); // Center the table contents
+        informationTable.pad(20); // Add padding to the table
+        stage.addActor(informationTable); // Add the table to the stage
+
+        // Add background image to the information table
+        Texture backgroundTexture = new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH));
+        Image background = new Image(backgroundTexture);
+        informationTable.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
+
+        informationLabel = new Label("", skin);
+        informationLabel.setAlignment(Align.center);
+        informationLabel.setColor(Color.WHITE);
+        informationLabel.setWrap(true); // Allow the text to wrap
         
-        informationLabel.getStyle().background.setLeftWidth(10);
-        informationLabel.getStyle().background.setRightWidth(10);
-        informationLabel.getStyle().background.setTopHeight(10);
-        informationLabel.getStyle().background.setBottomHeight(10);
-        
-        
-        stage.addActor(informationLabel);
+        float labelFontScale = 1.4f; // Adjust the scale value to your preference
+        informationLabel.setFontScale(labelFontScale);
+
+        informationTable.add(informationLabel).expand().fill().pad(20).width(Gdx.graphics.getWidth() * 0.5f); // Add the label to the table with padding and width
 
         updateButtonStyles();
     }
 
+    
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         this.width = width;
         this.height = height;
-        
-        backgroundImage.setSize(width, height);
 
         // Recalculate button sizes and positions based on the new resolution
         float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
@@ -108,12 +120,28 @@ public class WorldSelectionScene extends Scene {
         world2Button.setPosition((width - world2Button.getWidth()) / 2, startY + world1Button.getHeight() + spaceBetweenButtons);
         world3Button.setPosition((width - world3Button.getWidth()) / 2, startY);
 
-        // Update the information label size and position
-        if (worldSelected) {
-            informationLabel.pack();
-            informationLabel.setPosition((width - informationLabel.getWidth()) / 2, (height - informationLabel.getHeight()) / 2);
-        }
+        // Update the size of the background image in the information table
+        informationTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)))));
+
+        informationTable.pack();
+        float maxWidth = width * 0.6f; // Adjust as needed
+        float maxHeight = height * 0.3f; // Adjust as needed
+        informationTable.setWidth(Math.min(informationTable.getWidth(), maxWidth));
+        informationTable.setHeight(Math.min(informationTable.getHeight(), maxHeight));
+
+        // Center the information table on the screen
+        informationTable.setPosition((width - informationTable.getWidth()) / 2, (height - informationTable.getHeight()) / 2);
     }
+
+
+
+
+
+
+
+
+
+
 
 
     @Override
@@ -130,6 +158,7 @@ public class WorldSelectionScene extends Scene {
                 world1Button.remove();
                 world2Button.remove();
                 world3Button.remove();
+                informationTable.setVisible(true);
                 switch (currentButtonIndex) {
                     case 0: // Earth
                     	selectedWorld = "Earth";

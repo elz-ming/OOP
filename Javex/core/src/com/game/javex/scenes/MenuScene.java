@@ -12,12 +12,16 @@ import com.game.javex.inouts.*;
 
 public class MenuScene extends Scene {
     private TextButton playButton, settingButton, instructionsButton, exitButton;
+    
+
 
     public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-        outputManager.play("audio/menu.mp3", true);
+        outputManager.play("audio/end.mp3", true);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
+        
+        
 
         // Set background
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
