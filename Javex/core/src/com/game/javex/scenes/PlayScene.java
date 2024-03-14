@@ -5,46 +5,90 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 //import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.javex.Constants;
-import com.game.javex.entities.Enemy;
+//import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
 import com.game.javex.entities.Player;
 import com.game.javex.inouts.*;
-import com.game.javex.tools.AiControlManager;
+//import com.game.javex.tools.AiControlManager;
 import com.game.javex.tools.CollisionManager;
 import com.game.javex.tools.HUD;
 import com.game.javex.tools.PlayerControlManager;
 
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
+	private Viewport port;
 	private World world;
 	private SpriteBatch spriteBatch;
+	
+	private TmxMapLoader mapLoader;
+	private TiledMap map;
+	private OrthogonalTiledMapRenderer renderer;
+	
 //	//	For debug purposes
-//	private Box2DDebugRenderer b2dr;
+	private Box2DDebugRenderer b2dr;
 	
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
-	private AiControlManager aiControlManager;
+//	private AiControlManager aiControlManager;
 	private CollisionManager collisionManager;
 	private HUD hudManager;
+	
+	private Vector2 gravity;
+	private String audioPath;
+	private String backgroundImagePath;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
 		super(sceneManager, inputManager, outputManager);
 
-		outputManager.play("audio/earth.mp3", true);
 		width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
+    	switch (selectedWorld) {
+        case "Earth":
+            gravity = new Vector2(0, -15f);
+            audioPath = Constants.EARTH_AUDIO_PATH;
+            backgroundImagePath = Constants.EARTH_IMG_PATH;
+            break;
+            
+        case "Mars":
+            gravity = new Vector2(0, -10f);
+            audioPath = Constants.MARS_AUDIO_PATH;
+            backgroundImagePath = Constants.MARS_IMG_PATH;
+            break;
+            
+        case "Venus":
+            gravity = new Vector2(0, -2f);
+            audioPath = Constants.VENUS_AUDIO_PATH;
+            backgroundImagePath = Constants.VENUS_IMG_PATH;
+            break;
+            
+        default:
+            gravity = new Vector2(0, -10f); // Default to Earth's gravity
+            audioPath = Constants.EARTH_AUDIO_PATH;
+            backgroundImagePath = Constants.EARTH_IMG_PATH;
+            break;
+    	}
+    	
+    	// Play music
+    	outputManager.play(audioPath, true);
+    	
     	// Set background
-    	backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.PLAY_IMG_PATH)));
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(backgroundImagePath)));
     	backgroundImage.setSize(width, height); // Set the size to fill the screen
     	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
     	
@@ -57,55 +101,46 @@ public class PlayScene extends Scene {
         stage.addActor(hudManager.getTable());
         
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, width, height);
+		port = new FitViewport(Constants.V_WIDTH /Constants.PPM, Constants.V_HEIGHT /Constants.PPM, camera);
 		
-		Vector2 gravity;
-	    switch (selectedWorld) {
-	        case "Earth":
-	            gravity = new Vector2(0, -9.8f);
-	            break;
-	        case "Mars":
-	            gravity = new Vector2(0, -3.7f);
-	            break;
-	        case "Venus":
-	            gravity = new Vector2(0, -1.9f);
-	            break;
-	        default:
-	            gravity = new Vector2(0, -9.8f); // Default to Earth's gravity
-	            break;
-	    }
-	    world = new World(gravity, false);
+		mapLoader = new TmxMapLoader();
+		map = mapLoader.load("levels/WorldMap.tmx");
+		renderer = new OrthogonalTiledMapRenderer(map);
+		
+		camera.position.set(port.getWorldWidth() / 2, port.getWorldHeight() / 2, 0);
+		camera.zoom = 1.2f;
+		world = new World(gravity, true);
 	    
 		spriteBatch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
-		entityManager = new EntityManager(world);
+		entityManager = new EntityManager(world, map);
 		initialize();
 		Player player = entityManager.getPlayer();
-		Enemy boss = entityManager.getBoss();
+//		Enemy boss = entityManager.getBoss();
 		
 //		Initialize playerControlManager and link the control to the main player
 		playerControlManager = new PlayerControlManager(player, inputManager);
 		
 //		Initialize aiControlManager and link the control to the boss
-		aiControlManager = new AiControlManager(boss, player);
+//		aiControlManager = new AiControlManager(boss, player);
 		
 //		Initialize collisionManager to listen for collisions in the game world
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
 
 //	//	For debug purposes
-//		b2dr = new Box2DDebugRenderer();
+		b2dr = new Box2DDebugRenderer();
 	}
 	
 	@Override
 	public void update(float dt) {
 		handleInput();
-		world.step(1 / 60f, 6, 2);
+		world.step(1 /60f, 6, 2);
 
 	    cameraUpdate();
 	    playerControlManager.update(dt);
-	    aiControlManager.update(dt);
+//	    aiControlManager.update(dt);
 	    entityManager.update(dt);
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 		
@@ -119,17 +154,19 @@ public class PlayScene extends Scene {
         // Clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        
         stage.draw();
+        renderer.render();
 		
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
 			entityManager.render(spriteBatch);
 		spriteBatch.end();
 		
-//	//	For debug purposes
-//		if (b2dr != null && world != null && camera != null) {
-//			b2dr.render(world, camera.combined.scl(Constants.PPM));
-//		}
+	//	For debug purposes
+		if (b2dr != null && world != null && camera != null) {
+			b2dr.render(world, camera.combined.scl(Constants.PPM));
+		}
 	}
 	
 	@Override
@@ -195,5 +232,6 @@ public class PlayScene extends Scene {
 		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
 		camera.position.set(position);
 		camera.update();
+		renderer.setView(camera);
 	}
 }

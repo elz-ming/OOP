@@ -2,6 +2,7 @@ package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -29,7 +30,6 @@ public class Enemy extends Entity {
 		}
 		
 		createBody();
-		this.body.setLinearVelocity(1, 0);
 		createSprite();
 	}
 	
@@ -39,7 +39,7 @@ public class Enemy extends Entity {
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
-		PolygonShape head = new PolygonShape();
+		EdgeShape head = new EdgeShape();
 		
 //		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -51,13 +51,14 @@ public class Enemy extends Entity {
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
-		fixtureDef.friction = 0.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the head for jumping on enemies
-		head.setAsBox(width /2 /2 /Constants.PPM, 4 /Constants.PPM, new Vector2(0, height/2 /Constants.PPM), 0);
+		head.set(new Vector2(-width /2 /Constants.PPM, height /2 /Constants.PPM), 
+				 new Vector2(width /2 /Constants.PPM, height /2 /Constants.PPM)
+		);
 		fixtureDef.shape = head;
 		fixtureDef.restitution = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_HEAD_BIT;

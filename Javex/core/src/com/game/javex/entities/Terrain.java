@@ -14,7 +14,7 @@ public class Terrain extends Entity{
     	this.height = height;
     	this.imgPath = Constants.TERRAIN_IMG_PATH;
     	createBody();
-    	createSprite();
+//    	createSprite();
     }
     
     @Override
@@ -33,8 +33,11 @@ public class Terrain extends Entity{
 //		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0;
+		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.ENEMY_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT |Constants.ENEMY_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
     	
 //		resource management
