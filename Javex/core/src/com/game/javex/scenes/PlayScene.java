@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -148,16 +149,21 @@ public class PlayScene extends Scene {
 	
 	@Override
 	public void update(float dt) {
-		handleInput();
-		world.step(1 /60f, 6, 2);
+	    handleInput();
+	    world.step(1 / 60f, 6, 2);
 
 	    cameraUpdate();
 	    playerControlManager.update(dt);
-//	    aiControlManager.update(dt);
 	    entityManager.update(dt);
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
-		
-	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) { // end logic to be improved in the future
+
+	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) {
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    }
+
+	    long currentTime = TimeUtils.millis();
+	    long elapsedTime = hudManager.getElapsedTime();
+	    if (elapsedTime <= 0) {
 	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 	}
