@@ -27,10 +27,63 @@ public class PlayScene extends AbstractScene {
     // For Enemy
     private Enemy enemy[];
 
+<<<<<<< Updated upstream
     protected PlayScene(SceneManager sceneManager) {
         super(sceneManager);
         world = new World(new Vector2(0, -10f), false); // Create Box2D world
         b2dr = new Box2DDebugRenderer(); // Create Box2DDebugRenderer
+=======
+		width = Gdx.graphics.getWidth();
+    	height = Gdx.graphics.getHeight();
+    	
+    	switch (selectedWorld) {
+        case "Earth":
+            gravity = new Vector2(0, -15f);
+            audioPath = Constants.EARTH_AUDIO_PATH;
+            backgroundImagePath = Constants.EARTH_IMG_PATH;
+            cameraZoomValue = 0.4f;
+            countdownTimer = 30000;
+            break;
+            
+        case "Mars":
+            gravity = new Vector2(0, -10f);
+            audioPath = Constants.MARS_AUDIO_PATH;
+            backgroundImagePath = Constants.MARS_IMG_PATH;
+            cameraZoomValue = 0.5f;
+            countdownTimer = 30;
+            break;
+            
+        case "Venus":
+            gravity = new Vector2(0, -4.5f);
+            audioPath = Constants.VENUS_AUDIO_PATH;
+            backgroundImagePath = Constants.VENUS_IMG_PATH;
+            cameraZoomValue = 0.6f;
+            countdownTimer = 15;
+            break;
+            
+        default:
+            gravity = new Vector2(0, -10f); // Default to Earth's gravity
+            audioPath = Constants.EARTH_AUDIO_PATH;
+            backgroundImagePath = Constants.EARTH_IMG_PATH;
+            countdownTimer = 45;
+            break;
+    	}
+    	
+    	// Play music
+    	outputManager.play(audioPath, true);
+    	
+    	// Set background
+    	backgroundImage = new Image(new Texture(Gdx.files.internal(backgroundImagePath)));
+    	backgroundImage.setSize(width, height); // Set the size to fill the screen
+    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+    	
+    	//Initialize HUD
+    	hudManager = new HUD(countdownTimer);
+    	
+    	// Add buttons to stage
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage); // Add the background image to the stage
+>>>>>>> Stashed changes
         
         // Set up OrthographicCamera
         camera = new OrthographicCamera();
@@ -50,6 +103,23 @@ public class PlayScene extends AbstractScene {
     
     
 
+<<<<<<< Updated upstream
+=======
+	    cameraUpdate();
+	    playerControlManager.update(dt);
+//	    aiControlManager.update(dt);
+	    entityManager.update(dt);
+	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
+		
+	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) { // end logic to be improved in the future
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    }
+	    if (hudManager.getCountdownTimer() <= 0) {
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    }
+	}
+	
+>>>>>>> Stashed changes
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
