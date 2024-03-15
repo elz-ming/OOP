@@ -1,5 +1,7 @@
 package com.game.javex.scenes;
 
+import java.io.Console;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 //import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -119,6 +122,7 @@ public class PlayScene extends Scene {
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera.position.set(port.getWorldWidth() / 2, port.getWorldHeight() / 2, 0);
+		System.out.println(port.getWorldHeight());
 		camera.zoom = cameraZoomValue;
 		world = new World(gravity, true);
 	    
@@ -241,9 +245,18 @@ public class PlayScene extends Scene {
 	
 	private void cameraUpdate() {
 		Vector3 position = camera.position;
-		position.x = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
-		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
-		camera.position.set(position);
+		float playerX = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
+		float minX = camera.viewportWidth /2;
+		float maxX = 100000;
+		System.out.println(minX);
+		float cameraX = MathUtils.clamp(playerX, minX, maxX);
+		
+		float playerY = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
+		float minY = 0;
+		float maxY = 10000000;
+		float cameraY = MathUtils.clamp(playerY, minY, maxY);
+	
+		camera.position.set(cameraX, cameraY, 0);
 		camera.update();
 		renderer.setView(camera);
 	}
