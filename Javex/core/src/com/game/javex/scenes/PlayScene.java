@@ -246,10 +246,6 @@ public class PlayScene extends Scene {
 		float minX = Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
 		float maxX = Constants.WORLD_WIDTH - Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
 		float cameraX = MathUtils.clamp(playerX, minX, maxX);
-		System.out.println(minX);
-		System.out.println(playerX);
-		System.out.println(maxX);
-		System.out.println();
 		
 		float playerY = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
 		float minY = Constants.VIEWPORT_HEIGHT *cameraZoomValue /2;
