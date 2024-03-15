@@ -41,7 +41,7 @@ public class HUD implements Disposable {
         table.add(timeLabel).expandX().padTop(10).padBottom(10);
         
         this.countdownTimer = countdownTimer;
-        startTime = TimeUtils.millis() + 10000;
+        startTime = TimeUtils.millis() + 300000;
         
     }
 
