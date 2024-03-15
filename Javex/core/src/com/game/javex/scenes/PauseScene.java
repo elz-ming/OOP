@@ -18,7 +18,8 @@ public class PauseScene extends Scene {
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
-    	outputManager.setMuted(true);
+    	 outputManager.pauseMusic();
+    	
     	width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
@@ -48,6 +49,10 @@ public class PauseScene extends Scene {
         menuButton.setSize(300, 80); // Use the size that fits your needs
         menuButton.setPosition((Gdx.graphics.getWidth() - menuButton.getWidth()) / 2 - xOffset, Gdx.graphics.getHeight() / 2 - menuButton.getHeight() / 2 - 60);
         menuButton.getLabel().setFontScale(0.41f); // Adjust the scale value to your preference
+        
+        
+        
+        
         
         menuButton.addListener(new ChangeListener() {
             @Override
@@ -105,9 +110,11 @@ public class PauseScene extends Scene {
         } else if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.pop();
-                outputManager.setMuted(false);
+                outputManager.resumeMusic();
             } else if (currentButtonIndex == 1) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+                
+                
             }
             try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         } 

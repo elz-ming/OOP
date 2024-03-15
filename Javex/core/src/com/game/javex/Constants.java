@@ -1,6 +1,10 @@
 package com.game.javex;
 
 public class Constants {
+	
+	public static boolean muted = false;
+	
+	
 	public static final int V_WIDTH = 1920;
 	public static final int V_HEIGHT = 1080;
 	public static final int W_WIDTH = 3200;
@@ -29,6 +33,8 @@ public class Constants {
 	public static final int ENEMY_MAX_SPEED = 2;
 	
 	public static final String MENU_IMG_PATH = "image_background/menu.png";
+	public static final String WORLDSELECTION_IMG_PATH = "image_background/worldselection.png";
+	public static final String CHATBOX_IMG_PATH = "image_background/chatbox.png";
 	public static final String EARTH_IMG_PATH = "image_background/earth.png";
 	public static final String MARS_IMG_PATH = "image_background/mars.png";
 	public static final String VENUS_IMG_PATH = "image_background/venus.png";

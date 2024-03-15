@@ -34,6 +34,7 @@ public class SceneManager {
 	    scene.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()); // Update the layout of the new scene
 	}
 	
+	
 	public void update(float delta) {
     	scenes.peek().update(delta);
     }

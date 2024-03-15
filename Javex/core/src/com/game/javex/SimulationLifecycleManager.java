@@ -19,6 +19,10 @@ public class SimulationLifecycleManager extends ApplicationAdapter{
 		sceneManager = new SceneManager();
 		 
 		sceneManager.push(new MenuScene(sceneManager, inputManager, outputManager));
+		
+		
+		 Constants.muted = false; 
+	     outputManager.setMuted(Constants.muted);
 	}
 
 	@Override
