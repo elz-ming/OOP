@@ -9,7 +9,7 @@ public class DesktopLauncher {
         
         config.setTitle("Javex"); // Set the title
         
-        config.setWindowedMode(Constants.V_WIDTH, Constants.V_HEIGHT); // Set width and height
+        config.setWindowedMode(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT); // Set width and height
         
         new Lwjgl3Application(new SimulationLifecycleManager(), config);
     }

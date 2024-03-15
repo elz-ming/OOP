@@ -5,11 +5,16 @@ public class Constants {
 	public static boolean muted = false;
 	
 	
-	public static final int V_WIDTH = 1920;
-	public static final int V_HEIGHT = 1080;
-	public static final int W_WIDTH = 3200;
-	public static final int W_HEIGHT = 960;
+	public static final int VIEWPORT_WIDTH = 1920;
+	public static final int VIEWPORT_HEIGHT = 1080;
+	public static final int WORLD_WIDTH = 3200;
+	public static final int WORLD_HEIGHT = 960;
 	public static final float PPM = 100;
+	
+	public static final float VIEWPORT_WIDTH_METER = VIEWPORT_WIDTH /PPM;
+	public static final float VIEWPORT_HEIGHT_METER = VIEWPORT_HEIGHT /PPM;
+	public static final float WORLD_WIDTH_METER = WORLD_WIDTH /PPM;
+	public static final float WORLD_HEIGHT_METER = WORLD_HEIGHT /PPM;
 	
 	public static final short PLAYER_BIT = 1;
 	public static final short PLAYER_BOTTOM_BIT = 2; 
