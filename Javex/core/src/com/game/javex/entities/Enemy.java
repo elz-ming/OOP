@@ -9,28 +9,20 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class Enemy extends Entity {
-	private boolean isBoss;
 	private int health;
 	private boolean killed = false;
 	
-	public Enemy(World world, Vector2 position, boolean isBoss) {
+	public Enemy(World world, Vector2 position) {
 		super(world, position);
-		this.isBoss = isBoss;
-		if (isBoss) {
-			this.health = 1;
-			this.width = Constants.BOSS_WIDTH;
-			this.height = Constants.BOSS_HEIGHT;
-			this.imgPath = Constants.BOSS_IMG_PATH;
-			
-		} else {
-			this.health = 1;
-			this.width = Constants.ENEMY_WIDTH;
-			this.height = Constants.ENEMY_HEIGHT;
-			this.imgPath = Constants.ENEMY_IMG_PATH;
-		}
+		this.health = 1;
+		this.width = Constants.ENEMY_WIDTH;
+		this.height = Constants.ENEMY_HEIGHT;
+		this.imgPath = Constants.ENEMY_IMG_PATH;
 		
 		createBody();
 		createSprite();
+		
+		this.body.setLinearVelocity(1.0f, 0);
 	}
 	
 	@Override
@@ -42,7 +34,7 @@ public class Enemy extends Entity {
 		EdgeShape head = new EdgeShape();
 		
 //		bodyDef for the entire body
-		bodyDef.type = BodyDef.BodyType.StaticBody;
+		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
 		bodyDef.fixedRotation = true;
 		this.body = world.createBody(bodyDef);
@@ -71,16 +63,14 @@ public class Enemy extends Entity {
 	
 	@Override
 	public void update(float dt) {
-		if (!isBoss) {
-			float veloX = body.getLinearVelocity().x;
-			
-			if (veloX > -0.5 && veloX < 0.5) {
-				this.body.setLinearVelocity((veloX*1.1f), 0);
-			} else if (veloX == 0) {
-				this.body.setLinearVelocity(1, 0);
-			}
-		}
+		float veloX = body.getLinearVelocity().x;
 		
+		if (veloX > -0.5 && veloX < 0.5) {
+			this.body.setLinearVelocity((veloX*1.1f), 0);
+		} else if (veloX == 0) {
+			this.body.setLinearVelocity(1, 0);
+		}
+
 		Vector2 position = body.getPosition();
 		sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
@@ -98,10 +88,6 @@ public class Enemy extends Entity {
 	
 	public boolean getKilled() {
 		return killed;
-	}
-	
-	public boolean getIsBoss() {
-		return isBoss;
 	}
 	
 	public void moveOpposite() {

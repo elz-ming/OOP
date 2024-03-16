@@ -69,7 +69,7 @@ public class PlayScene extends Scene {
     	
     	switch (selectedWorld) {
         case "Earth":
-            gravity = new Vector2(0, -15f);
+            gravity = new Vector2(0, -10f);
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
@@ -228,9 +228,9 @@ public class PlayScene extends Scene {
 		
 	    camera = null;
 	    
-//		if (b2dr != null) {
-//	        b2dr.dispose();
-//	    }
+		if (b2dr != null) {
+	        b2dr.dispose();
+	    }
 	}
 
 	private void initialize() {
@@ -262,7 +262,6 @@ public class PlayScene extends Scene {
 	private void cameraUpdate() {
 		float playerX = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
 		float minX = (Constants.VIEWPORT_WIDTH +32) *cameraZoomValue /2;
-		System.out.println(minX);
 		float maxX = Constants.WORLD_WIDTH - Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
 		float cameraX = MathUtils.clamp(playerX, minX, maxX);
 		

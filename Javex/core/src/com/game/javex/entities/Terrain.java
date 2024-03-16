@@ -2,6 +2,7 @@ package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
@@ -12,9 +13,7 @@ public class Terrain extends Entity{
     	super(world, position);
     	this.width = width;
     	this.height = height;
-    	this.imgPath = Constants.TERRAIN_IMG_PATH;
     	createBody();
-//    	createSprite();
     }
     
     @Override
@@ -23,6 +22,7 @@ public class Terrain extends Entity{
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
+		EdgeShape top = new EdgeShape();
     	
 //		bodyDef for the entire body
     	bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -39,8 +39,17 @@ public class Terrain extends Entity{
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT |Constants.ENEMY_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
+		
+//		fixtureDef for the bottom for jumping on terrain
+		top.set(new Vector2(-(width) /2 /Constants.PPM, height /2 /Constants.PPM), 
+				   new Vector2((width) /2 /Constants.PPM, height /2 /Constants.PPM)
+		);
+		fixtureDef.shape = top;
+		fixtureDef.filter.categoryBits = Constants.TERRAIN_TOP_BIT;
+		this.body.createFixture(fixtureDef).setUserData(this);
     	
 //		resource management
-    	shape.dispose();	
+    	shape.dispose();
+    	top.dispose();
     }
 }

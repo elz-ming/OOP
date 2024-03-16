@@ -72,14 +72,10 @@ public class CollisionManager implements ContactListener{
                 // Determine which fixture is the enemy
                 if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
                 	Enemy enemy = (Enemy)fixA.getUserData();
-                	if(!enemy.getIsBoss()) {
-                		enemy.moveOpposite();
-                	}
+            		enemy.moveOpposite();
                 } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
                 	Enemy enemy = (Enemy)fixB.getUserData();
-                	if(!enemy.getIsBoss()) {
-                		enemy.moveOpposite();
-                	}
+            		enemy.moveOpposite();
                 }             
                 break;
     		

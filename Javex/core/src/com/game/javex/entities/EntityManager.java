@@ -15,16 +15,18 @@ public class EntityManager {
 	
 	private Array<Terrain> terrains;
 	private Array<Boundary> boundaries;
-//	private Flag flag;
-//	private Array<FlagBorder> flagBorders;
+	private Flag flag;
+	private Array<FlagBorder> flagBorders;
+	private Array<SignBoard> signboards;
+	private Array<TreasureChest> treasureChests;
+	
+	private Array<Coin> coins;
+//	private Array<Letter> letters;
 	
 	private Player player;
 	private Enemy boss;
 	private Array<Enemy> enemies;
-	private Array<Coin> coins;
-//	private Array<Letter> letters;
-//	private Array<Signboard> signboards;
-//	private Array<TreasureChest> treasureChests;
+
 	
 	
 	private int enemiesKilled = 0;
@@ -33,34 +35,29 @@ public class EntityManager {
 	public EntityManager(World world, TiledMap map) {
 		this.world = world;
 		this.map = map;
-		this.enemies = new Array<>();
 		this.terrains = new Array<>();
+		this.boundaries = new Array<>();
+		this.flagBorders = new Array<>();
+		this.signboards = new Array<>();
+		this.treasureChests = new Array<>();
+		
 		this.coins = new Array<>();
+		this.enemies = new Array<>();
 	}
 	
 	public void initialize() {
-//		createPlayer(new Vector2(64, 320));
+//		Create Boundary
+		for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createBoundary(position, width, height);
+        }
 		
-		createBoss(new Vector2(3002, 32));
-		
-//		createEnemy(new Vector2(192, 32));
-//		createEnemy(new Vector2(384, 32));
-//		
-//		createCoin(new Vector2(256, 32));
-//		createCoin(new Vector2(448, 32));
-		
-////		Render Boundary
-//		for(MapObject object : map.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
-		
-//		Render Terrain
+//		Create Terrain
 		for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -71,62 +68,62 @@ public class EntityManager {
             createTerrain(position, width, height);
         }
 		
-////		Render Flag
-//		for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create Flag
+		for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createFlag(position, width, height);
+        }
 		
-////		Render FlagBorder
-//		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create FlagBorder
+		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createFlagBorder(position, width, height);
+        }
 		
-////		Render Signboard
-//		for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create Signboard
+		for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createSignboard(position, width, height);
+        }
 		
-////		Render TreasureChest
-//		for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create TreasureChest
+		for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createTreasureChest(position, width, height);
+        }
 		
-////		Render Coin
-//		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create Coin
+		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            int width = (int)rect.getWidth();
+            int height = (int)rect.getHeight();
+            
+            createCoin(position);
+        }
 		
-////		Render Letter
+////		Create Letter
 //		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
 //            Rectangle rect = ((RectangleMapObject) object).getRectangle();
 //
@@ -137,7 +134,7 @@ public class EntityManager {
 //            createTerrain(position, width, height);
 //        }
 		
-//		Render Player
+//		Create Player
 		for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -145,36 +142,52 @@ public class EntityManager {
             createPlayer(position);
         }
 		
-////		Render Enemy
-//		for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
+//		Create Enemy
+		for(MapObject object : map.getLayers().get(10).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            Vector2 position = new Vector2(rect.getX(), rect.getY());
+            
+            createEnemy(position);
+        }
+	}
+	
+	
+	
+	public void createTerrain(Vector2 position, int width, int height) {
+		terrains.add(new Terrain(world, position, width, height));
+	}
+	
+	public void createBoundary(Vector2 position, int width, int height) {
+		boundaries.add(new Boundary(world, position, width, height));
+	}
+	
+	public void createFlag(Vector2 position, int width, int height) {
+		this.flag = new Flag(world, position, width, height);
+	}
+	
+	public void createFlagBorder(Vector2 position, int width, int height) {
+		flagBorders.add(new FlagBorder(world, position, width, height));
+	}
+	
+	public void createSignboard(Vector2 position, int width, int height) {
+		signboards.add(new SignBoard(world, position, width, height));
+	}
+	
+	public void createTreasureChest(Vector2 position, int width, int height) {
+		treasureChests.add(new TreasureChest(world, position, width, height));
 	}
 	
 	public void createPlayer(Vector2 position) {
 		this.player = new Player(world, position);
 	}
 	
-	public void createBoss(Vector2 position) {
-		this.boss = new Enemy(world, position, true);
-	}
-	
 	public void createEnemy(Vector2 position) {
-		enemies.add(new Enemy(world, position, false));
+		enemies.add(new Enemy(world, position));
 	}
 	
 	public void createCoin(Vector2 position) {
 		coins.add(new Coin(world, position));
-	}
-	
-	public void createTerrain(Vector2 position, int width, int height) {
-		terrains.add(new Terrain(world, position, width, height));
 	}
 
 	public void update(float delta) {
@@ -191,47 +204,47 @@ public class EntityManager {
             }
         }
 		
-//		Array<Enemy> enemyToRemove = new Array<>();
-//		for (Enemy enemy : enemies) {
-//			enemy.update(delta);
-//			if (enemy.getKilled()) {
-//				world.destroyBody(enemy.getBody());
-//				enemyToRemove.add(enemy);
-//				enemyKilled();
-//			}
-//		}
-//		enemies.removeAll(enemyToRemove, true);
-//		
-//		Array<Reward> coinToRemove = new Array<>();
-//		for (Reward coin : coins) {
-//			if (coin.isCollected()) {
-//				world.destroyBody(coin.getBody());
-//				coinToRemove.add(coin);
-//				coinsCollected();
-//			}
-//		}
-//		coins.removeAll(coinToRemove, true);
+		Array<Enemy> enemyToRemove = new Array<>();
+		for (Enemy enemy : enemies) {
+			enemy.update(delta);
+			if (enemy.getKilled()) {
+				world.destroyBody(enemy.getBody());
+				enemyToRemove.add(enemy);
+				enemyKilled();
+			}
+		}
+		enemies.removeAll(enemyToRemove, true);
+		
+		Array<Coin> coinToRemove = new Array<>();
+		for (Coin coin : coins) {
+			if (coin.isCollected()) {
+				world.destroyBody(coin.getBody());
+				coinToRemove.add(coin);
+				coinsCollected();
+			}
+		}
+		coins.removeAll(coinToRemove, true);
 	}
 	
 	public void render(SpriteBatch spriteBatch) {
+		if (flag != null) {
+			flag.render(spriteBatch);
+		}
+		
+		for (TreasureChest treasureChest : treasureChests) {
+			treasureChest.render(spriteBatch);
+		}
+		
 		if (player != null) {
 			player.render(spriteBatch);
 		}
 		
-		if (boss != null) {
-			boss.render(spriteBatch);
+		for (Enemy enemy : enemies) {
+			enemy.render(spriteBatch);
 		}
-//		
-//		for (Enemy enemy : enemies) {
-//			enemy.render(spriteBatch);
-//		}
-//		
-//		for (Reward coin : coins) {
-//			coin.render(spriteBatch);
-//		}
 		
-		for (Terrain terrain : terrains) {
-			terrain.render(spriteBatch);
+		for (Coin coin : coins) {
+			coin.render(spriteBatch);
 		}
 	}
 	

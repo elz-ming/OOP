@@ -8,14 +8,17 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class Boundary extends Entity{
+public class Flag extends Entity{
 
-	public Boundary(World world, Vector2 position, int width, int height) {
-    	super(world, position);
+	public Flag(World world, Vector2 position, int width, int height) {
+		super(world, position);
     	this.width = width;
     	this.height = height;
+    	this.imgPath = Constants.FLAG_IMG_PATH;
+    	
     	createBody();
-    }
+    	createSprite();
+	}
 
 	@Override
 	protected void createBody() {
@@ -23,7 +26,6 @@ public class Boundary extends Entity{
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
-		EdgeShape top = new EdgeShape();
     	
 //		bodyDef for the entire body
     	bodyDef.type = BodyDef.BodyType.StaticBody;
@@ -37,22 +39,9 @@ public class Boundary extends Entity{
 		fixtureDef.density = 0;
 		fixtureDef.friction = 0;
 		fixtureDef.restitution = 0;
-		fixtureDef.filter.categoryBits = Constants.BOUNDARY_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT;
+		fixtureDef.filter.categoryBits = Constants.FLAG_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
-		
-//		fixtureDef for the bottom for jumping on terrain
-		top.set(new Vector2(-(width) /2 /Constants.PPM, height /2 /Constants.PPM), 
-				   new Vector2((width) /2 /Constants.PPM, height /2 /Constants.PPM)
-		);
-		fixtureDef.shape = top;
-		fixtureDef.filter.categoryBits = Constants.BOUNDARY_TOP_BIT;
-		this.body.createFixture(fixtureDef).setUserData(this);
-    	
-//		resource management
-    	shape.dispose();
-    	top.dispose();
-		
 	}
 
 }
