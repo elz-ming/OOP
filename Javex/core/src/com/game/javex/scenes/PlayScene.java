@@ -52,6 +52,7 @@ public class PlayScene extends Scene {
 	private Vector2 gravity;
 	private String audioPath;
 	private String backgroundImagePath;
+	private String mapString;
 	private float cameraZoomValue;
 	private int countdownTimer;
 	
@@ -69,6 +70,7 @@ public class PlayScene extends Scene {
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
             countdownTimer = 45;
+            mapString = Constants.EARTH_MAP_PATH;
             break;
             
         case "Mars":
@@ -117,7 +119,7 @@ public class PlayScene extends Scene {
 		port = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
 		
 		mapLoader = new TmxMapLoader();
-		map = mapLoader.load("levels/WorldMap.tmx");
+		map = mapLoader.load(mapString);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera.position.set(Constants.VIEWPORT_WIDTH /2, Constants.VIEWPORT_HEIGHT /2, 0);

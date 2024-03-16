@@ -40,7 +40,7 @@ public class Player extends Entity{
 //		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.density = 4.0f;
+		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
 		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.REWARD_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
@@ -87,7 +87,7 @@ public class Player extends Entity{
 	public void jump(float delta) {
 		body.setLinearDamping(0f);
         if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 0.5f), body.getWorldCenter(), true); // Adjust impulse as needed
+            body.applyLinearImpulse(new Vector2(0, 0.6f), body.getWorldCenter(), true); // Adjust impulse as needed
             canJump = false; // Reset jump ability until player touches the ground again
         }
     }

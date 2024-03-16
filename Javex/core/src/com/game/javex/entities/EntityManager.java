@@ -12,11 +12,20 @@ import com.badlogic.gdx.utils.Array;
 public class EntityManager {
 	private World world;
 	private TiledMap map;
+	
+	private Array<Terrain> terrains;
+	private Array<Boundary> boundaries;
+//	private Flag flag;
+//	private Array<FlagBorder> flagBorders;
+	
 	private Player player;
 	private Enemy boss;
 	private Array<Enemy> enemies;
 	private Array<Reward> coins;
-	private Array<Terrain> terrains;
+//	private Array<Letter> letters;
+//	private Array<Signboard> signboards;
+//	private Array<TreasureChest> treasureChests;
+	
 	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;

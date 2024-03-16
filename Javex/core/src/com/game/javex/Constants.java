@@ -23,8 +23,8 @@ public class Constants {
 	public static final short TERRAIN_BIT = 16;
 	public static final short REWARD_BIT = 32;
 	
-	public static final int PLAYER_WIDTH = 16;
-	public static final int PLAYER_HEIGHT = 16;
+	public static final int PLAYER_WIDTH = 32;
+	public static final int PLAYER_HEIGHT = 32;
 	
 	public static final int ENEMY_WIDTH = 32;
 	public static final int ENEMY_HEIGHT = 32;
@@ -56,4 +56,8 @@ public class Constants {
 	public static final String BOSS_IMG_PATH = "image_entity/boss.png";
 	public static final String COIN_IMG_PATH = "image_entity/coin.png";
 	public static final String TERRAIN_IMG_PATH = "image_entity/terrain.png"; 
+	
+	public static final String EARTH_MAP_PATH = "map/WorldMap.tmx";
+	public static final String MARS_MAP_PATH = "";
+	public static final String VENUS_MAP_PATH = "";
 }
