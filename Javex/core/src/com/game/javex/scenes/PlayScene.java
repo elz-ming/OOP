@@ -11,7 +11,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-//import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -39,9 +39,10 @@ public class PlayScene extends Scene {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	
-//	//	For debug purposes
-//	private Box2DDebugRenderer b2dr;
+	//	For debug purposes
+	private Box2DDebugRenderer b2dr;
 	
+//	Managers to help structure the game
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
 //	private AiControlManager aiControlManager;
@@ -55,6 +56,9 @@ public class PlayScene extends Scene {
 	private String mapString;
 	private float cameraZoomValue;
 	private int countdownTimer;
+	
+	private boolean win;
+	private boolean lose;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
@@ -145,8 +149,12 @@ public class PlayScene extends Scene {
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
 
-////	//	For debug purposes
-//		b2dr = new Box2DDebugRenderer();
+//		For debug purposes
+		b2dr = new Box2DDebugRenderer();
+		
+//		Initialize win and lose booleans
+		win = false;
+		lose = false;
 	}
 	
 	@Override
@@ -186,10 +194,12 @@ public class PlayScene extends Scene {
 		
 		
 		frontStage.draw();
-//	//	For debug purposes
-//		if (b2dr != null && world != null && camera != null) {
-//			b2dr.render(world, camera.combined.scl(Constants.PPM));
-//		}
+		
+		
+	//	For debug purposes
+		if (b2dr != null && world != null && camera != null) {
+			b2dr.render(world, camera.combined.scl(Constants.PPM));
+		}
 	}
 	
 	@Override
@@ -251,7 +261,8 @@ public class PlayScene extends Scene {
 	
 	private void cameraUpdate() {
 		float playerX = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
-		float minX = Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
+		float minX = (Constants.VIEWPORT_WIDTH +32) *cameraZoomValue /2;
+		System.out.println(minX);
 		float maxX = Constants.WORLD_WIDTH - Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
 		float cameraX = MathUtils.clamp(playerX, minX, maxX);
 		

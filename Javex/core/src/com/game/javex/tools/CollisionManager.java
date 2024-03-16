@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
-import com.game.javex.entities.Reward;
+import com.game.javex.entities.Coin;
 
 public class CollisionManager implements ContactListener{
 	private Fixture fixA;
@@ -50,11 +50,11 @@ public class CollisionManager implements ContactListener{
 	            break;
 	            
 //		    Player collect rewards
-			case Constants.PLAYER_BIT | Constants.REWARD_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.REWARD_BIT) {
-                    ((Reward)fixA.getUserData()).collect();
-                } else if (fixB.getFilterData().categoryBits == Constants.REWARD_BIT) {
-                    ((Reward)fixB.getUserData()).collect();
+			case Constants.PLAYER_BIT | Constants.COIN_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.COIN_BIT) {
+                    ((Coin)fixA.getUserData()).collect();
+                } else if (fixB.getFilterData().categoryBits == Constants.COIN_BIT) {
+                    ((Coin)fixB.getUserData()).collect();
                 }
                 break;
 			

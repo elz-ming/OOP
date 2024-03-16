@@ -20,8 +20,15 @@ public class Constants {
 	public static final short PLAYER_BOTTOM_BIT = 2; 
 	public static final short ENEMY_BIT = 4; 
 	public static final short ENEMY_HEAD_BIT = 8;
-	public static final short TERRAIN_BIT = 16;
-	public static final short REWARD_BIT = 32;
+	public static final short COIN_BIT = 16;
+	public static final short LETTER_BIT = 32;
+	public static final short TREASURE_CHEST_BIT = 64;
+	public static final short BOUNDARY_BIT = 128;
+	public static final short BOUNDARY_TOP_BIT = 256;
+	public static final short TERRAIN_BIT = 512;
+	public static final short TERRAIN_TOP_BIT = 1024;
+	public static final short FLAG_BIT = 2048;
+	public static final short FLAG_BORDER_BIT = 2048;
 	
 	public static final int PLAYER_WIDTH = 32;
 	public static final int PLAYER_HEIGHT = 32;
@@ -57,7 +64,7 @@ public class Constants {
 	public static final String COIN_IMG_PATH = "image_entity/coin.png";
 	public static final String TERRAIN_IMG_PATH = "image_entity/terrain.png"; 
 	
-	public static final String EARTH_MAP_PATH = "map/WorldMap.tmx";
+	public static final String EARTH_MAP_PATH = "map/earth.tmx";
 	public static final String MARS_MAP_PATH = "";
 	public static final String VENUS_MAP_PATH = "";
 }

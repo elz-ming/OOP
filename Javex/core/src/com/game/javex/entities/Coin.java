@@ -7,10 +7,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class Reward extends Entity{
+public class Coin extends Entity{
 	private boolean collected = false;
 
-	public Reward(World world, Vector2 position) {
+	public Coin(World world, Vector2 position) {
 		super(world, position);
 		this.width = Constants.COIN_WIDTH;;
     	this.height = Constants.COIN_HEIGHT;;
@@ -35,7 +35,7 @@ public class Reward extends Entity{
 //		fixtureDef for the body
     	shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.filter.categoryBits = Constants.REWARD_BIT;
+		fixtureDef.filter.categoryBits = Constants.COIN_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		

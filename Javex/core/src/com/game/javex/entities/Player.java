@@ -42,7 +42,7 @@ public class Player extends Entity{
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
-		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.REWARD_BIT;
+		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.COIN_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the bottom for jumping on terrain
