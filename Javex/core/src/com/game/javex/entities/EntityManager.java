@@ -27,8 +27,6 @@ public class EntityManager {
 	private Enemy boss;
 	private Array<Enemy> enemies;
 
-	
-	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
