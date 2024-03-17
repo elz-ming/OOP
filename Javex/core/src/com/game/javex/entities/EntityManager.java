@@ -1,5 +1,7 @@
 package com.game.javex.entities;
 
+import javax.crypto.SecretKey;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
@@ -14,6 +16,7 @@ import com.game.javex.inouts.InputManager;
 public class EntityManager {
 	private World world;
 	private TiledMap map;
+	private String selectedWorld;
 	
 	private Array<Terrain> terrains;
 	private Array<Boundary> boundaries;
@@ -33,9 +36,10 @@ public class EntityManager {
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
-	public EntityManager(World world, TiledMap map, InputManager inputManager) {
+	public EntityManager(World world, TiledMap map, String selectedWorld, InputManager inputManager) {
 		this.world = world;
 		this.map = map;
+		this.selectedWorld = selectedWorld;
 		this.inputManager = inputManager;
 		this.enemies = new Array<>();
 		this.terrains = new Array<>();
@@ -93,78 +97,49 @@ public class EntityManager {
             createFlagBorder(position, width, height);
         }
 		
-		// Create Instruction Signboard
+		// Create INSTruction Signboard
 		int signboard_counter = 1;
 		for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
 		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
 		    Vector2 position = new Vector2(rect.getX(), rect.getY());
 		    int width = (int)rect.getWidth();
 		    int height = (int)rect.getHeight();
 
-		    // Generate a unique identifier based on the position
-		    String identifier = "signboard_" + signboard_counter++;
+		    // Generate a unique identifier
+		    int identifier = signboard_counter++;
 
 		    // Now pass this identifier when creating a new SignBoard
-		    createSignboard(position, width, height, identifier);
+		    createSignboard(position, width, height, selectedWorld, identifier);
 		}
 		
-		// Create Information Signboard
+		// Create INFOrmation Signboard
 		for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
 		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
-
 		    Vector2 position = new Vector2(rect.getX(), rect.getY());
 		    int width = (int)rect.getWidth();
 		    int height = (int)rect.getHeight();
 
-		    // Generate a unique identifier based on the position
-		    String identifier = "signboard_" + signboard_counter++;
+		    // Generate a unique identifier
+		    int identifier = signboard_counter++;
 
 		    // Now pass this identifier when creating a new SignBoard
-		    createSignboard(position, width, height, identifier);
+		    createSignboard(position, width, height, selectedWorld, identifier);
 		}
-
+			
 //		Create TreasureChest
+		int treasureChest_counter = 1;
 		if (map != null && map.getLayers().get(7) != null) {
-		    int treasureChestCounter = 1;
-
 		    for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
-		        Gdx.app.log("TreasureChest", "Creating treasure chest");
 		        Rectangle rect = ((RectangleMapObject) object).getRectangle();
 		        Vector2 position = new Vector2(rect.getX(), rect.getY());
 		        int width = (int) rect.getWidth();
 		        int height = (int) rect.getHeight();
-		        String identifier = "treasureChest_" + treasureChestCounter++;
-		        String question = "";
-		        String[] answers = new String[4];
-		        int correctAnswerIndex = 0;
-
-		        // Set different questions and answers for each chest
-		        switch (treasureChestCounter) {
-		            case 1:
-		                question = "What is the capital of France?";
-		                answers = new String[]{"Paris", "London", "Berlin", "Madrid"};
-		                correctAnswerIndex = 0;
-		                break;
-		            case 2:
-		                question = "What is the largest planet in our solar system?";
-		                answers = new String[]{"Jupiter", "Saturn", "Earth", "Mars"};
-		                correctAnswerIndex = 0;
-		                break;
-		            case 3:
-		                question = "What is the main ingredient in sushi?";
-		                answers = new String[]{"Rice", "Noodles", "Bread", "Pasta"};
-		                correctAnswerIndex = 0;
-		                break;
-		            default:
-		                // Default question and answers
-		                question = "Default question";
-		                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-		                correctAnswerIndex = 0;
-		                break;
-		        }
-
-		        createTreasureChest(position, width, height, identifier, question, answers, correctAnswerIndex);
+		        
+		        // Generate a unique identifier
+		        int identifier = treasureChest_counter++;
+		        
+		     // Now pass this identifier when creating a new TreasureChest
+		        createTreasureChest(position, width, height, selectedWorld, identifier);
 		    }
 		}
 
@@ -197,8 +172,6 @@ public class EntityManager {
         }
 	}
 	
-	
-	
 	public void createTerrain(Vector2 position, int width, int height) {
 		terrains.add(new Terrain(world, position, width, height));
 	}
@@ -215,14 +188,12 @@ public class EntityManager {
 		flagBorders.add(new FlagBorder(world, position, width, height));
 	}
 	
-	public void createSignboard(Vector2 position, int width, int height, String identifier) {
-		Gdx.app.log("Signboard Creation", "Creating signboard with ID: " + identifier);
-	    signboards.add(new Signboard(world, position, width, height, identifier));
+	public void createSignboard(Vector2 position, int width, int height, String selectedWorld, int identifier) {
+	    signboards.add(new Signboard(world, position, width, height, selectedWorld, identifier));
 	}
 	
-	public void createTreasureChest(Vector2 position, int width, int height, String identifier, String question, String[] answers, int correctAnswerIndex) {
-		Gdx.app.log("treasurechest Creation", "Creating treasurechest with ID: " + identifier);
-	    treasureChests.add(new TreasureChest(world, position, width, height, identifier, question, answers, correctAnswerIndex));
+	public void createTreasureChest(Vector2 position, int width, int height, String selectedWorld, int identifier) {
+	    treasureChests.add(new TreasureChest(world, position, width, height, selectedWorld, identifier));
 	}
 	
 	public void createPlayer(Vector2 position) {
@@ -307,6 +278,10 @@ public class EntityManager {
 	
 	public Player getPlayer() {
 	    return this.player;
+	}
+	
+	public Array<Signboard> getSignboards() {
+	    return signboards;
 	}
 	
 	public Array<TreasureChest> getTreasureChests() {

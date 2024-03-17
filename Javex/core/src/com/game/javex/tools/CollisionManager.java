@@ -16,9 +16,11 @@ import com.game.javex.entities.TreasureChest;;
 public class CollisionManager implements ContactListener{
 	private boolean playerOnSignboard = false;
 	private String currentSignboardIdentifier = null;
+	
+	private boolean playerOnChest = false; 
 	private String currentTreasureChestIdentifier;
 	private String currentChestIdentifier = null;
-	 private boolean playerOnChest = false;
+	
 	
 //	For contacts would affect the physics (velocity and acceleration
 	@Override
@@ -28,6 +30,8 @@ public class CollisionManager implements ContactListener{
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
 		Player player;
+		Signboard signboard;
+		TreasureChest treasureChest;
 		
 		switch (collisionDef) {         
 //	        #1 PLAYER &&& ENEMY
@@ -83,39 +87,24 @@ public class CollisionManager implements ContactListener{
 //        	Popup Signboard
 			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
                 if (fixA.getFilterData().categoryBits == Constants.SIGNBOARD_BIT) {
-                	currentSignboardIdentifier = (String)fixA.getUserData();
+                	signboard = (Signboard)fixA.getUserData();
                 } else {
-                	currentSignboardIdentifier = (String)fixB.getUserData();
+                	signboard = (Signboard)fixB.getUserData();
                 }
-				playerOnSignboard = true;
+                signboard.setVisible(true);
                 break;
                 
 //          #5 PLAYER &&& TREASURE CHEST
 //          Popup Quiz
 			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
-	           
-	            TreasureChest chest;
-
-	            if (fixA.getUserData() instanceof Player) {
-	                player = (Player) fixA.getUserData();
-	                chest = (TreasureChest) fixB.getUserData();
+	            if (fixA.getFilterData().categoryBits == Constants.TREASURE_CHEST_BIT) {
+	                treasureChest = (TreasureChest) fixA.getUserData();
 	            } else {
-	                player = (Player) fixB.getUserData();
-	                chest = (TreasureChest) fixA.getUserData();
+	            	treasureChest = (TreasureChest) fixB.getUserData();
 	            }
-
-	            if (!player.isEngagedWithChest()) {
-	                player.setEngagedWithChest(true);
-	                Gdx.app.log("TreasureChest", "engaged treasure chest");
-	                currentChestIdentifier = chest.getIdentifier();
-	                // Add your code to push the QuizScene here.
-	            }
+	            treasureChest.setSolving(true);
 	            break;
 	            
-	            
-
-			
-
 //          #9 ENEMY &&& TERRAIN
 //          Enemy move in opposite direction
 			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
@@ -144,26 +133,27 @@ public class CollisionManager implements ContactListener{
 		Fixture fixB = contact.getFixtureB();
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
-		 Player player;
+		 Signboard signboard;
+		 TreasureChest treasureChest;
 		
 		 switch (collisionDef) { 
-		 	case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
-				playerOnSignboard = false;
-				currentSignboardIdentifier = null;
-		        break;
+		 	 case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+				if (fixA.getFilterData().categoryBits == Constants.SIGNBOARD_BIT) {
+					signboard = (Signboard)fixA.getUserData();
+				} else {
+					signboard = (Signboard)fixB.getUserData();
+				}
+				signboard.setVisible(false);
+				break;
 		        
 		       
-			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
-				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-		        	player = (Player)fixA.getUserData();
-		        } else {
-		        	player = (Player)fixB.getUserData();
-		        }
-				player.setSolving(false);
-	            if (currentChestIdentifier != null) {
-	                player.setEngagedWithChest(false);
-	                currentChestIdentifier = null;
+		 	 case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+	            if (fixA.getFilterData().categoryBits == Constants.TREASURE_CHEST_BIT) {
+	                treasureChest = (TreasureChest) fixA.getUserData();
+	            } else {
+	            	treasureChest = (TreasureChest) fixB.getUserData();
 	            }
+	            treasureChest.setResetSolving(true);
 	            break;
 		}
 	}		

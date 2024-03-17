@@ -12,20 +12,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
+import com.game.javex.entities.TreasureChest;
 import com.game.javex.inouts.InputManager;
 import com.game.javex.inouts.OutputManager;
 
 
 public class QuizScene extends Scene {
+	private TreasureChest treasureChest;
+	
+	private String question;
+	private String[] answers;
+    private int correctAnswerIndex;
+	
     private Label questionLabel;
     private TextButton[] answerButtons;
-    private int correctAnswerIndex;
     private int currentButtonIndex = 0;
+    
     private boolean answerSelected = false;
 
-    public QuizScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String question, String[] answers, int correctAnswerIndex) {
+    public QuizScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, TreasureChest treasureChest) {
         super(sceneManager, inputManager, outputManager);
-        this.correctAnswerIndex = correctAnswerIndex;
+        
+        this.treasureChest = treasureChest;
+        
+        this.question = treasureChest.getQuestion();
+        this.answers = treasureChest.getAnswers();
+        this.correctAnswerIndex = treasureChest.getCorrectAnswerIndex();
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
@@ -82,6 +94,7 @@ public class QuizScene extends Scene {
     protected void handleInput() {
         if (answerSelected) {
             if (inputManager.isEnterPressed()) {
+            	treasureChest.setSolving(false);
                 sceneManager.pop();
             }
             return;

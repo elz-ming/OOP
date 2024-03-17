@@ -26,6 +26,7 @@ import com.game.javex.Constants;
 //import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
 import com.game.javex.entities.Player;
+import com.game.javex.entities.Signboard;
 import com.game.javex.entities.TreasureChest;
 import com.game.javex.inouts.*;
 //import com.game.javex.tools.AiControlManager;
@@ -141,7 +142,7 @@ public class PlayScene extends Scene {
 		spriteBatch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
-		entityManager = new EntityManager(world, map, inputManager);
+		entityManager = new EntityManager(world, map, selectedWorld, inputManager);
 		initialize();
 		Player player = entityManager.getPlayer();
 //		Enemy boss = entityManager.getBoss();
@@ -213,61 +214,33 @@ public class PlayScene extends Scene {
 	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 	    
-	    String signboardId = collisionManager.getCurrentSignboardIdentifier();
-	    if (signboardId != null) {
-	  
-	        signboardText.setText(getTextForSignboard(signboardId));
+	    
+	    Boolean signBoardShow = false;
+	    for (Signboard signboard:entityManager.getSignboards()) {
+	    	if (signboard.getVisible()) {
+	    		signboardText.setText(signboard.getContent());
+				signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20);
+		        signboardBackground.setPosition(signboardText.getX() - (signboardBackground.getWidth() - signboardText.getWidth()) / 2, 
+		                                        signboardText.getY() - (signboardBackground.getHeight() - signboardText.getHeight()) / 2);
+		        signBoardShow = true;
+		        break;
+	    	}  		
+	    }
+	    
+	    if (signBoardShow) {
 	        signboardText.setVisible(true);
-
-	        
-	        signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20);
-	        signboardBackground.setPosition(signboardText.getX() - (signboardBackground.getWidth() - signboardText.getWidth()) / 2, 
-	                                        signboardText.getY() - (signboardBackground.getHeight() - signboardText.getHeight()) / 2);
 	        signboardBackground.setVisible(true);
 	    } else {
-	        signboardText.setVisible(false);
+	    	signboardText.setVisible(false);
 	        signboardBackground.setVisible(false);
 	    }
 	    
-	    
-	    
-	    String currentTreasureChestIdentifier = collisionManager.getCurrentTreasureChestIdentifier();
-	    if (currentTreasureChestIdentifier != null) {
-	        for (TreasureChest chest : entityManager.getTreasureChests()) {
-	            if (chest.getIdentifier().equals(currentTreasureChestIdentifier)) {
-	                String question = chest.getQuestion();
-	                String[] answers = chest.getAnswers();
-	                int correctAnswerIndex = chest.getCorrectAnswerIndex();
-	                sceneManager.push(new QuizScene(sceneManager, inputManager, outputManager, question, answers, correctAnswerIndex));
-	                Gdx.app.log("TreasureChest", "pushing scene for chest: " + chest.getIdentifier());
-	                break;
-	            }
-	        }
-	    }
-	}
-
-	
-	private String getTextForSignboard(String signboardId) {
-	    if (signboardId == null) {
-	        return "Signboard ID is null"; // Or handle as you see fit
-	    }
-	    
-	    // Use a switch statement or if-else blocks to determine the text for each signboard
-	    switch (signboardId) {
-	        case "signboard_1":
-	            return "Text for the first signboard.";
-	        case "signboard_2":
-	            return "Active plate tectonics shape the planet's surface, forming mountains,\n"
-	            		+ "causing earthquakes, and renewing the crust.";
-	        case "signboard_3":
-	            return "The atmosphere contains a unique mix of gases crucial for life, \n"
-	            		+ "including oxygen and nitrogen.";
-	        case "signboard_4":
-	        	return "Earth supports diverse ecosystems, from rainforests to deserts, \n"
-	        			+ "harboring millions of different life forms.";
-	        // Add more cases as needed for additional signboards
-	        default:
-	            return ""; // Fallback text for an unknown signboard ID
+	    for (TreasureChest treasureChest:entityManager.getTreasureChests()) {
+	    	if (treasureChest.getSolving() && treasureChest.getResetSolving()) {
+	    		treasureChest.setResetSolving(false);
+	    		sceneManager.push(new QuizScene(sceneManager, inputManager, outputManager, treasureChest));
+		        break;
+	    	}  		
 	    }
 	}
 	@Override
