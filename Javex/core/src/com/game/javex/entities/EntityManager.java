@@ -180,7 +180,8 @@ public class EntityManager {
 	public void update(float delta) {
 		if (player != null) {
 			player.update(delta);
-			System.out.printf("%b %b \n", player.getSolving(), player.getResetSolving());
+			System.out.println(player.getReading());
+//			System.out.printf("%b %b \n", player.getSolving(), player.getResetSolving());
 		}
 		
 		if (boss != null) {

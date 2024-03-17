@@ -150,7 +150,7 @@ public class CollisionManager implements ContactListener{
   				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                 	player = (Player)fixA.getUserData();
                 } else {
-                	player = (Player)fixA.getUserData();
+                	player = (Player)fixB.getUserData();
                 }
   				player.setSolving(false);
   				break;
