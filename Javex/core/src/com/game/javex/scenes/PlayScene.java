@@ -78,7 +78,6 @@ public class PlayScene extends Scene {
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
-            countdownTimer = 45;
             mapString = Constants.EARTH_MAP_PATH;
             break;
             
@@ -87,7 +86,7 @@ public class PlayScene extends Scene {
             audioPath = Constants.MARS_AUDIO_PATH;
             backgroundImagePath = Constants.MARS_IMG_PATH;
             cameraZoomValue = 0.5f;
-            countdownTimer = 30;
+            mapString = Constants.EARTH_MAP_PATH;
             break;
             
         case "Venus":
@@ -95,18 +94,17 @@ public class PlayScene extends Scene {
             audioPath = Constants.VENUS_AUDIO_PATH;
             backgroundImagePath = Constants.VENUS_IMG_PATH;
             cameraZoomValue = 0.6f;
-            countdownTimer = 15;
+            mapString = Constants.EARTH_MAP_PATH;
             break;
             
         default:
             gravity = new Vector2(0, -10f); // Default to Earth's gravity
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
-            countdownTimer = 45;
+            cameraZoomValue = 0.4f;
+            mapString = Constants.EARTH_MAP_PATH;
             break;
     	}
-    	
-    	
     	
     	
     	// Play music
