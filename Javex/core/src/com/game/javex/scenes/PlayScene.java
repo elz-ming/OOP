@@ -237,15 +237,15 @@ public class PlayScene extends Scene {
 	    
 	    // Use a switch statement or if-else blocks to determine the text for each signboard
 	    switch (signboardId) {
-	        case "signboard_800.0_544.0":
+	        case "signboard_1":
 	            return "Text for the first signboard.";
-	        case "signboard_1376.0_416.0":
+	        case "signboard_2":
 	            return "Active plate tectonics shape the planet's surface, forming mountains,\n"
 	            		+ "causing earthquakes, and renewing the crust.";
-	        case "signboard_448.0_128.0":
+	        case "signboard_3":
 	            return "The atmosphere contains a unique mix of gases crucial for life, \n"
 	            		+ "including oxygen and nitrogen.";
-	        case "signboard_128.0_64.0":
+	        case "signboard_4":
 	        	return "Earth supports diverse ecosystems, from rainforests to deserts, \n"
 	        			+ "harboring millions of different life forms.";
 	        // Add more cases as needed for additional signboards
