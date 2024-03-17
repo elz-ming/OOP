@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-//import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -37,9 +39,10 @@ public class PlayScene extends Scene {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	
-//	//	For debug purposes
-//	private Box2DDebugRenderer b2dr;
+	//	For debug purposes
+	private Box2DDebugRenderer b2dr;
 	
+//	Managers to help structure the game
 	private EntityManager entityManager;
 	private PlayerControlManager playerControlManager;
 //	private AiControlManager aiControlManager;
@@ -50,8 +53,12 @@ public class PlayScene extends Scene {
 	private Vector2 gravity;
 	private String audioPath;
 	private String backgroundImagePath;
+	private String mapString;
 	private float cameraZoomValue;
 	private int countdownTimer;
+	
+	private boolean win;
+	private boolean lose;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
@@ -62,11 +69,12 @@ public class PlayScene extends Scene {
     	
     	switch (selectedWorld) {
         case "Earth":
-            gravity = new Vector2(0, -15f);
+            gravity = new Vector2(0, -10f);
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
             countdownTimer = 45;
+            mapString = Constants.EARTH_MAP_PATH;
             break;
             
         case "Mars":
@@ -112,14 +120,15 @@ public class PlayScene extends Scene {
         frontStage.addActor(hudManager.getTable());
         
 		camera = new OrthographicCamera();
-		port = new FitViewport(Constants.V_WIDTH /Constants.PPM, Constants.V_HEIGHT /Constants.PPM, camera);
+		port = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
 		
 		mapLoader = new TmxMapLoader();
-		map = mapLoader.load("levels/WorldMap.tmx");
+		map = mapLoader.load(mapString);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
-		camera.position.set(port.getWorldWidth() / 2, port.getWorldHeight() / 2, 0);
+		camera.position.set(Constants.VIEWPORT_WIDTH /2, Constants.VIEWPORT_HEIGHT /2, 0);
 		camera.zoom = cameraZoomValue;
+		camera.update();
 		world = new World(gravity, true);
 	    
 		spriteBatch = new SpriteBatch();
@@ -140,22 +149,31 @@ public class PlayScene extends Scene {
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
 
-////	//	For debug purposes
-//		b2dr = new Box2DDebugRenderer();
+//		For debug purposes
+		b2dr = new Box2DDebugRenderer();
+		
+//		Initialize win and lose booleans
+		win = false;
+		lose = false;
 	}
 	
 	@Override
 	public void update(float dt) {
-		handleInput();
-		world.step(1 /60f, 6, 2);
+	    handleInput();
+	    world.step(1 / 60f, 6, 2);
 
 	    cameraUpdate();
 	    playerControlManager.update(dt);
-//	    aiControlManager.update(dt);
 	    entityManager.update(dt);
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
-		
-	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) { // end logic to be improved in the future
+
+	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) {
+	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    }
+
+	    long currentTime = TimeUtils.millis();
+	    long elapsedTime = hudManager.getElapsedTime();
+	    if (elapsedTime <= 0) {
 	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 	}
@@ -176,10 +194,12 @@ public class PlayScene extends Scene {
 		
 		
 		frontStage.draw();
-//	//	For debug purposes
-//		if (b2dr != null && world != null && camera != null) {
-//			b2dr.render(world, camera.combined.scl(Constants.PPM));
-//		}
+		
+		
+	//	For debug purposes
+		if (b2dr != null && world != null && camera != null) {
+			b2dr.render(world, camera.combined.scl(Constants.PPM));
+		}
 	}
 	
 	@Override
@@ -208,9 +228,9 @@ public class PlayScene extends Scene {
 		
 	    camera = null;
 	    
-//		if (b2dr != null) {
-//	        b2dr.dispose();
-//	    }
+		if (b2dr != null) {
+	        b2dr.dispose();
+	    }
 	}
 
 	private void initialize() {
@@ -240,10 +260,18 @@ public class PlayScene extends Scene {
 
 	
 	private void cameraUpdate() {
-		Vector3 position = camera.position;
-		position.x = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
-		position.y = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
-		camera.position.set(position);
+		float playerX = entityManager.getPlayer().getBody().getPosition().x *Constants.PPM;
+		float minX = (Constants.VIEWPORT_WIDTH +32) *cameraZoomValue /2;
+		float maxX = Constants.WORLD_WIDTH - Constants.VIEWPORT_WIDTH *cameraZoomValue /2;
+		float cameraX = MathUtils.clamp(playerX, minX, maxX);
+		
+		float playerY = entityManager.getPlayer().getBody().getPosition().y *Constants.PPM;
+		float minY = Constants.VIEWPORT_HEIGHT *cameraZoomValue /2;
+		float maxY = Constants.WORLD_HEIGHT - Constants.VIEWPORT_HEIGHT *cameraZoomValue /2;
+		float cameraY = MathUtils.clamp(playerY, minY, maxY);
+	
+		camera.position.set(cameraX, cameraY, 0);
+		camera.zoom = cameraZoomValue;
 		camera.update();
 		renderer.setView(camera);
 	}

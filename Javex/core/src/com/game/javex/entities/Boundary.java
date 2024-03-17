@@ -3,20 +3,21 @@ package com.game.javex.entities;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class Terrain extends Entity{
-    public Terrain(World world, Vector2 position, int width, int height) {
+public class Boundary extends Entity{
+
+	public Boundary(World world, Vector2 position, int width, int height) {
     	super(world, position);
     	this.width = width;
     	this.height = height;
     	createBody();
     }
-    
-    @Override
+
+	@Override
 	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
@@ -36,8 +37,8 @@ public class Terrain extends Entity{
 		fixtureDef.density = 0;
 		fixtureDef.friction = 0;
 		fixtureDef.restitution = 0;
-		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT |Constants.ENEMY_BIT;
+		fixtureDef.filter.categoryBits = Constants.BOUNDARY_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the bottom for jumping on terrain
@@ -45,11 +46,13 @@ public class Terrain extends Entity{
 				   new Vector2((width) /2 /Constants.PPM, height /2 /Constants.PPM)
 		);
 		fixtureDef.shape = top;
-		fixtureDef.filter.categoryBits = Constants.TERRAIN_TOP_BIT;
+		fixtureDef.filter.categoryBits = Constants.BOUNDARY_TOP_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
     	
 //		resource management
     	shape.dispose();
     	top.dispose();
-    }
+		
+	}
+
 }

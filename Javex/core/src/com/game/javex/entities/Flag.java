@@ -2,24 +2,25 @@ package com.game.javex.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class Reward extends Entity{
-	private boolean collected = false;
+public class Flag extends Entity{
 
-	public Reward(World world, Vector2 position) {
+	public Flag(World world, Vector2 position, int width, int height) {
 		super(world, position);
-		this.width = Constants.COIN_WIDTH;;
-    	this.height = Constants.COIN_HEIGHT;;
-    	this.imgPath = Constants.COIN_IMG_PATH;
+    	this.width = width;
+    	this.height = height;
+    	this.imgPath = Constants.FLAG_IMG_PATH;
     	
-		createBody();
-		createSprite();
-    }
-	
+    	createBody();
+    	createSprite();
+	}
+
+	@Override
 	protected void createBody() {
 //		initialize bodyDef and fixtureDef
 		BodyDef bodyDef = new BodyDef();
@@ -33,21 +34,14 @@ public class Reward extends Entity{
     	this.body = world.createBody(bodyDef);
     	
 //		fixtureDef for the body
-    	shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
+		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.filter.categoryBits = Constants.REWARD_BIT;
+		fixtureDef.density = 0;
+		fixtureDef.friction = 0;
+		fixtureDef.restitution = 0;
+		fixtureDef.filter.categoryBits = Constants.FLAG_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
-		
-//		resource management
-    	shape.dispose();	
-    }
-	
-	public void collect() {
-        collected = true;
-    }
-	
-	public boolean isCollected() {
-		return collected;
 	}
+
 }
