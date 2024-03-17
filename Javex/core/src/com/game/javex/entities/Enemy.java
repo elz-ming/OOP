@@ -46,8 +46,8 @@ public class Enemy extends Entity {
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the head for jumping on enemies
-		head.set(new Vector2((-width /2) /Constants.PPM, (height /2 +4) /Constants.PPM), 
-				 new Vector2((width /2) /Constants.PPM, (height /2 +4) /Constants.PPM)
+		head.set(new Vector2((-width /2 -4) /Constants.PPM, (height /2 +4) /Constants.PPM), 
+				 new Vector2((width /2 +4) /Constants.PPM, (height /2 +4) /Constants.PPM)
 		);
 		fixtureDef.shape = head;
 		fixtureDef.restitution = 1.0f;

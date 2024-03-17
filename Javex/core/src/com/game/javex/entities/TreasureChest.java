@@ -178,4 +178,12 @@ public class TreasureChest extends Entity{
     public boolean getResetSolving() {
 		return resetSolving;
 	}
+    
+    public void setSolved(boolean solved) {
+    	this.solved = solved;
+    }
+    
+    public boolean getSolved() {
+		return solved;
+	}
 }

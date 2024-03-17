@@ -33,20 +33,34 @@ public class CollisionManager implements ContactListener{
 		Signboard signboard;
 		TreasureChest treasureChest;
 		
-		switch (collisionDef) {         
+		Enemy enemy_1;
+		Enemy enemy_2;
+		Enemy enemy_3;
+		
+		switch (collisionDef) {
+		
+			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
+	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT) {
+	            	enemy_1 = (Enemy) fixA.getUserData();
+	            }
+	            else {
+	            	enemy_1 = (Enemy) fixB.getUserData();
+	            }
+	            enemy_1.setKilled();
+	            break;
+		
 //	        #1 PLAYER &&& ENEMY
 //	        Lose
 			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
-				Enemy enemy_1;
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
 	            	player = (Player)fixA.getUserData();
-	            	enemy_1 = (Enemy)fixB.getUserData();
+	            	enemy_2 = (Enemy)fixB.getUserData();
 	            } else {
 	            	player = (Player)fixB.getUserData();
-	            	enemy_1 = (Enemy)fixA.getUserData();
+	            	enemy_2 = (Enemy)fixA.getUserData();
 	            }
 	            
-	            if (!enemy_1.getKilled()) {
+	            if (!enemy_2.getKilled()) {
 	            	player.setKilled();
 	            }
 	            break;
@@ -69,6 +83,7 @@ public class CollisionManager implements ContactListener{
                 	player = (Player)fixB.getUserData();
                 }
                 player.setKilled();
+                
                 break;
                          
 //          #3 PLAYER &&& FLAG
@@ -77,7 +92,7 @@ public class CollisionManager implements ContactListener{
                 if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
                 	player = (Player)fixA.getUserData();
                 } else {
-                	player = (Player)fixA.getUserData();
+                	player = (Player)fixB.getUserData();
                 }
                 player.setWon();
                 break;
@@ -108,14 +123,14 @@ public class CollisionManager implements ContactListener{
 //          #9 ENEMY &&& TERRAIN
 //          Enemy move in opposite direction
 			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
-				Enemy enemy;
+				
                 // Determine which fixture is the enemy
                 if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
-                	enemy = ((Enemy)fixA.getUserData());
+                	enemy_3 = ((Enemy)fixA.getUserData());
                 } else {
-                	enemy = ((Enemy)fixB.getUserData());
+                	enemy_3 = ((Enemy)fixB.getUserData());
                 }
-                enemy.moveOpposite();
+                enemy_3.moveOpposite();
                 break;
     		
 //			#10 ENEMY &&& ENEMY
@@ -182,14 +197,6 @@ public class CollisionManager implements ContactListener{
 	//		#1 PLAYER &&& ENEMY HEAD
 	//		Enemy disappears, score increases
 			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
-				Enemy enemy;
-	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT) {
-	            	enemy = (Enemy) fixA.getUserData();
-	            }
-	            else {
-	            	enemy = (Enemy) fixB.getUserData();
-	            }
-	            enemy.setKilled();
 	            contact.setEnabled(false);
 	            break;
 	            

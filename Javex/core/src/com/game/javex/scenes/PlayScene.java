@@ -1,5 +1,7 @@
 package com.game.javex.scenes;
 
+import java.security.KeyStore.LoadStoreParameter;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -64,8 +66,7 @@ public class PlayScene extends Scene {
 	private Label signboardText;
 	private Image signboardBackground;
 	
-	private boolean win;
-	private boolean lose;
+	private Player player;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
 		// Using universal attribute across all scenes
@@ -144,7 +145,7 @@ public class PlayScene extends Scene {
 //		Initialize entityManager and create relevant entities in the game world
 		entityManager = new EntityManager(world, map, selectedWorld, inputManager);
 		initialize();
-		Player player = entityManager.getPlayer();
+		player = entityManager.getPlayer();
 //		Enemy boss = entityManager.getBoss();
 		
 //		Initialize playerControlManager and link the control to the main player
@@ -181,13 +182,6 @@ public class PlayScene extends Scene {
 		signboardBackground.setPosition(labelX - signboardBackground.getWidth() / 2, labelY - signboardBackground.getHeight() / 2); // Center the background behind the label
 		signboardBackground.setVisible(false); // Initially hide the background
 
-	    
-	    
-		
-//		Initialize win and lose booleans
-		win = false;
-		lose = false;
-		
 		frontStage.addActor(signboardBackground);
 		frontStage.addActor(signboardText); 
 	}
@@ -204,17 +198,17 @@ public class PlayScene extends Scene {
 	    entityManager.update(dt);
 	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
 
-	    if (entityManager.getTotalEnemies() == 0 && entityManager.getTotalCoins() == 0) {
-	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+//	    Lose Condition
+	    long elapsedTime = hudManager.getElapsedTime();
+	    if ((elapsedTime <= 0) || (player.getKilled())) {
+	    	sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    }
+	    
+//	    Win Condition
+	    if (player.getWon()) {
+	    	sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
 
-	    long currentTime = TimeUtils.millis();
-	    long elapsedTime = hudManager.getElapsedTime();
-	    if (elapsedTime <= 0) {
-	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
-	    }
-	    
-	    
 	    Boolean signBoardShow = false;
 	    for (Signboard signboard:entityManager.getSignboards()) {
 	    	if (signboard.getVisible()) {
@@ -273,8 +267,6 @@ public class PlayScene extends Scene {
 	        try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
 	    } 
 	}
-	
-	
 	
 	@Override
 	public void dispose() {

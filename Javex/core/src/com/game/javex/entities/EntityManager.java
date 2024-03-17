@@ -24,17 +24,15 @@ public class EntityManager {
 	private Array<FlagBorder> flagBorders;
 	private Array<Signboard> signboards;
 	private Array<TreasureChest> treasureChests;
-	
 	private Array<Coin> coins;
-//	private Array<Letter> letters;
 	
 	private Player player;
-	private Enemy boss;
 	private Array<Enemy> enemies;
 	private InputManager inputManager;
 	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
+	private int treasureChestSolved = 0;
 	
 	public EntityManager(World world, TiledMap map, String selectedWorld, InputManager inputManager) {
 		this.world = world;
@@ -143,8 +141,6 @@ public class EntityManager {
 		    }
 		}
 
-		
-		
 		//		Create Coin
 		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -211,18 +207,24 @@ public class EntityManager {
 	public void update(float delta) {
 		if (player != null) {
 			player.update(delta);
-//			System.out.println(player.getReading());
-//			System.out.printf("%b %b \n", player.getSolving(), player.getResetSolving());
 		}
 		
-		if (boss != null) {
-			boss.update(delta);
-            if (boss.getKilled()) {
-                world.destroyBody(boss.getBody());
-                boss = null; 
-                enemyKilled(); // Remove the boss if it's dead
-            }
-        }
+		int solved = 0;
+		for (TreasureChest treasureChest : treasureChests) {
+			if (treasureChest.getSolved()) {
+				solved++;
+			}
+		}
+		treasureChestSolved = solved;
+		
+		if (treasureChestSolved == treasureChests.size) {
+			Array<FlagBorder> flagBorderToRemove = new Array<>();
+			for (FlagBorder flagBorder : flagBorders) {
+				world.destroyBody(flagBorder.getBody());
+				flagBorderToRemove.add(flagBorder);
+			}
+			flagBorders.removeAll(flagBorderToRemove, true);
+		}
 		
 		Array<Enemy> enemyToRemove = new Array<>();
 		for (Enemy enemy : enemies) {
@@ -287,11 +289,14 @@ public class EntityManager {
 	public Array<TreasureChest> getTreasureChests() {
 	    return treasureChests;
 	}
-
 	
-	public Enemy getBoss() {
-	    return this.boss;
-	}
+	public int getTreasureChestsSolved() {
+		return treasureChestSolved;
+	} 
+	
+	public int getTreasureChestsTotal() {
+		return treasureChests.size;
+	} 
 	
 	public Array<Enemy> getEnemies() {
 		return this.enemies;
@@ -304,10 +309,6 @@ public class EntityManager {
     public int getEnemiesKilled() {
         return enemiesKilled;
     }
-    
-    public int getTotalEnemies() {
-		return enemies.size + (boss != null ? 1 : 0);
-	 } 
 	    
 	public void coinsCollected() {
 	    coinsCollected++;
@@ -316,8 +317,4 @@ public class EntityManager {
 	public int getCoinsCollected() {
 	    return coinsCollected;
 	}
-	 
-	 public int getTotalCoins() {
-		return coins.size;
-	 } 
 }
