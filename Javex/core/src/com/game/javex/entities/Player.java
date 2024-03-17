@@ -70,7 +70,7 @@ public class Player extends Entity{
 	}
 	
 	public void jump(float delta) {
-		body.setLinearDamping(0f);
+		body.setLinearDamping(2f);
         body.applyLinearImpulse(new Vector2(0, 1.2f), body.getWorldCenter(), true); // Adjust impulse as needed
         canJump = false; // Reset jump ability until player touches the ground again
     }

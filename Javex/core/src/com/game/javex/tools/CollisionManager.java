@@ -13,18 +13,15 @@ import com.game.javex.entities.SignBoard;
 import com.game.javex.entities.Coin;
 
 public class CollisionManager implements ContactListener{
-	private Fixture fixA;
-	private Fixture fixB;
-	private int collisionDef;
 	private boolean playerOnSignboard = false;
 	private String currentSignboardIdentifier = null;
 	
 //	For contacts would affect the physics (velocity and acceleration
 	@Override
 	public void beginContact(Contact contact) {
-		fixA = contact.getFixtureA();
-		fixB = contact.getFixtureB();
-		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		Fixture fixA = contact.getFixtureA();
+		Fixture fixB = contact.getFixtureB();
+		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
 		Player player;
 		
@@ -48,11 +45,12 @@ public class CollisionManager implements ContactListener{
 	        
 			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-	                ((Player)fixA.getUserData()).setCanJump(true);
-	            } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-	                ((Player)fixB.getUserData()).setCanJump(true);
+	            	player = (Player)fixA.getUserData();
+	            } else {
+	            	player = (Player)fixB.getUserData();
 	            }
-	            break;    
+	            player.setCanJump(true);
+	            break;
 	        
 //    		#2 PLAYER BOTTOM &&& BOUNDARY TOP
 //    	    Lose
@@ -80,12 +78,12 @@ public class CollisionManager implements ContactListener{
 //        	#4 PLAYER &&& SIGNBOARD
 //        	Popup Signboard
 			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-                	player = (Player)fixA.getUserData();
+                if (fixA.getFilterData().categoryBits == Constants.SIGNBOARD_BIT) {
+                	currentSignboardIdentifier = (String)fixA.getUserData();
                 } else {
-                	player = (Player)fixB.getUserData();
+                	currentSignboardIdentifier = (String)fixB.getUserData();
                 }
-                player.setReading(true);
+				playerOnSignboard = true;
                 break;
                 
 //          #5 PLAYER &&& TREASURE CHEST
@@ -119,79 +117,54 @@ public class CollisionManager implements ContactListener{
 	            ((Enemy)fixA.getUserData()).moveOpposite();
 	            ((Enemy)fixB.getUserData()).moveOpposite();
 		        break;
-		  
-		        
-			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
-				 if (collisionDef == (Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT)) {
-				        if (fixA.getFilterData().categoryBits == Constants.SIGNBOARD_BIT && fixA.getUserData() instanceof String) {
-				            currentSignboardIdentifier = (String) fixA.getUserData();
-				        } else if (fixB.getFilterData().categoryBits == Constants.SIGNBOARD_BIT && fixB.getUserData() instanceof String) {
-				            currentSignboardIdentifier = (String) fixB.getUserData();
-				        }
-				        playerOnSignboard = true;
-				    }
-			break;
-		        
-		        
 		}
 	}
 	
 	@Override 
 	public void endContact(Contact contact) {
-		 Fixture fixA = contact.getFixtureA();
-		 Fixture fixB = contact.getFixtureB();
-		    
-		 if ((fixA.getUserData() instanceof String && fixB.getUserData() instanceof Player) ||
-			        (fixB.getUserData() instanceof String && fixA.getUserData() instanceof Player)) {
-			        playerOnSignboard = false;
-			        currentSignboardIdentifier = null;
-			    }
-	}
-	
-	public String getCurrentSignboardIdentifier() {
-	    return currentSignboardIdentifier;
-		fixA = contact.getFixtureA();
-		fixB = contact.getFixtureB();
-		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		Fixture fixA = contact.getFixtureA();
+		Fixture fixB = contact.getFixtureB();
+		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+
+		 Player player;
 		
-		Player player;
-		
-		switch (collisionDef) { 
-			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
+		 switch (collisionDef) { 
+		 	case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
+		 	case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
 				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
 					player = (Player)fixA.getUserData();
 				} else {
 					player = (Player)fixB.getUserData();
-	            }
+		        }
 				player.setCanJump(false);
-                break;
+		        break;
 			
-			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-                	player = (Player)fixA.getUserData();
-                } else {
-                	player = (Player)fixB.getUserData();
-                }
-                player.setReading(false);
-                break;
-                
-               
-  			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
-  				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-                	player = (Player)fixA.getUserData();
-                } else {
-                	player = (Player)fixB.getUserData();
-                }
-  				player.setSolving(false);
-  				break;
+		 	case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+				playerOnSignboard = false;
+				currentSignboardIdentifier = null;
+		        break;
+		        
+		       
+			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+		        	player = (Player)fixA.getUserData();
+		        } else {
+		        	player = (Player)fixB.getUserData();
+		        }
+				player.setSolving(false);
+				break; 
 		}
+	}		
+
+	public String getCurrentSignboardIdentifier() {
+	    return currentSignboardIdentifier;
 	}
 	
 	@Override 
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		fixA = contact.getFixtureA();
-		fixB = contact.getFixtureB();
-		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		Fixture fixA = contact.getFixtureA();
+		Fixture fixB = contact.getFixtureB();
+		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
 		Player player;
 		
@@ -238,6 +211,5 @@ public class CollisionManager implements ContactListener{
 	}
 	
 	@Override 
-	public void postSolve(Contact contact, ContactImpulse impulse) {
-	}
+	public void postSolve(Contact contact, ContactImpulse impulse) {}
 }
