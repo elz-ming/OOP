@@ -15,6 +15,7 @@ public class Player extends Entity{
 	private boolean reading = false;
 	private boolean solving = false;
 	private boolean resetSolving = true;
+	private boolean engagedWithChest = false;
 	
 	public Player(World world, Vector2 position) {
 		super(world, position);
@@ -114,6 +115,15 @@ public class Player extends Entity{
 	public boolean getResetSolving() {
 		return resetSolving;
 	}
+	
+	
+	 public void setEngagedWithChest(boolean engaged) {
+	        engagedWithChest = engaged;
+	    }
+
+	    public boolean isEngagedWithChest() {
+	        return engagedWithChest;
+	    }
 
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;

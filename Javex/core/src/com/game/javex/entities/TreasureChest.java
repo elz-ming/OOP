@@ -8,17 +8,46 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class TreasureChest extends Entity{
+	 private String identifier;
+	    private String question;
+	    private String[] answers;
+	    private int correctAnswerIndex;
 
-	public TreasureChest(World world, Vector2 position, int width, int height) {
+	public TreasureChest(World world, Vector2 position, int width, int height, String identifier, String question, String[] answers, int correctAnswerIndex) {
 		super(world, position);
 		this.width = width;
     	this.height = height;
     	this.imgPath = Constants.TREASURE_CHEST_IMG_PATH;
     	
+    	
+    	 this.identifier = identifier;
+         this.question = question;
+         this.answers = answers;
+         this.correctAnswerIndex = correctAnswerIndex;
+    	
     	createBody();
     	createSprite();
 	}
 
+	 public String getIdentifier() {
+	        return identifier;
+	    }
+
+	    public String getQuestion() {
+	        return question;
+	    }
+
+	    public String[] getAnswers() {
+	        return answers;
+	    }
+
+	    public int getCorrectAnswerIndex() {
+	        return correctAnswerIndex;
+	    }
+	    
+	
+	
+	
 	@Override
 	protected void createBody() {
 //		initialize bodyDef and fixtureDef

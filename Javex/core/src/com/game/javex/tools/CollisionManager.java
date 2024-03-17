@@ -11,10 +11,14 @@ import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
 import com.game.javex.entities.SignBoard;
 import com.game.javex.entities.Coin;
+import com.game.javex.entities.TreasureChest;;
 
 public class CollisionManager implements ContactListener{
 	private boolean playerOnSignboard = false;
 	private String currentSignboardIdentifier = null;
+	private String currentTreasureChestIdentifier;
+	private String currentChestIdentifier = null;
+	 private boolean playerOnChest = false;
 	
 //	For contacts would affect the physics (velocity and acceleration
 	@Override
@@ -88,14 +92,28 @@ public class CollisionManager implements ContactListener{
                 
 //          #5 PLAYER &&& TREASURE CHEST
 //          Popup Quiz
-  			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
-  				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-                	player = (Player)fixA.getUserData();
-                } else {
-                	player = (Player)fixB.getUserData();
-                }
-  				player.setSolving(true);
-  				break;
+			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+	           
+	            TreasureChest chest;
+
+	            if (fixA.getUserData() instanceof Player) {
+	                player = (Player) fixA.getUserData();
+	                chest = (TreasureChest) fixB.getUserData();
+	            } else {
+	                player = (Player) fixB.getUserData();
+	                chest = (TreasureChest) fixA.getUserData();
+	            }
+
+	            if (!player.isEngagedWithChest()) {
+	                player.setEngagedWithChest(true);
+	                Gdx.app.log("TreasureChest", "engaged treasure chest");
+	                currentChestIdentifier = chest.getIdentifier();
+	                // Add your code to push the QuizScene here.
+	            }
+	            break;
+	            
+	            
+
 			
 
 //          #9 ENEMY &&& TERRAIN
@@ -152,13 +170,25 @@ public class CollisionManager implements ContactListener{
 		        	player = (Player)fixB.getUserData();
 		        }
 				player.setSolving(false);
-				break; 
+	            if (currentChestIdentifier != null) {
+	                player.setEngagedWithChest(false);
+	                currentChestIdentifier = null;
+	            }
+	            break;
 		}
 	}		
 
 	public String getCurrentSignboardIdentifier() {
 	    return currentSignboardIdentifier;
 	}
+	
+	public String getCurrentTreasureChestIdentifier() {
+        return currentTreasureChestIdentifier;
+    }
+	
+	 public boolean isPlayerOnChest() {
+	        return playerOnChest;
+	    }
 	
 	@Override 
 	public void preSolve(Contact contact, Manifold oldManifold) {

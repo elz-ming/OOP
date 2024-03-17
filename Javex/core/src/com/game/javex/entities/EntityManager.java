@@ -121,17 +121,52 @@ public class EntityManager {
 		}
 
 //		Create TreasureChest
-		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+		if (map != null && map.getLayers().get(7) != null) {
+		    int treasureChestCounter = 1;
 
-            Vector2 position = new Vector2(rect.getX(), rect.getY());
-            int width = (int)rect.getWidth();
-            int height = (int)rect.getHeight();
-            
-            createTreasureChest(position, width, height);
-        }
+		    for (MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)) {
+		        Gdx.app.log("TreasureChest", "Creating treasure chest");
+		        Rectangle rect = ((RectangleMapObject) object).getRectangle();
+		        Vector2 position = new Vector2(rect.getX(), rect.getY());
+		        int width = (int) rect.getWidth();
+		        int height = (int) rect.getHeight();
+		        String identifier = "treasureChest_" + treasureChestCounter++;
+		        String question = "";
+		        String[] answers = new String[4];
+		        int correctAnswerIndex = 0;
+
+		        // Set different questions and answers for each chest
+		        switch (treasureChestCounter) {
+		            case 1:
+		                question = "What is the capital of France?";
+		                answers = new String[]{"Paris", "London", "Berlin", "Madrid"};
+		                correctAnswerIndex = 0;
+		                break;
+		            case 2:
+		                question = "What is the largest planet in our solar system?";
+		                answers = new String[]{"Jupiter", "Saturn", "Earth", "Mars"};
+		                correctAnswerIndex = 0;
+		                break;
+		            case 3:
+		                question = "What is the main ingredient in sushi?";
+		                answers = new String[]{"Rice", "Noodles", "Bread", "Pasta"};
+		                correctAnswerIndex = 0;
+		                break;
+		            default:
+		                // Default question and answers
+		                question = "Default question";
+		                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
+		                correctAnswerIndex = 0;
+		                break;
+		        }
+
+		        createTreasureChest(position, width, height, identifier, question, answers, correctAnswerIndex);
+		    }
+		}
+
 		
-//		Create Coin
+		
+		//		Create Coin
 		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -181,8 +216,9 @@ public class EntityManager {
 	    signboards.add(new SignBoard(world, position, width, height, identifier));
 	}
 	
-	public void createTreasureChest(Vector2 position, int width, int height) {
-		treasureChests.add(new TreasureChest(world, position, width, height));
+	public void createTreasureChest(Vector2 position, int width, int height, String identifier, String question, String[] answers, int correctAnswerIndex) {
+		Gdx.app.log("treasurechest Creation", "Creating treasurechest with ID: " + identifier);
+	    treasureChests.add(new TreasureChest(world, position, width, height, identifier, question, answers, correctAnswerIndex));
 	}
 	
 	public void createPlayer(Vector2 position) {
@@ -260,6 +296,11 @@ public class EntityManager {
 	public Player getPlayer() {
 	    return this.player;
 	}
+	
+	public Array<TreasureChest> getTreasureChests() {
+	    return treasureChests;
+	}
+
 	
 	public Enemy getBoss() {
 	    return this.boss;
