@@ -44,10 +44,11 @@ public class CollisionManager implements ContactListener{
 	        
 			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-	                ((Player)fixA.getUserData()).setCanJump(true);
-	            } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-	                ((Player)fixB.getUserData()).setCanJump(true);
+	            	player = (Player)fixA.getUserData();
+	            } else {
+	            	player = (Player)fixB.getUserData();
 	            }
+	            player.setCanJump(true);
 	            break;    
 	        
 //    		#2 PLAYER BOTTOM &&& BOUNDARY TOP

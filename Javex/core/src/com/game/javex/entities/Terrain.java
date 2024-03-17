@@ -41,8 +41,8 @@ public class Terrain extends Entity{
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the bottom for jumping on terrain
-		top.set(new Vector2((-width /2 +1) /Constants.PPM, (height /2 +1) /Constants.PPM), 
-				   new Vector2(((width) /2 -1) /Constants.PPM, (height /2 +1) /Constants.PPM)
+		top.set(new Vector2((-width /2) /Constants.PPM, (height /2 +4) /Constants.PPM), 
+				   new Vector2(((width) /2) /Constants.PPM, (height /2 +4) /Constants.PPM)
 		);
 		fixtureDef.shape = top;
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_TOP_BIT;
