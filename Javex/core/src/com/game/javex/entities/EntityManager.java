@@ -117,22 +117,9 @@ public class EntityManager {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             Vector2 position = new Vector2(rect.getX(), rect.getY());
-            int width = (int)rect.getWidth();
-            int height = (int)rect.getHeight();
             
             createCoin(position);
         }
-		
-////		Create Letter
-//		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
 		
 //		Create Player
 		for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
@@ -193,6 +180,7 @@ public class EntityManager {
 	public void update(float delta) {
 		if (player != null) {
 			player.update(delta);
+			System.out.printf("%b %b \n", player.getSolving(), player.getResetSolving());
 		}
 		
 		if (boss != null) {

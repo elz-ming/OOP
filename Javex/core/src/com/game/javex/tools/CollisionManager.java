@@ -15,73 +15,103 @@ public class CollisionManager implements ContactListener{
 	private Fixture fixB;
 	private int collisionDef;
 	
+//	For contacts would affect the physics (velocity and acceleration
 	@Override
 	public void beginContact(Contact contact) {
 		fixA = contact.getFixtureA();
 		fixB = contact.getFixtureB();
-		
 		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
-		switch (collisionDef) {
-	
-//			Player land on enemy top
-			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
-	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT) {
-	            	((Enemy) fixA.getUserData()).hitOnHead();
-	            	((Player) fixB.getUserData()).setCanJump(true);
-	            }
-	            else {
-	                ((Enemy) fixB.getUserData()).hitOnHead();
-	            	((Player) fixA.getUserData()).setCanJump(true);
-	            }
-	            break;
-				
-	            
-//	        Enemy touch player from side
+		Player player;
+		
+		switch (collisionDef) {         
+//	        #1 PLAYER &&& ENEMY
+//	        Lose
 			case Constants.PLAYER_BIT | Constants.ENEMY_BIT:
+				Enemy enemy_1;
 	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-	                ((Player) fixA.getUserData()).hit((Enemy) fixB.getUserData());
-	            	((Player) fixA.getUserData()).setCanJump(true);
+	            	player = (Player)fixA.getUserData();
+	            	enemy_1 = (Enemy)fixB.getUserData();
+	            } else {
+	            	player = (Player)fixB.getUserData();
+	            	enemy_1 = (Enemy)fixA.getUserData();
 	            }
-	            else {
-	                ((Player) fixB.getUserData()).hit((Enemy) fixA.getUserData());
-	            	((Player) fixB.getUserData()).setCanJump(true);
+	            
+	            if (!enemy_1.getKilled()) {
+	            	player.setKilled();
 	            }
 	            break;
-	            
-//		    Player collect rewards
-			case Constants.PLAYER_BIT | Constants.COIN_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.COIN_BIT) {
-                    ((Coin)fixA.getUserData()).collect();
-                } else if (fixB.getFilterData().categoryBits == Constants.COIN_BIT) {
-                    ((Coin)fixB.getUserData()).collect();
+	        
+			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
+	            if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+	                ((Player)fixA.getUserData()).setCanJump(true);
+	            } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+	                ((Player)fixB.getUserData()).setCanJump(true);
+	            }
+	            break;    
+	        
+//    		#2 PLAYER BOTTOM &&& BOUNDARY TOP
+//    	    Lose
+			case Constants.PLAYER_BIT | Constants.BOUNDARY_TOP_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixB.getUserData();
                 }
+                player.setKilled();
                 break;
-			
-//	        Player can jump again after touching terrain
-			case Constants.PLAYER_BOTTOM_BIT | Constants.TERRAIN_BIT:
-                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BOTTOM_BIT) {
-                    ((Player)fixA.getUserData()).setCanJump(true);
-                } else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BOTTOM_BIT) {
-                    ((Player)fixB.getUserData()).setCanJump(true);
+                         
+//          #3 PLAYER &&& FLAG
+//    		WIN
+			case Constants.PLAYER_BIT | Constants.FLAG_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixA.getUserData();
                 }
+                player.setWon();
                 break;
                 
-//              Enemy will move in opposite direction once touch terrain
+                
+//        	#4 PLAYER &&& SIGNBOARD
+//        	Popup Signboard
+			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixB.getUserData();
+                }
+                player.setReading(true);
+                break;
+                
+//          #5 PLAYER &&& TREASURE CHEST
+//          Popup Quiz
+  			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+  				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixB.getUserData();
+                }
+  				player.setSolving(true);
+  				break;
+			
+
+//          #9 ENEMY &&& TERRAIN
+//          Enemy move in opposite direction
 			case Constants.ENEMY_BIT | Constants.TERRAIN_BIT:
+				Enemy enemy;
                 // Determine which fixture is the enemy
                 if (fixA.getFilterData().categoryBits == Constants.ENEMY_BIT) {
-                	Enemy enemy = (Enemy)fixA.getUserData();
-            		enemy.moveOpposite();
-                } else if (fixB.getFilterData().categoryBits == Constants.ENEMY_BIT) {
-                	Enemy enemy = (Enemy)fixB.getUserData();
-            		enemy.moveOpposite();
-                }             
+                	enemy = ((Enemy)fixA.getUserData());
+                } else {
+                	enemy = ((Enemy)fixB.getUserData());
+                }
+                enemy.moveOpposite();
                 break;
     		
-//              Enemies will move in opposite direction once touch each other
+//			#10 ENEMY &&& ENEMY
+//          Enemies will move in opposite direction once touch each other
 			case Constants.ENEMY_BIT | Constants.ENEMY_BIT:
-		        // If you want enemies to interact with each other (e.g., bounce off each other)
 	            ((Enemy)fixA.getUserData()).moveOpposite();
 	            ((Enemy)fixB.getUserData()).moveOpposite();
 		        break;
@@ -90,19 +120,94 @@ public class CollisionManager implements ContactListener{
 	
 	@Override 
 	public void endContact(Contact contact) {
-		if ((fixA.getFilterData().categoryBits == Constants.PLAYER_BIT && fixB.getFilterData().categoryBits == Constants.TERRAIN_BIT) ||
-			(fixB.getFilterData().categoryBits == Constants.PLAYER_BIT && fixA.getFilterData().categoryBits == Constants.TERRAIN_BIT)) {
-			if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-				((Player)fixA.getUserData()).setCanJump(false);
-			} else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-				((Player)fixB.getUserData()).setCanJump(false);
-            }
-	    }
+		fixA = contact.getFixtureA();
+		fixB = contact.getFixtureB();
+		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		
+		Player player;
+		
+		switch (collisionDef) { 
+			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
+				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+					player = (Player)fixA.getUserData();
+				} else {
+					player = (Player)fixB.getUserData();
+	            }
+				player.setCanJump(false);
+                break;
+			
+			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+                if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixB.getUserData();
+                }
+                player.setReading(false);
+                break;
+                
+               
+  			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+  				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
+                	player = (Player)fixA.getUserData();
+                } else {
+                	player = (Player)fixA.getUserData();
+                }
+  				player.setSolving(false);
+  				break;
+		}
 	}
 	
-	// ========================= //
-	// ===== EMPTY METHODS ===== //	
-	// ========================= //
-	@Override public void preSolve(Contact contact, Manifold oldManifold) {}
-	@Override public void postSolve(Contact contact, ContactImpulse impulse) {}
+	@Override 
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		fixA = contact.getFixtureA();
+		fixB = contact.getFixtureB();
+		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
+		
+		Player player;
+		
+		switch (collisionDef) {
+	//		#1 PLAYER &&& ENEMY HEAD
+	//		Enemy disappears, score increases
+			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
+				Enemy enemy;
+	            if (fixA.getFilterData().categoryBits == Constants.ENEMY_HEAD_BIT) {
+	            	enemy = (Enemy) fixA.getUserData();
+	            }
+	            else {
+	            	enemy = (Enemy) fixB.getUserData();
+	            }
+	            enemy.setKilled();
+	            contact.setEnabled(false);
+	            break;
+	            
+//      	#5 PLAYER &&& COIN
+//	    	Coins disappear, score increases
+			case Constants.PLAYER_BIT | Constants.COIN_BIT:
+				Coin coin;
+	            if (fixA.getFilterData().categoryBits == Constants.COIN_BIT) {
+	                coin = (Coin)fixA.getUserData();
+	            } else {
+	                coin = (Coin)fixB.getUserData();
+	            }
+	            coin.collect();
+	            contact.setEnabled(false);
+	            break;
+	        
+			case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
+	            contact.setEnabled(false);
+	            break;
+	            
+			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+                contact.setEnabled(false);
+                break;
+                
+			case Constants.PLAYER_BIT | Constants.TREASURE_CHEST_BIT:
+  				contact.setEnabled(false);
+  				break;
+		}
+	}
+	
+	@Override 
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+	}
 }

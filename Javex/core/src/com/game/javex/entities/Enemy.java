@@ -9,12 +9,10 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class Enemy extends Entity {
-	private int health;
 	private boolean killed = false;
 	
 	public Enemy(World world, Vector2 position) {
 		super(world, position);
-		this.health = 1;
 		this.width = Constants.ENEMY_WIDTH;
 		this.height = Constants.ENEMY_HEIGHT;
 		this.imgPath = Constants.ENEMY_IMG_PATH;
@@ -48,12 +46,13 @@ public class Enemy extends Entity {
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the head for jumping on enemies
-		head.set(new Vector2(-width /2 /Constants.PPM, height /2 /Constants.PPM), 
-				 new Vector2(width /2 /Constants.PPM, height /2 /Constants.PPM)
+		head.set(new Vector2((-width /2) /Constants.PPM, (height /2 +4) /Constants.PPM), 
+				 new Vector2((width /2) /Constants.PPM, (height /2 +4) /Constants.PPM)
 		);
 		fixtureDef.shape = head;
 		fixtureDef.restitution = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_HEAD_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		resource management
@@ -74,16 +73,9 @@ public class Enemy extends Entity {
 		Vector2 position = body.getPosition();
 		sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
-	
-	public void reduceHealth() {
-		health -= 1;
-	}
 
-	public void hitOnHead() {
-		health -= 1;
-		if (health <= 0) {
-			killed = true;
-		}
+	public void setKilled() {
+		killed = true;
 	}
 	
 	public boolean getKilled() {
