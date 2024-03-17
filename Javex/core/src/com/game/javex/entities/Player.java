@@ -35,8 +35,6 @@ public class Player extends Entity{
  // Animation state
     private int currentFrameIndex = 0;
     
-    
-    
     private float animationTimer = 0;
     private final float FRAME_DURATION = 0.1f; // Adjust this value as needed
 	
@@ -46,9 +44,7 @@ public class Player extends Entity{
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
 		this.imgPath = Constants.PLAYER_IMG_PATH;
-				
 		createBody();
-
 		createSprite();
 		
 		// Load images
@@ -116,7 +112,7 @@ public class Player extends Entity{
 		fixtureDef.shape = shape;
 		fixtureDef.density = 2.0f;
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
-		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.TERRAIN_TOP_BIT | Constants.BOUNDARY_BIT | Constants.BOUNDARY_TOP_BIT | Constants.COIN_BIT | Constants.TREASURE_CHEST_BIT | Constants.SIGNBOARD_BIT;
+		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.TERRAIN_TOP_BIT | Constants.BOUNDARY_BIT | Constants.BOUNDARY_TOP_BIT | Constants.COIN_BIT | Constants.TREASURE_CHEST_BIT | Constants.SIGNBOARD_BIT | Constants.FLAG_BIT | Constants.FLAG_BORDER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 	
 //		resource management
@@ -143,7 +139,7 @@ public class Player extends Entity{
 	
 	public void jump(float delta) {
 		body.setLinearDamping(2f);
-        body.applyLinearImpulse(new Vector2(0, 1.2f), body.getWorldCenter(), true); // Adjust impulse as needed
+        body.applyLinearImpulse(new Vector2(0, 1.3f), body.getWorldCenter(), true); // Adjust impulse as needed
         canJump = false; // Reset jump ability until player touches the ground again
     }
 	

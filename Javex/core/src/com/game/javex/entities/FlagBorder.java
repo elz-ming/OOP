@@ -13,7 +13,9 @@ public class FlagBorder extends Entity{
 		super(world, position);
     	this.width = width;
     	this.height = height;
+    	this.imgPath = Constants.FLAG_BORDER_IMG_PATH;
     	createBody();
+    	createSprite();
 	}
 
 	@Override
@@ -32,9 +34,6 @@ public class FlagBorder extends Entity{
 //		fixtureDef for the body
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0;
-		fixtureDef.friction = 0;
-		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.FLAG_BORDER_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);

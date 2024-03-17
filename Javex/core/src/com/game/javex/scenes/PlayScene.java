@@ -12,6 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -73,7 +74,7 @@ public class PlayScene extends Scene {
     	
     	switch (selectedWorld) {
         case "Earth":
-            gravity = new Vector2(0, -10f);
+            gravity = new Vector2(0, -12f);
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
@@ -81,19 +82,19 @@ public class PlayScene extends Scene {
             break;
             
         case "Mars":
-            gravity = new Vector2(0, -10f);
+            gravity = new Vector2(0, -9f);
             audioPath = Constants.MARS_AUDIO_PATH;
             backgroundImagePath = Constants.MARS_IMG_PATH;
-            cameraZoomValue = 0.5f;
-            mapString = Constants.EARTH_MAP_PATH;
+            cameraZoomValue = 0.6f;
+            mapString = Constants.MARS_MAP_PATH;
             break;
             
         case "Venus":
-            gravity = new Vector2(0, -4.5f);
+            gravity = new Vector2(0, -6f);
             audioPath = Constants.VENUS_AUDIO_PATH;
             backgroundImagePath = Constants.VENUS_IMG_PATH;
-            cameraZoomValue = 0.6f;
-            mapString = Constants.EARTH_MAP_PATH;
+            cameraZoomValue = 0.8f;
+            mapString = Constants.VENUS_MAP_PATH;
             break;
             
         default:
@@ -264,14 +265,13 @@ public class PlayScene extends Scene {
 			entityManager.render(spriteBatch);
 		spriteBatch.end();
 		
-		
 		frontStage.draw();
 		
 		
-	//	For debug purposes
-		if (b2dr != null && world != null && camera != null) {
-			b2dr.render(world, camera.combined.scl(Constants.PPM));
-		}
+//	//	For debug purposes
+//		if (b2dr != null && world != null && camera != null) {
+//			b2dr.render(world, camera.combined.scl(Constants.PPM));
+//		}
 	}
 	
 	@Override

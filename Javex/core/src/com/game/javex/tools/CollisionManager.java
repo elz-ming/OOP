@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
-import com.game.javex.entities.SignBoard;
+import com.game.javex.entities.Signboard;
 import com.game.javex.entities.Coin;
 
 public class CollisionManager implements ContactListener{
@@ -129,16 +129,6 @@ public class CollisionManager implements ContactListener{
 		 Player player;
 		
 		 switch (collisionDef) { 
-		 	case Constants.PLAYER_BIT | Constants.TERRAIN_TOP_BIT:
-		 	case Constants.PLAYER_BIT | Constants.TERRAIN_BIT:
-				if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-					player = (Player)fixA.getUserData();
-				} else {
-					player = (Player)fixB.getUserData();
-		        }
-				player.setCanJump(false);
-		        break;
-			
 		 	case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
 				playerOnSignboard = false;
 				currentSignboardIdentifier = null;

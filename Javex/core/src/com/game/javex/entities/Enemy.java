@@ -42,7 +42,7 @@ public class Enemy extends Entity {
 		fixtureDef.shape = shape;
 		fixtureDef.density = 1.0f;
 		fixtureDef.filter.categoryBits = Constants.ENEMY_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.TERRAIN_BIT | Constants.ENEMY_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the head for jumping on enemies

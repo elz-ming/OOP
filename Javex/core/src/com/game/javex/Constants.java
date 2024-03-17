@@ -62,10 +62,12 @@ public class Constants {
 	public static final String ENEMY_IMG_PATH = "image_entity/enemy.png";
 	public static final String BOSS_IMG_PATH = "image_entity/boss.png";
 	public static final String COIN_IMG_PATH = "image_entity/coin.png";
+	public static final String SIGNBOARD_IMG_PATH = "image_entity/signboard.png"; 
 	public static final String TREASURE_CHEST_IMG_PATH = "image_entity/treasureChest.png"; 
 	public static final String FLAG_IMG_PATH = "image_entity/flag.png"; 
+	public static final String FLAG_BORDER_IMG_PATH = "image_entity/flagBorder.png";
 	
 	public static final String EARTH_MAP_PATH = "map/earth.tmx";
-	public static final String MARS_MAP_PATH = "";
-	public static final String VENUS_MAP_PATH = "";
+	public static final String MARS_MAP_PATH = "map/mars.tmx";
+	public static final String VENUS_MAP_PATH = "map/venus.tmx";
 }

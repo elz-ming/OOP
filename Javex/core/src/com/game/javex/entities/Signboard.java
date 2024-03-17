@@ -7,16 +7,18 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class SignBoard extends Entity{
+public class Signboard extends Entity{
 
 	private String identifier;
 	
-	public SignBoard(World world, Vector2 position, int width, int height, String id) {
+	public Signboard(World world, Vector2 position, int width, int height, String id) {
 		super(world, position);
 		this.width = width;
     	this.height = height;
+    	this.imgPath = Constants.SIGNBOARD_IMG_PATH;
     	this.identifier = id;  
     	createBody();
+    	createSprite();
 	}
 
 	@Override

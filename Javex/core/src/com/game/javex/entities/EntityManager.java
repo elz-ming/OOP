@@ -19,7 +19,7 @@ public class EntityManager {
 	private Array<Boundary> boundaries;
 	private Flag flag;
 	private Array<FlagBorder> flagBorders;
-	private Array<SignBoard> signboards;
+	private Array<Signboard> signboards;
 	private Array<TreasureChest> treasureChests;
 	
 	private Array<Coin> coins;
@@ -182,7 +182,7 @@ public class EntityManager {
 	
 	public void createSignboard(Vector2 position, int width, int height, String identifier) {
 		Gdx.app.log("Signboard Creation", "Creating signboard with ID: " + identifier);
-	    signboards.add(new SignBoard(world, position, width, height, identifier));
+	    signboards.add(new Signboard(world, position, width, height, identifier));
 	}
 	
 	public void createTreasureChest(Vector2 position, int width, int height) {
@@ -242,6 +242,14 @@ public class EntityManager {
 	public void render(SpriteBatch spriteBatch) {
 		if (flag != null) {
 			flag.render(spriteBatch);
+		}
+		
+		for (FlagBorder flagBorder : flagBorders) {
+			flagBorder.render(spriteBatch);
+		}
+		
+		for (Signboard signboard : signboards) {
+			signboard.render(spriteBatch);
 		}
 		
 		for (TreasureChest treasureChest : treasureChests) {
