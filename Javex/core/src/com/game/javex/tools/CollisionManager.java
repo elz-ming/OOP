@@ -50,7 +50,7 @@ public class CollisionManager implements ContactListener{
 	            	player = (Player)fixB.getUserData();
 	            }
 	            player.setCanJump(true);
-	            break;
+	            break;    
 	        
 //    		#2 PLAYER BOTTOM &&& BOUNDARY TOP
 //    	    Lose

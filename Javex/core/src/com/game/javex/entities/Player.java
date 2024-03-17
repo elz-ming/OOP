@@ -138,7 +138,7 @@ public class Player extends Entity{
 	}
 	
 	public void slowDown(float delta) {
-		body.setLinearDamping(1.0f);
+		body.setLinearVelocity(body.getLinearVelocity().x * 0.95f, body.getLinearVelocity().y);
 	}
 	
 	public void jump(float delta) {

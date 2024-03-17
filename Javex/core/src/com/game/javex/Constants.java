@@ -4,11 +4,10 @@ public class Constants {
 	
 	public static boolean muted = false;
 	
-	
 	public static final int VIEWPORT_WIDTH = 1920;
 	public static final int VIEWPORT_HEIGHT = 1080;
-	public static final int WORLD_WIDTH = 3200;
-	public static final int WORLD_HEIGHT = 960;
+	public static final int WORLD_WIDTH = 3264;
+	public static final int WORLD_HEIGHT = 1024;
 	public static final float PPM = 100;
 	
 	public static final float VIEWPORT_WIDTH_METER = VIEWPORT_WIDTH /PPM;
