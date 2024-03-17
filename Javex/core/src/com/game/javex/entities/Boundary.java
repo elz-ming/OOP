@@ -38,15 +38,16 @@ public class Boundary extends Entity{
 		fixtureDef.friction = 0;
 		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.BOUNDARY_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the bottom for jumping on terrain
-		top.set(new Vector2(-(width) /2 /Constants.PPM, height /2 /Constants.PPM), 
-				   new Vector2((width) /2 /Constants.PPM, height /2 /Constants.PPM)
+		top.set(new Vector2(-(width) /2 /Constants.PPM, (height /2) /Constants.PPM), 
+				   new Vector2((width) /2 /Constants.PPM, (height /2) /Constants.PPM)
 		);
 		fixtureDef.shape = top;
 		fixtureDef.filter.categoryBits = Constants.BOUNDARY_TOP_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
     	
 //		resource management

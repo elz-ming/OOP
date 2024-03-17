@@ -37,15 +37,17 @@ public class Terrain extends Entity{
 		fixtureDef.friction = 0;
 		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT | Constants.PLAYER_BOTTOM_BIT |Constants.ENEMY_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT |Constants.ENEMY_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
 		
 //		fixtureDef for the bottom for jumping on terrain
-		top.set(new Vector2(-(width) /2 /Constants.PPM, height /2 /Constants.PPM), 
-				   new Vector2((width) /2 /Constants.PPM, height /2 /Constants.PPM)
+		top.set(new Vector2((-width /2 +1) /Constants.PPM, (height /2 +1) /Constants.PPM), 
+				   new Vector2(((width) /2 -1) /Constants.PPM, (height /2 +1) /Constants.PPM)
 		);
 		fixtureDef.shape = top;
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_TOP_BIT;
+		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
+		fixtureDef.restitution = 0;
 		this.body.createFixture(fixtureDef).setUserData(this);
     	
 //		resource management
