@@ -1,5 +1,6 @@
 package com.game.javex.tools;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -8,12 +9,15 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.game.javex.Constants;
 import com.game.javex.entities.Enemy;
 import com.game.javex.entities.Player;
+import com.game.javex.entities.SignBoard;
 import com.game.javex.entities.Coin;
 
 public class CollisionManager implements ContactListener{
 	private Fixture fixA;
 	private Fixture fixB;
 	private int collisionDef;
+	private boolean playerOnSignboard = false;
+	private String currentSignboardIdentifier = null;
 	
 	@Override
 	public void beginContact(Contact contact) {
@@ -22,7 +26,10 @@ public class CollisionManager implements ContactListener{
 		
 		collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 		
+		
+		
 		switch (collisionDef) {
+			 
 	
 //			Player land on enemy top
 			case Constants.PLAYER_BIT | Constants.ENEMY_HEAD_BIT:
@@ -85,19 +92,37 @@ public class CollisionManager implements ContactListener{
 	            ((Enemy)fixA.getUserData()).moveOpposite();
 	            ((Enemy)fixB.getUserData()).moveOpposite();
 		        break;
+		  
+		        
+			case Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT:
+				 if (collisionDef == (Constants.PLAYER_BIT | Constants.SIGNBOARD_BIT)) {
+				        if (fixA.getFilterData().categoryBits == Constants.SIGNBOARD_BIT && fixA.getUserData() instanceof String) {
+				            currentSignboardIdentifier = (String) fixA.getUserData();
+				        } else if (fixB.getFilterData().categoryBits == Constants.SIGNBOARD_BIT && fixB.getUserData() instanceof String) {
+				            currentSignboardIdentifier = (String) fixB.getUserData();
+				        }
+				        playerOnSignboard = true;
+				    }
+			break;
+		        
+		        
 		}
 	}
 	
 	@Override 
 	public void endContact(Contact contact) {
-		if ((fixA.getFilterData().categoryBits == Constants.PLAYER_BIT && fixB.getFilterData().categoryBits == Constants.TERRAIN_BIT) ||
-			(fixB.getFilterData().categoryBits == Constants.PLAYER_BIT && fixA.getFilterData().categoryBits == Constants.TERRAIN_BIT)) {
-			if (fixA.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-				((Player)fixA.getUserData()).setCanJump(false);
-			} else if (fixB.getFilterData().categoryBits == Constants.PLAYER_BIT) {
-				((Player)fixB.getUserData()).setCanJump(false);
-            }
-	    }
+		 Fixture fixA = contact.getFixtureA();
+		 Fixture fixB = contact.getFixtureB();
+		    
+		 if ((fixA.getUserData() instanceof String && fixB.getUserData() instanceof Player) ||
+			        (fixB.getUserData() instanceof String && fixA.getUserData() instanceof Player)) {
+			        playerOnSignboard = false;
+			        currentSignboardIdentifier = null;
+			    }
+	}
+	
+	public String getCurrentSignboardIdentifier() {
+	    return currentSignboardIdentifier;
 	}
 	
 	// ========================= //
