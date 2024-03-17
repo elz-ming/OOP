@@ -33,8 +33,9 @@ public class EntityManager {
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
-	public EntityManager(World world, InputManager inputManager) {
+	public EntityManager(World world, TiledMap map, InputManager inputManager) {
 		this.world = world;
+		this.map = map;
 		this.inputManager = inputManager;
 		this.enemies = new Array<>();
 		this.terrains = new Array<>();
