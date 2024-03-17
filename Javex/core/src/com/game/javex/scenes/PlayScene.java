@@ -26,6 +26,7 @@ import com.game.javex.Constants;
 //import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
 import com.game.javex.entities.Player;
+import com.game.javex.entities.TreasureChest;
 import com.game.javex.inouts.*;
 //import com.game.javex.tools.AiControlManager;
 import com.game.javex.tools.CollisionManager;
@@ -190,6 +191,8 @@ public class PlayScene extends Scene {
 		frontStage.addActor(signboardText); 
 	}
 	
+	
+	
 	@Override
 	public void update(float dt) {
 	    handleInput();
@@ -224,6 +227,22 @@ public class PlayScene extends Scene {
 	    } else {
 	        signboardText.setVisible(false);
 	        signboardBackground.setVisible(false);
+	    }
+	    
+	    
+	    
+	    String currentTreasureChestIdentifier = collisionManager.getCurrentTreasureChestIdentifier();
+	    if (currentTreasureChestIdentifier != null) {
+	        for (TreasureChest chest : entityManager.getTreasureChests()) {
+	            if (chest.getIdentifier().equals(currentTreasureChestIdentifier)) {
+	                String question = chest.getQuestion();
+	                String[] answers = chest.getAnswers();
+	                int correctAnswerIndex = chest.getCorrectAnswerIndex();
+	                sceneManager.push(new QuizScene(sceneManager, inputManager, outputManager, question, answers, correctAnswerIndex));
+	                Gdx.app.log("TreasureChest", "pushing scene for chest: " + chest.getIdentifier());
+	                break;
+	            }
+	        }
 	    }
 	}
 

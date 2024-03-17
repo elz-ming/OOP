@@ -23,6 +23,7 @@ public class Player extends Entity{
 	private boolean reading = false;
 	private boolean solving = false;
 	private boolean resetSolving = true;
+	private boolean engagedWithChest = false;
 	
 	// Store textures for different animations
 	private List<Texture> moveRightTextures = new ArrayList<>();
@@ -182,6 +183,15 @@ public class Player extends Entity{
 	public boolean getResetSolving() {
 		return resetSolving;
 	}
+	
+	
+	 public void setEngagedWithChest(boolean engaged) {
+	        engagedWithChest = engaged;
+	    }
+
+	    public boolean isEngagedWithChest() {
+	        return engagedWithChest;
+	    }
 
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;

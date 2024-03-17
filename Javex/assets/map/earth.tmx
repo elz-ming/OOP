@@ -44,7 +44,7 @@
   <object id="5" x="3232" y="32" width="32" height="960"/>
  </objectgroup>
  <objectgroup id="3" name="Terrain">
-  <object id="9" x="32" y="960" width="160" height="32"/>
+  <object id="9" x="32" y="960" width="224" height="32"/>
   <object id="11" x="320" y="864" width="32" height="64"/>
   <object id="12" x="576" y="864" width="32" height="64"/>
   <object id="18" x="416" y="768" width="96" height="32"/>
@@ -141,9 +141,9 @@
   <object id="78" x="448" y="864" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="9" name="TreasureChest">
-  <object id="86" x="2080" y="320" width="32" height="32"/>
   <object id="116" x="1536" y="864" width="32" height="32"/>
   <object id="201" x="3168" y="96" width="32" height="32"/>
+  <object id="207" x="192" y="928" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="Coin">
   <object id="151" x="288" y="128" width="32" height="32"/>
