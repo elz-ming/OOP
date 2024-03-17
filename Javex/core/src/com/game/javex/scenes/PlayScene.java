@@ -142,7 +142,7 @@ public class PlayScene extends Scene {
 		spriteBatch = new SpriteBatch();
 		
 //		Initialize entityManager and create relevant entities in the game world
-		entityManager = new EntityManager(world, map);
+		entityManager = new EntityManager(world, inputManager);
 		initialize();
 		Player player = entityManager.getPlayer();
 //		Enemy boss = entityManager.getBoss();

@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.game.javex.inouts.InputManager;
 
 public class EntityManager {
 	private World world;
@@ -27,13 +28,15 @@ public class EntityManager {
 	private Player player;
 	private Enemy boss;
 	private Array<Enemy> enemies;
-
+	private InputManager inputManager;
+	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
-	public EntityManager(World world, TiledMap map) {
+	public EntityManager(World world, InputManager inputManager) {
 		this.world = world;
-		this.map = map;
+		this.inputManager = inputManager;
+		this.enemies = new Array<>();
 		this.terrains = new Array<>();
 		this.boundaries = new Array<>();
 		this.flagBorders = new Array<>();
@@ -186,8 +189,8 @@ public class EntityManager {
 	}
 	
 	public void createPlayer(Vector2 position) {
-		this.player = new Player(world, position);
-	}
+		this.player = new Player(world, position, inputManager);
+    }
 	
 	public void createEnemy(Vector2 position) {
 		enemies.add(new Enemy(world, position));
