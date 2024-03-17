@@ -1,9 +1,11 @@
 package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -15,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -56,6 +59,8 @@ public class PlayScene extends Scene {
 	private String mapString;
 	private float cameraZoomValue;
 	private int countdownTimer;
+	private Label signboardText;
+	private Image signboardBackground;
 	
 	private boolean win;
 	private boolean lose;
@@ -100,6 +105,9 @@ public class PlayScene extends Scene {
             countdownTimer = 45;
             break;
     	}
+    	
+    	
+    	
     	
     	// Play music
     	outputManager.play(audioPath, true);
@@ -152,16 +160,43 @@ public class PlayScene extends Scene {
 //		For debug purposes
 		b2dr = new Box2DDebugRenderer();
 		
+		
+		Label.LabelStyle labelStyle = new Label.LabelStyle();
+		labelStyle.font = new BitmapFont(); // Use your preferred font
+		labelStyle.fontColor = Color.BLACK; // Set the font color to black
+		signboardText = new Label("", labelStyle); //
+
+		// Position the label higher on the screen
+		float labelX = width / 2f;
+		float labelY = height * 0.8f; // Adjust this value to move the label higher
+		signboardText.setPosition(labelX, labelY);
+		signboardText.setAlignment(1); // Center the text horizontally
+
+		// Load the texture for the signboard background
+		Texture signboardBackgroundTexture = new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH));
+		signboardBackground = new Image(signboardBackgroundTexture);
+
+		// Set the size and position of the background image based on the label size
+		signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20); // Add some padding
+		signboardBackground.setPosition(labelX - signboardBackground.getWidth() / 2, labelY - signboardBackground.getHeight() / 2); // Center the background behind the label
+		signboardBackground.setVisible(false); // Initially hide the background
+
+	    
+	    
+		
 //		Initialize win and lose booleans
 		win = false;
 		lose = false;
+		
+		frontStage.addActor(signboardBackground);
+		frontStage.addActor(signboardText); 
 	}
 	
 	@Override
 	public void update(float dt) {
 	    handleInput();
 	    world.step(1 / 60f, 6, 2);
-
+	    
 	    cameraUpdate();
 	    playerControlManager.update(dt);
 	    entityManager.update(dt);
@@ -176,8 +211,48 @@ public class PlayScene extends Scene {
 	    if (elapsedTime <= 0) {
 	        sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
 	    }
+	    
+	    String signboardId = collisionManager.getCurrentSignboardIdentifier();
+	    if (signboardId != null) {
+	  
+	        signboardText.setText(getTextForSignboard(signboardId));
+	        signboardText.setVisible(true);
+
+	        
+	        signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20);
+	        signboardBackground.setPosition(signboardText.getX() - (signboardBackground.getWidth() - signboardText.getWidth()) / 2, 
+	                                        signboardText.getY() - (signboardBackground.getHeight() - signboardText.getHeight()) / 2);
+	        signboardBackground.setVisible(true);
+	    } else {
+	        signboardText.setVisible(false);
+	        signboardBackground.setVisible(false);
+	    }
 	}
+
 	
+	private String getTextForSignboard(String signboardId) {
+	    if (signboardId == null) {
+	        return "Signboard ID is null"; // Or handle as you see fit
+	    }
+	    
+	    // Use a switch statement or if-else blocks to determine the text for each signboard
+	    switch (signboardId) {
+	        case "signboard_800.0_544.0":
+	            return "Text for the first signboard.";
+	        case "signboard_1376.0_416.0":
+	            return "Active plate tectonics shape the planet's surface, forming mountains,\n"
+	            		+ "causing earthquakes, and renewing the crust.";
+	        case "signboard_448.0_128.0":
+	            return "The atmosphere contains a unique mix of gases crucial for life, \n"
+	            		+ "including oxygen and nitrogen.";
+	        case "signboard_128.0_64.0":
+	        	return "Earth supports diverse ecosystems, from rainforests to deserts, \n"
+	        			+ "harboring millions of different life forms.";
+	        // Add more cases as needed for additional signboards
+	        default:
+	            return ""; // Fallback text for an unknown signboard ID
+	    }
+	}
 	@Override
 	public void render() {
         // Clear the screen

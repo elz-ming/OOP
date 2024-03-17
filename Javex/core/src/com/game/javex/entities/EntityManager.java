@@ -1,5 +1,6 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -90,17 +91,21 @@ public class EntityManager {
             createFlagBorder(position, width, height);
         }
 		
-//		Create Signboard
-		for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+		// Create Signboard
+		for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            Vector2 position = new Vector2(rect.getX(), rect.getY());
-            int width = (int)rect.getWidth();
-            int height = (int)rect.getHeight();
-            
-            createSignboard(position, width, height);
-        }
-		
+		    Vector2 position = new Vector2(rect.getX(), rect.getY());
+		    int width = (int)rect.getWidth();
+		    int height = (int)rect.getHeight();
+
+		    // Generate a unique identifier based on the position
+		    String identifier = "signboard_" + position.x + "_" + position.y;
+
+		    // Now pass this identifier when creating a new SignBoard
+		    createSignboard(position, width, height, identifier);
+		}
+
 //		Create TreasureChest
 		for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -170,8 +175,9 @@ public class EntityManager {
 		flagBorders.add(new FlagBorder(world, position, width, height));
 	}
 	
-	public void createSignboard(Vector2 position, int width, int height) {
-		signboards.add(new SignBoard(world, position, width, height));
+	public void createSignboard(Vector2 position, int width, int height, String identifier) {
+		Gdx.app.log("Signboard Creation", "Creating signboard with ID: " + identifier);
+	    signboards.add(new SignBoard(world, position, width, height, identifier));
 	}
 	
 	public void createTreasureChest(Vector2 position, int width, int height) {

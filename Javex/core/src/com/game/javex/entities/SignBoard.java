@@ -9,10 +9,13 @@ import com.game.javex.Constants;
 
 public class SignBoard extends Entity{
 
-	public SignBoard(World world, Vector2 position, int width, int height) {
+	private String identifier;
+	
+	public SignBoard(World world, Vector2 position, int width, int height, String id) {
 		super(world, position);
 		this.width = width;
     	this.height = height;
+    	this.identifier = id;  
     	createBody();
 	}
 
@@ -37,8 +40,12 @@ public class SignBoard extends Entity{
 		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.SIGNBOARD_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-		this.body.createFixture(fixtureDef).setUserData(this);
+		this.body.createFixture(fixtureDef).setUserData(this.identifier);
 		
 	}
+	 public String getIdentifier() {
+	        return identifier;
+	    }
+	}
 
-}
+
