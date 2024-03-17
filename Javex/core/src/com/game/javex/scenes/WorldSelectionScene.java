@@ -165,7 +165,7 @@ public class WorldSelectionScene extends Scene {
                         worldInformation = new String[]{
                             "Earth is the third planet from the Sun.",
                             "It is the only known planet to support life.",
-                            "Earth has a large ocean covering 71% of its surface."
+                            "Earth's gravity is approximately 9.8 m/s²."
                         };
                         break;
                     case 1: // Mars
@@ -173,7 +173,7 @@ public class WorldSelectionScene extends Scene {
                         worldInformation = new String[]{
                             "Mars is known as the Red Planet.",
                             "It has the largest volcano in the solar system, Olympus Mons.",
-                            "Mars has two moons: Phobos and Deimos."
+                            "Mars' gravity is approximately 3.7 m/s²."
                         };
                         break;
                     case 2: // Venus
@@ -181,7 +181,7 @@ public class WorldSelectionScene extends Scene {
                         worldInformation = new String[]{
                             "Venus is the second planet from the Sun.",
                             "It is the hottest planet in the solar system.",
-                            "A day on Venus is longer than a year on Venus."
+                            "Venus' gravity at approximately 8.9 m/s²"
                         };
                         break;
                 }

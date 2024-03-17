@@ -51,7 +51,7 @@ import com.game.javex.inouts.*;
             Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
             instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
 
-            Label instructionLabel1 = new Label("Use Up/Down arrow keys to move", skin);
+            Label instructionLabel1 = new Label("Use arrow keys to move and jump on enemies heads to kill them", skin);
             Label instructionLabel2 = new Label("Press Enter to proceed", skin);
             Label instructionLabel3 = new Label("Press Escape to pause", skin);
 
@@ -64,7 +64,7 @@ import com.game.javex.inouts.*;
             instructionsTable.add(instructionLabel3).padBottom(5).row();
 
             // Set the size of the instructions table
-            float tableWidth = width * 0.6f; // Adjust the width of the table as needed
+            float tableWidth = width * 0.85f; // Adjust the width of the table as needed
             float tableHeight = height * 0.3f; // Adjust the height of the table as needed
             instructionsTable.setSize(tableWidth, tableHeight);
             instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
@@ -87,7 +87,7 @@ import com.game.javex.inouts.*;
         float spaceBetweenButtons = height * 0.06f;
         float totalButtonsHeight = buttonHeight + spaceBetweenButtons;
         float startY = (height - totalButtonsHeight) / 4; // Adjusted startY value
-
+        
         backButton.setSize(buttonWidth, buttonHeight);
 
         float fontScale = buttonHeight / 120f;
