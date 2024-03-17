@@ -9,12 +9,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class Player extends Entity{
-	private int health;
 	private boolean canJump;
+	private boolean killed = false;
+	private boolean won = false;
+	private boolean reading = false;
+	private boolean solving = false;
+	private boolean resetSolving = true;
 	
 	public Player(World world, Vector2 position) {
 		super(world, position);
-		this.health = 3;
 		this.width = Constants.PLAYER_WIDTH;
 		this.height = Constants.PLAYER_HEIGHT;
 		this.imgPath = Constants.PLAYER_IMG_PATH;
@@ -29,7 +32,6 @@ public class Player extends Entity{
 		BodyDef bodyDef = new BodyDef();
 		FixtureDef fixtureDef = new FixtureDef();
 		PolygonShape shape = new PolygonShape();
-		EdgeShape bottom = new EdgeShape();
 		
 //		bodyDef for the entire body
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -44,26 +46,9 @@ public class Player extends Entity{
 		fixtureDef.filter.categoryBits = Constants.PLAYER_BIT;
 		fixtureDef.filter.maskBits = Constants.ENEMY_BIT | Constants.ENEMY_HEAD_BIT | Constants.TERRAIN_BIT | Constants.TERRAIN_TOP_BIT | Constants.BOUNDARY_BIT | Constants.BOUNDARY_TOP_BIT | Constants.COIN_BIT | Constants.TREASURE_CHEST_BIT | Constants.SIGNBOARD_BIT;
 		this.body.createFixture(fixtureDef).setUserData(this);
-		
-//		fixtureDef for the bottom for jumping on terrain
-		bottom.set(new Vector2(-(width-1) /2 /Constants.PPM, -height /2 /Constants.PPM), 
-				   new Vector2((width-1) /2 /Constants.PPM, -height /2 /Constants.PPM)
-		);
-		fixtureDef.shape = bottom;
-		fixtureDef.filter.categoryBits = Constants.PLAYER_BOTTOM_BIT;
-		this.body.createFixture(fixtureDef).setUserData(this);
-		
+	
 //		resource management
 		shape.dispose();
-		bottom.dispose();
-	}
-	
-	public void reduceHealth() {
-		health -= 1;
-	}
-	
-	public int getHealth() {
-		return health;
 	}
 	
 	public void moveLeft(float delta) {
@@ -85,18 +70,56 @@ public class Player extends Entity{
 	}
 	
 	public void jump(float delta) {
-		body.setLinearDamping(0f);
-        if (canJump) {
-            body.applyLinearImpulse(new Vector2(0, 1f), body.getWorldCenter(), true); // Adjust impulse as needed
-            canJump = false; // Reset jump ability until player touches the ground again
-        }
+		body.setLinearDamping(2f);
+        body.applyLinearImpulse(new Vector2(0, 1.2f), body.getWorldCenter(), true); // Adjust impulse as needed
+        canJump = false; // Reset jump ability until player touches the ground again
     }
 	
-	public void hit(Enemy enemy) {
-		health -= 1;
+	public void setKilled() {
+		killed = true;
+	}
+	
+	public boolean getKilled() {
+		return killed;
+	}
+	
+	public void setWon() {
+		won = true;
+	}
+	
+	public boolean getWon() {
+		return won;
+	}
+	
+	public void setReading(boolean reading) {
+		this.reading = reading;
+	}
+	
+	public boolean getReading() {
+		return reading;
+	}
+	
+	public void setSolving(boolean solving) {
+		this.solving = solving;
+	}
+	
+	public boolean getSolving() {
+		return solving;
+	}
+	
+	public void setResetSolving(boolean resetSolving) {
+		this.resetSolving = resetSolving;
+	}
+	
+	public boolean getResetSolving() {
+		return resetSolving;
 	}
 
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;
+    }
+	
+	public boolean getCanJump() {
+		return canJump;
     }
 }

@@ -28,8 +28,6 @@ public class EntityManager {
 	private Enemy boss;
 	private Array<Enemy> enemies;
 
-	
-	
 	private int enemiesKilled = 0;
 	private int coinsCollected = 0;
 	
@@ -91,7 +89,8 @@ public class EntityManager {
             createFlagBorder(position, width, height);
         }
 		
-		// Create Signboard
+		// Create Instruction Signboard
+		int signboard_counter = 1;
 		for (MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
 		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
@@ -100,14 +99,29 @@ public class EntityManager {
 		    int height = (int)rect.getHeight();
 
 		    // Generate a unique identifier based on the position
-		    String identifier = "signboard_" + position.x + "_" + position.y;
+		    String identifier = "signboard_" + signboard_counter++;
+
+		    // Now pass this identifier when creating a new SignBoard
+		    createSignboard(position, width, height, identifier);
+		}
+		
+		// Create Information Signboard
+		for (MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)) {
+		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+		    Vector2 position = new Vector2(rect.getX(), rect.getY());
+		    int width = (int)rect.getWidth();
+		    int height = (int)rect.getHeight();
+
+		    // Generate a unique identifier based on the position
+		    String identifier = "signboard_" + signboard_counter++;
 
 		    // Now pass this identifier when creating a new SignBoard
 		    createSignboard(position, width, height, identifier);
 		}
 
 //		Create TreasureChest
-		for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
+		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             Vector2 position = new Vector2(rect.getX(), rect.getY());
@@ -118,26 +132,13 @@ public class EntityManager {
         }
 		
 //		Create Coin
-		for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
             Vector2 position = new Vector2(rect.getX(), rect.getY());
-            int width = (int)rect.getWidth();
-            int height = (int)rect.getHeight();
             
             createCoin(position);
         }
-		
-////		Create Letter
-//		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//
-//            Vector2 position = new Vector2(rect.getX(), rect.getY());
-//            int width = (int)rect.getWidth();
-//            int height = (int)rect.getHeight();
-//            
-//            createTerrain(position, width, height);
-//        }
 		
 //		Create Player
 		for(MapObject object : map.getLayers().get(9).getObjects().getByType(RectangleMapObject.class)){
@@ -199,6 +200,8 @@ public class EntityManager {
 	public void update(float delta) {
 		if (player != null) {
 			player.update(delta);
+			System.out.println(player.getReading());
+//			System.out.printf("%b %b \n", player.getSolving(), player.getResetSolving());
 		}
 		
 		if (boss != null) {

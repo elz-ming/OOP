@@ -1,5 +1,7 @@
 package com.game.javex.tools;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.game.javex.entities.Player;
 import com.game.javex.inouts.InputManager;
 
@@ -25,8 +27,10 @@ public class PlayerControlManager {
         	player.slowDown(delta);
         }
         
-        if (inputManager.isUpPressed()) {
-        	player.jump(delta);
+        if (Gdx.input.isKeyJustPressed(Keys.UP)) {
+        	if (player.getCanJump()) {
+        		player.jump(delta);
+        	}
         }
     }
 }
