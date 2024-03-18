@@ -110,97 +110,87 @@ public class TreasureChest extends Entity {
     }
 	
 	private void setContent(String selectedWorld) {
-		switch (selectedWorld) {
-        case "Earth":
-        	switch (identifier) {
-	        case 1:
-	        	question = "What is the capital of France?";
-    			answers = new String[]{"Paris", "London", "Berlin", "Madrid"};
-    			correctAnswerIndex = 0;
-	        	break;
-	        case 2:
-	        	question = "What is the largest planet in our solar system?";
-                answers = new String[]{"Jupiter", "Saturn", "Earth", "Mars"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        case 3:
-	        	question = "What is the main ingredient in sushi?";
-                answers = new String[]{"Rice", "Noodles", "Bread", "Pasta"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
+	    switch (selectedWorld) {
+	        case "Earth":
+	            switch (identifier) {
+	                case 1: // Earth Treasure Chest
+	                    question = "What supports Earth's diverse life forms?";
+	                    answers = new String[]{"Oceans", "Deserts", "Ecosystems", "Clouds"};
+	                    correctAnswerIndex = 2; // Index of the correct answer in the 'answers' array
+	                    break;
+	                case 2:
+	                    question = "What is unique to Earth's atmosphere for life?";
+	                    answers = new String[]{"Methane", "Oxygen", "Helium", "Argon"};
+	                    correctAnswerIndex = 1;
+	                    break;
+	                case 3:
+	                    question = "What geological feature is active on Earth?";
+	                    answers = new String[]{"Erosion", "Photosynthesis", "Tectonics", "Radiation"};
+	                    correctAnswerIndex = 2;
+	                    break;
+	                default:
+	                    question = "Default question";
+	                    answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
+	                    correctAnswerIndex = 0;
+	                    break;
+	            }
+	            break;
+	        case "Mars":
+	            switch (identifier) {
+	                case 1: // Mars Treasure Chest
+	                    question = "What is Mars's largest volcano called?";
+	                    answers = new String[]{"Etna", "Kilimanjaro", "Olympus Mons", "Fuji"};
+	                    correctAnswerIndex = 2;
+	                    break;
+	                case 2:
+	                    question = "How long is a day on Mars?";
+	                    answers = new String[]{"12 hours", "24.6 hours", "30 hours", "48 hours"};
+	                    correctAnswerIndex = 1;
+	                    break;
+	                case 3:
+	                    question = "Why is Mars red?";
+	                    answers = new String[]{"Water", "Trees", "Iron oxide", "Snow"};
+	                    correctAnswerIndex = 2;
+	                    break;
+	                default:
+	                    question = "Default question";
+	                    answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
+	                    correctAnswerIndex = 0;
+	                    break;
+	            }
+	            break;
+	        case "Venus":
+	            switch (identifier) {
+	                case 1: // Venus Treasure Chest
+	                    question = "What is Venus's atmosphere mostly made of?";
+	                    answers = new String[]{"Nitrogen", "Oxygen", "Hydrogen", "Carbon dioxide"};
+	                    correctAnswerIndex = 3;
+	                    break;
+	                case 2:
+	                    question = "How hot can Venus's surface get?";
+	                    answers = new String[]{"182°C", "382°C", "482°C", "682°C"};
+	                    correctAnswerIndex = 2;
+	                    break;
+	                case 3:
+	                    question = "Which direction does Venus rotate?";
+	                    answers = new String[]{"Clockwise", "Upward", "Downward", "Counterclockwise"};
+	                    correctAnswerIndex = 0;
+	                    break;
+	                default:
+	                    question = "Default question";
+	                    answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
+	                    correctAnswerIndex = 0;
+	                    break;
+	            }
+	            break;
 	        default:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	    	}
-        	break;
-            
-        case "Mars":
-        	switch (identifier) {
-	        case 1:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        case 2:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        case 3:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        default:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	    	}
-        	break;
-        	
-        case "Venus":
-        	switch (identifier) {
-	        case 1:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        case 2:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            
-	        case 3:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	            	
-	        default:
-	        	question = "Default question";
-                answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-                correctAnswerIndex = 0;
-	        	break;
-	    	}
-        	break;
-        	
-        default:
-        	question = "Default question";
-            answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
-            correctAnswerIndex = 0;
-        	break;
-    	}
+	            question = "Default question";
+	            answers = new String[]{"Default answer 1", "Default answer 2", "Default answer 3", "Default answer 4"};
+	            correctAnswerIndex = 0;
+	            break;
+	    }
 	}
+
 	
     public String getQuestion() {
         return question;
