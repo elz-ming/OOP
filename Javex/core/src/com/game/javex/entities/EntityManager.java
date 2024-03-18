@@ -34,6 +34,8 @@ public class EntityManager {
 	private int coinsCollected = 0;
 	private int treasureChestSolved = 0;
 	
+	private Array<Flag> flags;
+	
 	public EntityManager(World world, TiledMap map, String selectedWorld, InputManager inputManager) {
 		this.world = world;
 		this.map = map;
@@ -48,6 +50,7 @@ public class EntityManager {
 		
 		this.coins = new Array<>();
 		this.enemies = new Array<>();
+		flags = new Array<>();
 	}
 	
 	public void initialize() {
@@ -73,16 +76,16 @@ public class EntityManager {
             createTerrain(position, width, height);
         }
 		
-//		Create Flag
+		// Create Flag
 		for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+		    Rectangle rect = ((RectangleMapObject) object).getRectangle();
 
-            Vector2 position = new Vector2(rect.getX(), rect.getY());
-            int width = (int)rect.getWidth();
-            int height = (int)rect.getHeight();
-            
-            createFlag(position, width, height);
-        }
+		    Vector2 position = new Vector2(rect.getX(), rect.getY());
+		    int width = (int)rect.getWidth();
+		    int height = (int)rect.getHeight();
+		    
+		    createFlag(world, position, width, height); // Pass 'world' object here
+		}
 		
 //		Create FlagBorder
 		for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
@@ -176,9 +179,10 @@ public class EntityManager {
 		boundaries.add(new Boundary(world, position, width, height));
 	}
 	
-	public void createFlag(Vector2 position, int width, int height) {
-		this.flag = new Flag(world, position, width, height);
-	}
+	public void createFlag(World world, Vector2 position, int width, int height) {
+        Flag flag = new Flag(world, position, width, height);
+        flags.add(flag);
+    }
 	
 	public void createFlagBorder(Vector2 position, int width, int height) {
 		flagBorders.add(new FlagBorder(world, position, width, height));
@@ -209,8 +213,12 @@ public class EntityManager {
 			player.update(delta);
 		}
 		
+		for (TreasureChest treasureChest : treasureChests) {
+	        treasureChest.update(delta);
+	    }
 		int solved = 0;
 		for (TreasureChest treasureChest : treasureChests) {
+			
 			if (treasureChest.getSolved()) {
 				solved++;
 			}
@@ -237,21 +245,32 @@ public class EntityManager {
 		}
 		enemies.removeAll(enemyToRemove, true);
 		
+		
+		 for (Coin coin : coins) {
+		        if (!coin.isCollected()) {
+		            coin.update(delta);
+		        }
+		 }
 		Array<Coin> coinToRemove = new Array<>();
 		for (Coin coin : coins) {
-			if (coin.isCollected()) {
-				world.destroyBody(coin.getBody());
-				coinToRemove.add(coin);
-				coinsCollected();
-			}
+		    if (coin.isCollected()) {
+		        coin.update(delta); // This is where you should place the update call
+		        world.destroyBody(coin.getBody());
+		        coinToRemove.add(coin);
+		        coinsCollected();
+		    }
 		}
 		coins.removeAll(coinToRemove, true);
+		
+		for (Flag flag : flags) {
+	        flag.update(delta); // Update each flag
+	    }
 	}
 	
 	public void render(SpriteBatch spriteBatch) {
-		if (flag != null) {
-			flag.render(spriteBatch);
-		}
+		for (Flag flag : flags) {
+	        flag.render(spriteBatch); // Render each flag
+	    }
 		
 		for (FlagBorder flagBorder : flagBorders) {
 			flagBorder.render(spriteBatch);

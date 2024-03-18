@@ -65,6 +65,13 @@ public abstract class Entity {
         this.sprite.setSize(width, height);
         this.sprite.setPosition(position.x *Constants.PPM - width /2, position.y *Constants.PPM - height/2);
 	}
+
+    protected void createAnimatedSprite(Texture[] textures, int currentTextureIndex) {
+        position = body.getPosition();
+        this.sprite = new Sprite(textures[currentTextureIndex]);
+        this.sprite.setSize(width, height);
+        this.sprite.setPosition(position.x * Constants.PPM - width / 2, position.y * Constants.PPM - height / 2);
+    }
 	
 	public void update(float delta) {
 	    stateTime += delta; // Update animation state time

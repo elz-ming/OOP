@@ -248,6 +248,7 @@ public class PlayScene extends Scene {
 		
         spriteBatch.setProjectionMatrix(camera.combined);
         spriteBatch.begin();
+        
 			entityManager.render(spriteBatch);
 		spriteBatch.end();
 		

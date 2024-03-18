@@ -1,5 +1,9 @@
 package com.game.javex.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -7,52 +11,103 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
-public class TreasureChest extends Entity{
-	private int identifier;
+public class TreasureChest extends Entity {
+	
+    private Texture[] chestTextures;
+    private int currentTextureIndex;
+    private float animationTimer;
+    private final float ANIMATION_DURATION = 0.5f; // Adjust as needed
+    private int identifier;
     private String question;
     private String[] answers;
     private int correctAnswerIndex;
-    
     private boolean solving = false;
     private boolean resetSolving = true;
-    
     private boolean solved = false;
 
-	public TreasureChest(World world, Vector2 position, int width, int height, String selectedWorld, int identifier) {
-		super(world, position);
-		this.width = width;
-    	this.height = height;
-    	this.imgPath = Constants.TREASURE_CHEST_IMG_PATH;
-    	this.identifier = identifier;
-        
-    	createBody();
-    	createSprite();
-    	setContent(selectedWorld);
-	}
+    public TreasureChest(World world, Vector2 position, int width, int height, String selectedWorld, int identifier) {
+        super(world, position);
+        this.width = width;
+        this.height = height;
+        this.chestTextures = new Texture[3]; // Assuming you have 3 textures
+        loadTextures();
+        this.currentTextureIndex = 0; // Start with the first texture
+        this.animationTimer = 0;
+        this.identifier = identifier;
+        createBody();
+        createAnimatedSprite();
+        setContent(selectedWorld);
+    }
+    
+    private void loadTextures() {
+        for (int i = 0; i < 3; i++) {
+            chestTextures[i] = new Texture(Gdx.files.internal("chest_" + i + ".png"));
+        }
+    }
+    
+    @Override
+    public void update(float delta) {
+    	super.update(delta);
+        animationTimer += delta;
+        if (animationTimer >= ANIMATION_DURATION) {
+            currentTextureIndex = (currentTextureIndex + 1) % 3; // Cycle through textures
+            animationTimer = 0;
+            updateAnimatedSpriteTexture();
+        }
+        // Update sprite position based on body position
+        if (this.sprite != null) {
+            position = body.getPosition();
+            this.sprite.setPosition(position.x * Constants.PPM - width / 2, position.y * Constants.PPM - height / 2);
+        }
+    }
+    
+    // Update the animated sprite with the current texture
+    private void updateAnimatedSpriteTexture() {
+        this.sprite.setTexture(chestTextures[currentTextureIndex]);
+    }
 
-	@Override
-	protected void createBody() {
-//		initialize bodyDef and fixtureDef
-		BodyDef bodyDef = new BodyDef();
-		FixtureDef fixtureDef = new FixtureDef();
-		PolygonShape shape = new PolygonShape();
-    	
-//		bodyDef for the entire body
-    	bodyDef.type = BodyDef.BodyType.StaticBody;
-    	bodyDef.position.set((position.x + width /2) /Constants.PPM, (position.y + height /2) /Constants.PPM);
-    	bodyDef.fixedRotation = true;
-    	this.body = world.createBody(bodyDef);
-    	
-//		fixtureDef for the body
-		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
-		fixtureDef.shape = shape;
-		fixtureDef.density = 0;
-		fixtureDef.friction = 0;
-		fixtureDef.restitution = 0;
-		fixtureDef.filter.categoryBits = Constants.TREASURE_CHEST_BIT;
-		fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
-		this.body.createFixture(fixtureDef).setUserData(this);
-	}
+    @Override
+    public void render(SpriteBatch spriteBatch) {
+    	super.render(spriteBatch);
+        if (this.sprite != null) {
+            this.sprite.draw(spriteBatch);
+        }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose(); // Dispose of textures and Box2D body
+    }
+
+    @Override
+    protected void createBody() {
+        BodyDef bodyDef = new BodyDef();
+        FixtureDef fixtureDef = new FixtureDef();
+        PolygonShape shape = new PolygonShape();
+
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set((position.x + width / 2) / Constants.PPM, (position.y + height / 2) / Constants.PPM);
+        bodyDef.fixedRotation = true;
+        this.body = world.createBody(bodyDef);
+
+        shape.setAsBox(width / 2 / Constants.PPM, height / 2 / Constants.PPM);
+        fixtureDef.shape = shape;
+        fixtureDef.density = 0;
+        fixtureDef.friction = 0;
+        fixtureDef.restitution = 0;
+        fixtureDef.filter.categoryBits = Constants.TREASURE_CHEST_BIT;
+        fixtureDef.filter.maskBits = Constants.PLAYER_BIT;
+        this.body.createFixture(fixtureDef).setUserData(this);
+    }
+	
+    private void createAnimatedSprite() {
+        position = body.getPosition();
+        this.sprite = new Sprite(chestTextures[currentTextureIndex]);
+        this.sprite.setSize(width, height);
+        // Calculate the position relative to the center of the sprite
+        this.sprite.setOriginCenter();
+        this.sprite.setPosition(position.x * Constants.PPM - this.sprite.getWidth() / 2, position.y * Constants.PPM - this.sprite.getHeight() / 2);
+    }
 	
 	private void setContent(String selectedWorld) {
 		switch (selectedWorld) {
