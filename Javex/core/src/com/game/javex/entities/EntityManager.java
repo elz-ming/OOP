@@ -140,6 +140,7 @@ public class EntityManager {
 		        createTreasureChest(position, width, height, selectedWorld, identifier);
 		    }
 		}
+		
 
 		//		Create Coin
 		for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
