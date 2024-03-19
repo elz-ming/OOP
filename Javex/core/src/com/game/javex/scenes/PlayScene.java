@@ -206,7 +206,7 @@ public class PlayScene extends Scene {
 	    
 //	    Win Condition
 	    if (player.getWon()) {
-	    	sceneManager.set(new EndScene(sceneManager, inputManager, outputManager));
+	    	sceneManager.set(new WinScene(sceneManager, inputManager, outputManager));
 	    }
 
 	    Boolean signBoardShow = false;

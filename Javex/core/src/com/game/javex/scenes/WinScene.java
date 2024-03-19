@@ -10,14 +10,14 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
-public class EndScene extends Scene {
+public class WinScene extends Scene {
 	private TextButton homeButton;
-    private TextButton retryButton;
+    
     private float inputDelayTimer = 0f;
     private final float INPUT_DELAY = 0.2f; // 0.2 seconds
 
 
-    public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+    public WinScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
         outputManager.play("audio/end.mp3", true);
         width = Gdx.graphics.getWidth();
@@ -32,30 +32,29 @@ public class EndScene extends Scene {
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
         // Create buttons
-        retryButton = new TextButton("Retry", skin);
+       
         homeButton = new TextButton("Home", skin);
 
         // Set the font scale for each button's label
         homeButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
-        retryButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
+       
 
         // Increase the button size
         float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
         float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
         homeButton.setSize(buttonWidth, buttonHeight);
-        retryButton.setSize(buttonWidth, buttonHeight);
+        
 
         // Position the buttons starting from the bottom of the screen
         homeButton.setPosition((width / 2 - homeButton.getWidth() / 2), 2 * (homeButton.getHeight()));
-        retryButton.setPosition((width / 2 - retryButton.getWidth() / 2), homeButton.getY() + homeButton.getHeight() + 10);
-
+        
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
-        stage.addActor(retryButton);
+        
         stage.addActor(homeButton);
 
         // Create an array for navigation
-        menuButtons = new TextButton[]{retryButton, homeButton};
+        menuButtons = new TextButton[]{homeButton};
 
         updateButtonStyles();
     }
@@ -76,17 +75,17 @@ public class EndScene extends Scene {
         float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
         float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
 
-        retryButton.setSize(buttonWidth, buttonHeight);
+        
         homeButton.setSize(buttonWidth, buttonHeight);
 
         // Adjust the font scale based on the button size
         float fontScale = buttonHeight / 120f; // Adjust if needed
-        retryButton.getLabel().setFontScale(fontScale);
+        
         homeButton.getLabel().setFontScale(fontScale);
 
         // Center the buttons
-        retryButton.setPosition((width - retryButton.getWidth()) / 2, (height - retryButton.getHeight()) / 2);
-        homeButton.setPosition((width - homeButton.getWidth()) / 2, retryButton.getY() - homeButton.getHeight() - 10);
+        homeButton.setPosition((width - homeButton.getWidth()) / 2, (height - homeButton.getHeight()) / 2);
+        
     }
 
     
@@ -99,21 +98,14 @@ public class EndScene extends Scene {
             return; // Input delay not reached yet
         }
 
-        if (inputManager.isUpPressed()) {
+        if (inputManager.isEnterPressed()) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
+            sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             updateButtonStyles();
             inputDelayTimer = 0f; // Reset the input delay timer
-        } else if (inputManager.isDownPressed()) {
-            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
-            updateButtonStyles();
-            inputDelayTimer = 0f; // Reset the input delay timer
-        } else if (inputManager.isEnterPressed()) {
-            if (currentButtonIndex == 0) {
-                sceneManager.set(new WorldSelectionScene(sceneManager, inputManager, outputManager));
-            } else if (currentButtonIndex == 1) {
-                sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
-            }
-            inputDelayTimer = 0f; // Reset the input delay timer
+        
+            
+  
         }
     }
 

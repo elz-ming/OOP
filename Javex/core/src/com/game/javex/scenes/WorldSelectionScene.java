@@ -147,7 +147,13 @@ public class WorldSelectionScene extends Scene {
     @Override
     protected void handleInput() {
         if (!worldSelected) {
-            if (inputManager.isUpPressed() || inputManager.isDownPressed()) {
+            if (inputManager.isUpPressed()) {
+                currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
+                updateButtonStyles();
+                try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+            }
+
+            if (inputManager.isDownPressed()) {
                 currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
                 try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
@@ -161,27 +167,27 @@ public class WorldSelectionScene extends Scene {
                 informationTable.setVisible(true);
                 switch (currentButtonIndex) {
                     case 0: // Earth
-                    	selectedWorld = "Earth";
+                        selectedWorld = "Earth";
                         worldInformation = new String[]{
-                            "Earth is the third planet from the Sun.",
-                            "It is the only known planet to support life.",
-                            "Earth's gravity is approximately 9.8 m/s²."
+                                "Earth is the third planet from the Sun.",
+                                "It is the only known planet to support life.",
+                                "Earth's gravity is approximately 9.8 m/s²."
                         };
                         break;
                     case 1: // Mars
-                    	selectedWorld = "Mars";
+                        selectedWorld = "Mars";
                         worldInformation = new String[]{
-                            "Mars is known as the Red Planet.",
-                            "It has the largest volcano in the solar system, Olympus Mons.",
-                            "Mars' gravity is approximately 3.7 m/s²."
+                                "Mars is known as the Red Planet.",
+                                "It has the largest volcano in the solar system, Olympus Mons.",
+                                "Mars' gravity is approximately 3.7 m/s²."
                         };
                         break;
                     case 2: // Venus
-                    	selectedWorld = "Venus";
+                        selectedWorld = "Venus";
                         worldInformation = new String[]{
-                            "Venus is the second planet from the Sun.",
-                            "It is the hottest planet in the solar system.",
-                            "Venus' gravity at approximately 8.9 m/s²"
+                                "Venus is the second planet from the Sun.",
+                                "It is the hottest planet in the solar system.",
+                                "Venus' gravity at approximately 8.9 m/s²"
                         };
                         break;
                 }
@@ -205,4 +211,6 @@ public class WorldSelectionScene extends Scene {
             }
         }
     }
+
+
 }
