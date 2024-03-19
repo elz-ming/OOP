@@ -1,8 +1,5 @@
 package com.game.javex.entities;
 
-import javax.crypto.SecretKey;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
@@ -20,7 +17,6 @@ public class EntityManager {
 	
 	private Array<Terrain> terrains;
 	private Array<Boundary> boundaries;
-	private Flag flag;
 	private Array<FlagBorder> flagBorders;
 	private Array<Signboard> signboards;
 	private Array<TreasureChest> treasureChests;

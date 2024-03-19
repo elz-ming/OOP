@@ -75,7 +75,6 @@ public class WorldSelectionScene extends Scene {
 
         // Add background image to the information table
         Texture backgroundTexture = new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH));
-        Image background = new Image(backgroundTexture);
         informationTable.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
 
         informationLabel = new Label("", skin);

@@ -1,7 +1,5 @@
 package com.game.javex.scenes;
 
-import java.security.KeyStore.LoadStoreParameter;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -14,16 +12,12 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.game.javex.Constants;
 //import com.game.javex.entities.Enemy;
 import com.game.javex.entities.EntityManager;
@@ -38,7 +32,6 @@ import com.game.javex.tools.PlayerControlManager;
 
 public class PlayScene extends Scene {
 	private OrthographicCamera camera;
-	private Viewport port;
 	private World world;
 	private SpriteBatch spriteBatch;
 	
@@ -129,7 +122,6 @@ public class PlayScene extends Scene {
         frontStage.addActor(hudManager.getTable());
         
 		camera = new OrthographicCamera();
-		port = new FitViewport(Constants.VIEWPORT_WIDTH, Constants.VIEWPORT_HEIGHT, camera);
 		
 		mapLoader = new TmxMapLoader();
 		map = mapLoader.load(mapString);

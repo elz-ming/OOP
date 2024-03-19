@@ -1,6 +1,5 @@
 package com.game.javex.tools;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -13,15 +12,7 @@ import com.game.javex.entities.Signboard;
 import com.game.javex.entities.Coin;
 import com.game.javex.entities.TreasureChest;;
 
-public class CollisionManager implements ContactListener{
-	private boolean playerOnSignboard = false;
-	private String currentSignboardIdentifier = null;
-	
-	private boolean playerOnChest = false; 
-	private String currentTreasureChestIdentifier;
-	private String currentChestIdentifier = null;
-	
-	
+public class CollisionManager implements ContactListener{	
 //	For contacts would affect the physics (velocity and acceleration
 	@Override
 	public void beginContact(Contact contact) {
@@ -171,27 +162,13 @@ public class CollisionManager implements ContactListener{
 	            treasureChest.setResetSolving(true);
 	            break;
 		}
-	}		
-
-	public String getCurrentSignboardIdentifier() {
-	    return currentSignboardIdentifier;
 	}
-	
-	public String getCurrentTreasureChestIdentifier() {
-        return currentTreasureChestIdentifier;
-    }
-	
-	 public boolean isPlayerOnChest() {
-	        return playerOnChest;
-	    }
 	
 	@Override 
 	public void preSolve(Contact contact, Manifold oldManifold) {
 		Fixture fixA = contact.getFixtureA();
 		Fixture fixB = contact.getFixtureB();
 		int collisionDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
-		
-		Player player;
 		
 		switch (collisionDef) {
 	//		#1 PLAYER &&& ENEMY HEAD
