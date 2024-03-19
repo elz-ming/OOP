@@ -230,7 +230,7 @@ public class PlayScene extends Scene {
 	    }
 	    
 	    for (TreasureChest treasureChest:entityManager.getTreasureChests()) {
-	    	if (treasureChest.getSolving() && treasureChest.getResetSolving()) {
+	    	if (treasureChest.getSolving() && treasureChest.getResetSolving() && !treasureChest.getSolved()) {
 	    		treasureChest.setResetSolving(false);
 	    		sceneManager.push(new QuizScene(sceneManager, inputManager, outputManager, treasureChest));
 		        break;

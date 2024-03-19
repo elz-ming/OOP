@@ -15,7 +15,6 @@ public class TreasureChest extends Entity{
     
     private boolean solving = false;
     private boolean resetSolving = true;
-    
     private boolean solved = false;
 
 	public TreasureChest(World world, Vector2 position, int width, int height, String selectedWorld, int identifier) {
