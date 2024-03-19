@@ -34,7 +34,7 @@ public class Terrain extends Entity{
 		shape.setAsBox(width /2 /Constants.PPM, height /2 /Constants.PPM);
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0;
-		fixtureDef.friction = 0;
+		fixtureDef.friction = 0.2f;
 		fixtureDef.restitution = 0;
 		fixtureDef.filter.categoryBits = Constants.TERRAIN_BIT;
 		fixtureDef.filter.maskBits = Constants.PLAYER_BIT |Constants.ENEMY_BIT;
