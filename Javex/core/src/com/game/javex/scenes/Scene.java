@@ -52,6 +52,9 @@ public abstract class Scene implements Disposable{
 	    }
     }
     
+    
+    protected abstract void resize(int width, int height);
+    
     protected void updateButtonStyles() {
         for (int i = 0; i < menuButtons.length; i++) {
             if (i == currentButtonIndex) {

@@ -1,4 +1,4 @@
-package com.game.javex.scenes;
+	package com.game.javex.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,7 +18,8 @@ public class PauseScene extends Scene {
     public PauseScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
     	// Using universal attribute across all scenes
     	super(sceneManager, inputManager, outputManager);
-    	outputManager.setMuted(true);
+    	 outputManager.pauseMusic();
+    	
     	width = Gdx.graphics.getWidth();
     	height = Gdx.graphics.getHeight();
     	
@@ -49,6 +50,10 @@ public class PauseScene extends Scene {
         menuButton.setPosition((Gdx.graphics.getWidth() - menuButton.getWidth()) / 2 - xOffset, Gdx.graphics.getHeight() / 2 - menuButton.getHeight() / 2 - 60);
         menuButton.getLabel().setFontScale(0.41f); // Adjust the scale value to your preference
         
+        
+        
+        
+        
         menuButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -62,6 +67,35 @@ public class PauseScene extends Scene {
         menuButtons = new TextButton[]{resumeButton, menuButton};
         updateButtonStyles();   
     }
+    
+    @Override
+    public void resize(int width, int height) {
+        stage.getViewport().update(width, height, true);
+        this.width = width;
+        this.height = height;
+
+        backgroundImage.setSize(width, height);
+
+        // Recalculate button sizes and positions based on the new resolution
+        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
+        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        float startY = height / 2 - buttonHeight / 2;
+
+        resumeButton.setSize(buttonWidth, buttonHeight);
+        menuButton.setSize(buttonWidth, buttonHeight);
+
+        // Adjust the font scale based on the button size to make the text smaller
+        float fontScale = buttonHeight / 140f; // Adjust if needed
+        resumeButton.getLabel().setFontScale(fontScale);
+        menuButton.getLabel().setFontScale(fontScale);
+
+        // Center the buttons and position them vertically
+        resumeButton.setPosition((width - resumeButton.getWidth()) / 2, startY + spaceBetweenButtons / 2 + buttonHeight);
+        menuButton.setPosition((width - menuButton.getWidth()) / 2, startY - spaceBetweenButtons / 2 - buttonHeight);
+    }
+
+
 
     @Override
     protected void handleInput() {
@@ -76,9 +110,11 @@ public class PauseScene extends Scene {
         } else if (inputManager.isEnterPressed()) {
             if (currentButtonIndex == 0) {
                 sceneManager.pop();
-                outputManager.setMuted(false);
+                outputManager.resumeMusic();
             } else if (currentButtonIndex == 1) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
+                
+                
             }
             try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
         } 

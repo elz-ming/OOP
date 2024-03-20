@@ -19,6 +19,10 @@ public class SimulationLifecycleManager extends ApplicationAdapter{
 		sceneManager = new SceneManager();
 		 
 		sceneManager.push(new MenuScene(sceneManager, inputManager, outputManager));
+		
+		
+		 Constants.muted = false; 
+	     outputManager.setMuted(Constants.muted);
 	}
 
 	@Override
@@ -26,6 +30,13 @@ public class SimulationLifecycleManager extends ApplicationAdapter{
 	    sceneManager.update(Gdx.graphics.getDeltaTime());
 	    sceneManager.render();
 	}
+	
+	
+	@Override
+    public void resize(int width, int height) {
+        sceneManager.resize(width, height);
+    }
+	
 	
 	@Override
 	public void dispose () {
