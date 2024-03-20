@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class HUD implements Disposable {
     private Table table;
-    private Label enemiesKilledLabel;
-    private Label coinsCollectedLabel;
+    private Label scoreLabel;
+    private Label treasureChestsSolvedLabel;
     private Label timeLabel;
     private Skin skin;
 
@@ -32,12 +32,12 @@ public class HUD implements Disposable {
         table.setFillParent(true);
 
         // Create labels with the custom styles
-        enemiesKilledLabel = new Label("Enemies Killed: 0", labelStyleRed);
-        coinsCollectedLabel = new Label("Coins Collected: 0", labelStyleGreen);
+        scoreLabel = new Label("Score: 0", labelStyleRed);
+        treasureChestsSolvedLabel = new Label("Chests Solved: 0", labelStyleGreen);
         timeLabel = new Label("Time: 0", labelStyleWhite);
 
-        table.add(enemiesKilledLabel).expandX().padTop(10).padBottom(10);
-        table.add(coinsCollectedLabel).expandX().padTop(10).padBottom(10);
+        table.add(scoreLabel).expandX().padTop(10).padBottom(10);
+        table.add(treasureChestsSolvedLabel).expandX().padTop(10).padBottom(10);
         table.add(timeLabel).expandX().padTop(10).padBottom(10);
         
         this.countdownTimer = countdownTimer;
@@ -45,13 +45,14 @@ public class HUD implements Disposable {
         
     }
 
-    public void update(int enemiesKilled, int coinsCollected) {
-        enemiesKilledLabel.setText("Enemies Killed: " + enemiesKilled);
-        coinsCollectedLabel.setText("Coins Collected: " + coinsCollected);
+    public void update(int getScore, int treasureChestsSolved) {
+        scoreLabel.setText("Score: " + getScore);
+        treasureChestsSolvedLabel.setText("Chests Solved: " + treasureChestsSolved);
         long currentTime = TimeUtils.millis();
         elapsedTime = (countdownTimer - (currentTime - startTime)) / 1000;
         timeLabel.setText("Time: " + elapsedTime);
     }
+
 
     public Table getTable() {
         return table;

@@ -188,7 +188,7 @@ public class PlayScene extends Scene {
 	    cameraUpdate();
 	    playerControlManager.update(dt);
 	    entityManager.update(dt);
-	    hudManager.update(entityManager.getEnemiesKilled(), entityManager.getCoinsCollected());
+	    hudManager.update(entityManager.getScore(), entityManager.getTreasureChestsSolved());
 
 //	    Lose Condition
 	    long elapsedTime = hudManager.getElapsedTime();

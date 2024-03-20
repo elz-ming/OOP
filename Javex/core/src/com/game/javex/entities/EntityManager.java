@@ -330,6 +330,12 @@ public class EntityManager {
 	    coinsCollected++;
 	}
 	 
+	public int getScore() {
+	    return enemiesKilled + coinsCollected;
+	}
+
+
+	
 	public int getCoinsCollected() {
 	    return coinsCollected;
 	}
