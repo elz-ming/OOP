@@ -8,18 +8,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.javex.inouts.*;
 
 public class WinScene extends Scene {
 	private TextButton homeButton;
-    
+	private String audioPath;
     private float inputDelayTimer = 0f;
     private final float INPUT_DELAY = 0.2f; // 0.2 seconds
+    private Label winLabel; // Add this line
 
 
     public WinScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-        outputManager.play("audio/end.mp3", true);
+        audioPath = Constants.END_AUDIO_PATH;
+        outputManager.play(audioPath, true);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
 
@@ -30,9 +33,16 @@ public class WinScene extends Scene {
 
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
+        
+        
+        // Create "YOU WIN" label
+        winLabel = new Label("YOU WIN", skin); // Add this line
+        winLabel.setFontScale(2.0f); // Adjust the font scale as needed
+        winLabel.setPosition(width / 2 - winLabel.getWidth() / 2, height - winLabel.getHeight() - 50); // Position the label at the top of the screen
+
+       
 
         // Create buttons
-       
         homeButton = new TextButton("Home", skin);
 
         // Set the font scale for each button's label
@@ -50,9 +60,9 @@ public class WinScene extends Scene {
         
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
-        
+        stage.addActor(winLabel); // Add the "YOU WIN" label to the stage
         stage.addActor(homeButton);
-
+        
         // Create an array for navigation
         menuButtons = new TextButton[]{homeButton};
 

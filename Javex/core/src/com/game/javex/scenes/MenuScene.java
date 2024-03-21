@@ -13,11 +13,12 @@ import com.game.javex.inouts.*;
 public class MenuScene extends Scene {
     private TextButton playButton, settingButton, instructionsButton, exitButton;
     
-
+    private String audioPath;
 
     public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-        outputManager.play("audio/end.mp3", true);
+        audioPath = Constants.MENU_AUDIO_PATH;
+        outputManager.play(audioPath, true);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         

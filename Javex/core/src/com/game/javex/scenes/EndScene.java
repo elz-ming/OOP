@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.game.javex.Constants;
@@ -15,22 +16,28 @@ public class EndScene extends Scene {
     private TextButton retryButton;
     private float inputDelayTimer = 0f;
     private final float INPUT_DELAY = 0.2f; // 0.2 seconds
+    private String audioPath;
+   
 
 
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
-        outputManager.play("audio/end.mp3", true);
+        audioPath = Constants.END_AUDIO_PATH;
+        outputManager.play(audioPath, true);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
 
         // Set background
-        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END_IMG_PATH)));
+        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END2_IMG_PATH)));
         backgroundImage.setSize(width, height); // Set the size to fill the screen
         backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
 
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
+        
+        
+     
         // Create buttons
         retryButton = new TextButton("Retry", skin);
         homeButton = new TextButton("Home", skin);
@@ -51,6 +58,7 @@ public class EndScene extends Scene {
 
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); // Add the background image to the stage
+       
         stage.addActor(retryButton);
         stage.addActor(homeButton);
 

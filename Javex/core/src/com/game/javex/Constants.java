@@ -51,6 +51,7 @@ public class Constants {
 	public static final String MARS_IMG_PATH = "image_background/mars.png";
 	public static final String VENUS_IMG_PATH = "image_background/venus.png";
 	public static final String END_IMG_PATH = "image_background/end.png";
+	public static final String END2_IMG_PATH = "image_background/end2.png";
 	
 	public static final String MENU_AUDIO_PATH = "audio/menu.mp3";
 	public static final String EARTH_AUDIO_PATH = "audio/earth.mp3";

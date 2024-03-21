@@ -51,21 +51,26 @@ import com.game.javex.inouts.*;
             Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
             instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
 
-            Label instructionLabel1 = new Label("Use arrow keys to move and jump on enemies heads to kill them", skin);
-            Label instructionLabel2 = new Label("Press Enter to proceed", skin);
-            Label instructionLabel3 = new Label("Press Escape to pause", skin);
+            
+            
+            Label instructionLabel1 = new Label("Collect coins and kill enemies by jumping on\n" + "their heads to get a higher score", skin);
+            Label instructionLabel2 = new Label("Find the signboards for more clues to solve\n" + "the treasure chests" , skin);
+            Label instructionLabel3 = new Label("Solve all the treasure chests and collect the\n" + "flag at the end to win the game" , skin);
+            Label instructionLabel4 = new Label("Press Enter to proceed and Escape to pause", skin);
 
             instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
             instructionLabel2.setFontScale(1.5f);
             instructionLabel3.setFontScale(1.5f);
+            instructionLabel4.setFontScale(1.5f);
 
             instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
             instructionsTable.add(instructionLabel2).padBottom(5).row();
             instructionsTable.add(instructionLabel3).padBottom(5).row();
+            instructionsTable.add(instructionLabel4).padBottom(5).row();
 
             // Set the size of the instructions table
             float tableWidth = width * 0.85f; // Adjust the width of the table as needed
-            float tableHeight = height * 0.3f; // Adjust the height of the table as needed
+            float tableHeight = height * 0.4f; // Adjust the height of the table as needed
             instructionsTable.setSize(tableWidth, tableHeight);
             instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
 
