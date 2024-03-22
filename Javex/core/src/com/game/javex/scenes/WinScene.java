@@ -16,7 +16,7 @@ public class WinScene extends Scene {
 	private String audioPath;
     private float inputDelayTimer = 0f;
     private final float INPUT_DELAY = 0.2f; // 0.2 seconds
-    private Label winLabel; // Add this line
+ 
 
 
     public WinScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
@@ -28,42 +28,38 @@ public class WinScene extends Scene {
 
         // Set background
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END_IMG_PATH)));
-        backgroundImage.setSize(width, height); // Set the size to fill the screen
-        backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+        backgroundImage.setSize(width, height); 
+        backgroundImage.setZIndex(0); 
 
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
         
         
-        // Create "YOU WIN" label
-        winLabel = new Label("YOU WIN", skin); // Add this line
-        winLabel.setFontScale(2.0f); // Adjust the font scale as needed
-        winLabel.setPosition(width / 2 - winLabel.getWidth() / 2, height - winLabel.getHeight() - 50); // Position the label at the top of the screen
+   
 
        
 
         // Create buttons
         homeButton = new TextButton("Home", skin);
 
-        // Set the font scale for each button's label
-        homeButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
+       
+        homeButton.getLabel().setFontScale(0.5f); 
        
 
-        // Increase the button size
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
         homeButton.setSize(buttonWidth, buttonHeight);
         
 
-        // Position the buttons starting from the bottom of the screen
+       
         homeButton.setPosition((width / 2 - homeButton.getWidth() / 2), 2 * (homeButton.getHeight()));
         
         stage = new Stage(new ScreenViewport());
-        stage.addActor(backgroundImage); // Add the background image to the stage
-        stage.addActor(winLabel); // Add the "YOU WIN" label to the stage
+        stage.addActor(backgroundImage); 
         stage.addActor(homeButton);
         
-        // Create an array for navigation
+        
         menuButtons = new TextButton[]{homeButton};
 
         updateButtonStyles();
@@ -81,19 +77,19 @@ public class WinScene extends Scene {
 
         backgroundImage.setSize(width, height);
 
-        // Recalculate button size and position based on the new resolution
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
 
         
         homeButton.setSize(buttonWidth, buttonHeight);
 
-        // Adjust the font scale based on the button size
-        float fontScale = buttonHeight / 120f; // Adjust if needed
+     
+        float fontScale = buttonHeight / 120f; 
         
         homeButton.getLabel().setFontScale(fontScale);
 
-        // Center the buttons
+        
         homeButton.setPosition((width - homeButton.getWidth()) / 2, (height - homeButton.getHeight()) / 2);
         
     }
@@ -101,18 +97,18 @@ public class WinScene extends Scene {
     
     @Override
     protected void handleInput() {
-        // Update the input delay timer
+      
         inputDelayTimer += Gdx.graphics.getDeltaTime();
 
         if (inputDelayTimer < INPUT_DELAY) {
-            return; // Input delay not reached yet
+            return; 
         }
 
         if (inputManager.isEnterPressed()) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
             sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             updateButtonStyles();
-            inputDelayTimer = 0f; // Reset the input delay timer
+            inputDelayTimer = 0f; 
         
             
   

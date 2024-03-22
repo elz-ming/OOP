@@ -251,7 +251,7 @@ public class EntityManager {
 		Array<Coin> coinToRemove = new Array<>();
 		for (Coin coin : coins) {
 		    if (coin.isCollected()) {
-		        coin.update(delta); // This is where you should place the update call
+		        coin.update(delta); 
 		        world.destroyBody(coin.getBody());
 		        coinToRemove.add(coin);
 		        coinsCollected();

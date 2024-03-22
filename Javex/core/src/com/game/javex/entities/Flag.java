@@ -21,11 +21,11 @@ public class Flag extends Entity{
         this.width = width; 
         this.height = height;
 
-        TextureRegion[] flagFrames = new TextureRegion[4]; // Assuming you have 4 frames for the flag animation
+        TextureRegion[] flagFrames = new TextureRegion[4]; 
         for (int i = 0; i < 4; i++) { // Change the loop condition from 1 to 0
-            flagFrames[i] = new TextureRegion(new Texture(Gdx.files.internal("flag_" + (i + 1) + ".png"))); // Correct the index
+            flagFrames[i] = new TextureRegion(new Texture(Gdx.files.internal("flag_" + (i + 1) + ".png"))); 
         }
-        animation = new Animation<>(0.25f, flagFrames); // Adjust frame duration as needed
+        animation = new Animation<>(0.25f, flagFrames); 
         stateTime = 0f;
 
         createBody();

@@ -20,9 +20,9 @@ public class HUD implements Disposable {
 	private long elapsedTime;
 
     public HUD(int countdownTimer) {
-        skin = new Skin(Gdx.files.internal("rainbow-ui.json")); // Load the skin
+        skin = new Skin(Gdx.files.internal("rainbow-ui.json")); 
 
-        // Create custom label styles with your desired font color
+        
         Label.LabelStyle labelStyleWhite = new Label.LabelStyle(skin.getFont("font"), Color.WHITE);
         Label.LabelStyle labelStyleRed = new Label.LabelStyle(skin.getFont("font"), Color.WHITE);
         Label.LabelStyle labelStyleGreen = new Label.LabelStyle(skin.getFont("font"), Color.WHITE);
@@ -31,7 +31,7 @@ public class HUD implements Disposable {
         table.top();
         table.setFillParent(true);
 
-        // Create labels with the custom styles
+       
         scoreLabel = new Label("Score: 0", labelStyleRed);
         treasureChestsSolvedLabel = new Label("Chests Solved: 0", labelStyleGreen);
         timeLabel = new Label("Time: 0", labelStyleWhite);
@@ -59,7 +59,7 @@ public class HUD implements Disposable {
     }
 
     public void resize(int width, int height) {
-        // Resize labels and table as needed
+       
         table.invalidateHierarchy();
         table.setSize(width, height);
     }
@@ -72,7 +72,7 @@ public class HUD implements Disposable {
     }
 
 	public int getCountdownTimer() {
-		// TODO Auto-generated method stub
+		
 		return countdownTimer;
 	}
     public long getElapsedTime() {

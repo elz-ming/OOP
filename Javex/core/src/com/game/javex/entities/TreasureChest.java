@@ -16,7 +16,7 @@ public class TreasureChest extends Entity {
     private Texture[] chestTextures;
     private int currentTextureIndex;
     private float animationTimer;
-    private final float ANIMATION_DURATION = 0.5f; // Adjust as needed
+    private final float ANIMATION_DURATION = 0.5f; 
     private int identifier;
     private String question;
     private String[] answers;
@@ -29,9 +29,9 @@ public class TreasureChest extends Entity {
         super(world, position);
         this.width = width;
         this.height = height;
-        this.chestTextures = new Texture[3]; // Assuming you have 3 textures
+        this.chestTextures = new Texture[3];
         loadTextures();
-        this.currentTextureIndex = 0; // Start with the first texture
+        this.currentTextureIndex = 0; 
         this.animationTimer = 0;
         this.identifier = identifier;
         createBody();

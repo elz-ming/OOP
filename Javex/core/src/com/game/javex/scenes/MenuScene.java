@@ -26,8 +26,8 @@ public class MenuScene extends Scene {
 
         // Set background
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
-        backgroundImage.setSize(width, height); // Set the size to fill the screen
-        backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+        backgroundImage.setSize(width, height); 
+        backgroundImage.setZIndex(0); 
 
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
@@ -39,7 +39,7 @@ public class MenuScene extends Scene {
         exitButton = new TextButton("Exit", skin);
 
         // Set the font scale for each button's label
-        float fontScale = 0.5f; // Adjust the scale value to your preference
+        float fontScale = 0.5f; 
         playButton.getLabel().setFontScale(fontScale);
         settingButton.getLabel().setFontScale(fontScale);
         instructionsButton.getLabel().setFontScale(fontScale);
@@ -54,17 +54,16 @@ public class MenuScene extends Scene {
         exitButton.setSize(buttonWidth, buttonHeight);
 
         // Position buttons
-        float spaceBetweenButtons = 20; // Adjust the space to your preference
+        float spaceBetweenButtons = 20; 
 
-        // Calculate the total height that the buttons will occupy on the screen
+       
         float totalButtonsHeight = 4 * buttonHeight + 3 * spaceBetweenButtons;
 
-        // Calculate the starting Y position for the playButton
-        // This will start drawing buttons from the bottom of the screen upward
+     
         float startY = (height - totalButtonsHeight) / 2;
 
-        // Position the buttons starting from the bottom of the screen
-        float xOffset = 30; // Adjust this value to move the buttons further to the left
+        
+        float xOffset = 30; 
 
         playButton.setPosition((width / 2 - playButton.getWidth() / 2) - xOffset, startY + 3 * (buttonHeight + spaceBetweenButtons));
         settingButton.setPosition((width / 2 - settingButton.getWidth() / 2) - xOffset, startY + 2 * (buttonHeight + spaceBetweenButtons));
@@ -95,10 +94,10 @@ public class MenuScene extends Scene {
 
         backgroundImage.setSize(width, height);
 
-        // Recalculate button sizes and positions based on the new resolution
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
-        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
+        float spaceBetweenButtons = height * 0.06f; 
         float totalButtonsHeight = 4 * buttonHeight + 3 * spaceBetweenButtons;
         float startY = (height - totalButtonsHeight) / 2;
 
@@ -107,8 +106,8 @@ public class MenuScene extends Scene {
         instructionsButton.setSize(buttonWidth, buttonHeight);
         exitButton.setSize(buttonWidth, buttonHeight);
 
-        // Adjust the font scale based on the button size
-        float fontScale = buttonHeight / 120f; // Adjust if needed
+        
+        float fontScale = buttonHeight / 120f; 
         playButton.getLabel().setFontScale(fontScale);
         settingButton.getLabel().setFontScale(fontScale);
         instructionsButton.getLabel().setFontScale(fontScale);
@@ -147,7 +146,7 @@ public class MenuScene extends Scene {
                     sceneManager.set(new WorldSelectionScene(sceneManager, inputManager, outputManager));
                     break;
                 case 1: // Settings button
-                    // Add your logic for the settings button here
+                  
                     sceneManager.set(new SettingScene(sceneManager, inputManager, outputManager));
                     break;
                 case 2: // Instructions button

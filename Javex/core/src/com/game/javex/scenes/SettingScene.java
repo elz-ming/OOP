@@ -47,7 +47,7 @@ public class SettingScene extends Scene {
         menuButtons = new TextButton[]{muteButton, backButton};
 
         updateButtonStyles();
-        updateMuteButtonText(); // Update the mute button text initially
+        updateMuteButtonText(); 
     }
 
     @Override
@@ -78,7 +78,7 @@ public class SettingScene extends Scene {
     @Override
     protected void handleInput() {
         if (inputManager.isUpPressed()) {
-            currentButtonIndex = (currentButtonIndex + menuButtons.length - 1) % menuButtons.length; // Move up one button
+            currentButtonIndex = (currentButtonIndex + menuButtons.length - 1) % menuButtons.length; 
             updateButtonStyles();
             try {
                 Thread.sleep(100);
@@ -86,7 +86,7 @@ public class SettingScene extends Scene {
                 e.printStackTrace();
             }
         } else if (inputManager.isDownPressed()) {
-            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length; // Move down one button
+            currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length; 
             updateButtonStyles();
             try {
                 Thread.sleep(100);
@@ -97,11 +97,11 @@ public class SettingScene extends Scene {
 
         if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
-                case 0: // Mute button
+                case 0: 
                     outputManager.setMuted(!outputManager.isMuted());
-                    updateMuteButtonText(); // Update the mute button text
+                    updateMuteButtonText(); 
                     break;
-                case 1: // Back button
+                case 1: 
                     sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
                     break;
             }
@@ -114,7 +114,7 @@ public class SettingScene extends Scene {
     }
 
 
-    // Helper method to update the mute button text based on the mute status
+    
     private void updateMuteButtonText() {
         if (outputManager.isMuted()) {
             muteButton.setText("Muted");

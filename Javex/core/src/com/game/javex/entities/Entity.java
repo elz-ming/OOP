@@ -77,7 +77,7 @@ public abstract class Entity {
 	    stateTime += delta; // Update animation state time
 	    position = body.getPosition(); // Update position based on the physics body
 
-	    // Only attempt to set the sprite's position if the sprite has been initialized
+	    
 	    if (this.sprite != null) {
 	        this.sprite.setPosition(position.x * Constants.PPM - width / 2, position.y * Constants.PPM - height / 2);
 	    }

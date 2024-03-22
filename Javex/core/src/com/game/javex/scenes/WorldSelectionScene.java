@@ -69,23 +69,23 @@ public class WorldSelectionScene extends Scene {
         informationTable = new Table();
         informationTable.setVisible(false);
 
-        informationTable.center(); // Center the table contents
-        informationTable.pad(20); // Add padding to the table
-        stage.addActor(informationTable); // Add the table to the stage
+        informationTable.center(); 
+        informationTable.pad(20); 
+        stage.addActor(informationTable); 
 
-        // Add background image to the information table
+        
         Texture backgroundTexture = new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH));
         informationTable.setBackground(new TextureRegionDrawable(new TextureRegion(backgroundTexture)));
 
         informationLabel = new Label("", skin);
         informationLabel.setAlignment(Align.center);
         informationLabel.setColor(Color.WHITE);
-        informationLabel.setWrap(true); // Allow the text to wrap
+        informationLabel.setWrap(true); 
         
-        float labelFontScale = 1.4f; // Adjust the scale value to your preference
+        float labelFontScale = 1.4f; 
         informationLabel.setFontScale(labelFontScale);
 
-        informationTable.add(informationLabel).expand().fill().pad(20).width(Gdx.graphics.getWidth() * 0.5f); // Add the label to the table with padding and width
+        informationTable.add(informationLabel).expand().fill().pad(20).width(Gdx.graphics.getWidth() * 0.5f); 
 
         updateButtonStyles();
     }
@@ -97,10 +97,10 @@ public class WorldSelectionScene extends Scene {
         this.width = width;
         this.height = height;
 
-        // Recalculate button sizes and positions based on the new resolution
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
-        float spaceBetweenButtons = height * 0.06f; // 6% of the screen height
+        
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
+        float spaceBetweenButtons = height * 0.06f; 
         float totalHeight = 3 * buttonHeight + 2 * spaceBetweenButtons;
         float startY = (height - totalHeight) / 2;
 
@@ -108,8 +108,8 @@ public class WorldSelectionScene extends Scene {
         world2Button.setSize(buttonWidth, buttonHeight);
         world3Button.setSize(buttonWidth, buttonHeight);
 
-        // Adjust the font scale based on the button size
-        float fontScale = buttonHeight / 120f; // Adjust if needed
+        
+        float fontScale = buttonHeight / 120f; 
         world1Button.getLabel().setFontScale(fontScale);
         world2Button.getLabel().setFontScale(fontScale);
         world3Button.getLabel().setFontScale(fontScale);
@@ -119,12 +119,12 @@ public class WorldSelectionScene extends Scene {
         world2Button.setPosition((width - world2Button.getWidth()) / 2, startY + world1Button.getHeight() + spaceBetweenButtons);
         world3Button.setPosition((width - world3Button.getWidth()) / 2, startY);
 
-        // Update the size of the background image in the information table
+        
         informationTable.setBackground(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)))));
 
         informationTable.pack();
-        float maxWidth = width * 0.6f; // Adjust as needed
-        float maxHeight = height * 0.3f; // Adjust as needed
+        float maxWidth = width * 0.6f; 
+        float maxHeight = height * 0.3f; 
         informationTable.setWidth(Math.min(informationTable.getWidth(), maxWidth));
         informationTable.setHeight(Math.min(informationTable.getHeight(), maxHeight));
 

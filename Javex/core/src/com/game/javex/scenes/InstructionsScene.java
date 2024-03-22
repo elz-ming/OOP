@@ -34,7 +34,7 @@ import com.game.javex.inouts.*;
 
             float spaceBetweenButtons = 20;
             float totalButtonsHeight = backButton.getHeight() + spaceBetweenButtons;
-            float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; // Adjusted startY value
+            float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; 
 
             backButton.setPosition((Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2), startY - backButton.getHeight() - 10); // Adjusted button position
 
@@ -42,14 +42,14 @@ import com.game.javex.inouts.*;
 
             menuButtons = new TextButton[]{backButton};
 
-            // Add instructions labels encapsulated in a box
+            
             Table instructionsTable = new Table();
             instructionsTable.center();
-            instructionsTable.padTop(20); // Adjusted padding to make the box smaller
+            instructionsTable.padTop(20); 
 
-            // Set the background image for the box
+           
             Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
-            instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
+            instructionsTable.setBackground(backgroundImg.getDrawable()); 
 
             
             
@@ -58,21 +58,21 @@ import com.game.javex.inouts.*;
             Label instructionLabel3 = new Label("Solve all the treasure chests and collect the\n" + "flag at the end to win the game" , skin);
             Label instructionLabel4 = new Label("Press Enter to proceed and Escape to pause", skin);
 
-            instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
+            instructionLabel1.setFontScale(1.5f); 
             instructionLabel2.setFontScale(1.5f);
             instructionLabel3.setFontScale(1.5f);
             instructionLabel4.setFontScale(1.5f);
 
-            instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
+            instructionsTable.add(instructionLabel1).padBottom(5).row(); 
             instructionsTable.add(instructionLabel2).padBottom(5).row();
             instructionsTable.add(instructionLabel3).padBottom(5).row();
             instructionsTable.add(instructionLabel4).padBottom(5).row();
 
-            // Set the size of the instructions table
-            float tableWidth = width * 0.85f; // Adjust the width of the table as needed
-            float tableHeight = height * 0.4f; // Adjust the height of the table as needed
+            
+            float tableWidth = width * 0.85f; 
+            float tableHeight = height * 0.4f; 
             instructionsTable.setSize(tableWidth, tableHeight);
-            instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
+            instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); 
 
             stage.addActor(instructionsTable);
 
@@ -91,14 +91,14 @@ import com.game.javex.inouts.*;
         float buttonHeight = height * 0.15f;
         float spaceBetweenButtons = height * 0.06f;
         float totalButtonsHeight = buttonHeight + spaceBetweenButtons;
-        float startY = (height - totalButtonsHeight) / 4; // Adjusted startY value
+        float startY = (height - totalButtonsHeight) / 4; 
         
         backButton.setSize(buttonWidth, buttonHeight);
 
         float fontScale = buttonHeight / 120f;
         backButton.getLabel().setFontScale(fontScale);
 
-        backButton.setPosition((width - backButton.getWidth()) / 2, startY - backButton.getHeight() - 10); // Adjusted button position
+        backButton.setPosition((width - backButton.getWidth()) / 2, startY - backButton.getHeight() - 10); 
     }
 
     @Override
