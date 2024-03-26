@@ -23,7 +23,6 @@ public class WorldSelectionScene extends Scene {
     private Label informationLabel;
     private String[] worldInformation;
     private String selectedWorld;
-    private int currentInfoIndex = 0;
     private boolean worldSelected = false;
 
     public WorldSelectionScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
@@ -131,18 +130,7 @@ public class WorldSelectionScene extends Scene {
         // Center the information table on the screen
         informationTable.setPosition((width - informationTable.getWidth()) / 2, (height - informationTable.getHeight()) / 2);
     }
-
-
-
-
-
-
-
-
-
-
-
-
+    
     @Override
     protected void handleInput() {
         if (!worldSelected) {
@@ -156,6 +144,11 @@ public class WorldSelectionScene extends Scene {
                 currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
                 try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
+            }
+            
+            if (inputManager.isReturnPressed()) {
+            	inputManager.resetKey();
+            	sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
 
             if (inputManager.isEnterPressed()) {
@@ -190,20 +183,21 @@ public class WorldSelectionScene extends Scene {
                         };
                         break;
                 }
-                informationLabel.setText(worldInformation[currentInfoIndex]);
+                informationLabel.setText(worldInformation[currentButtonIndex]);
                 informationLabel.pack();
                 informationLabel.setPosition((width - informationLabel.getWidth()) / 2, (height - informationLabel.getHeight()) / 2);
-                currentInfoIndex++;
+                currentButtonIndex++;
                 try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }
             }
         } else {
             if (inputManager.isEnterPressed()) {
-                if (currentInfoIndex < worldInformation.length) {
-                    informationLabel.setText(worldInformation[currentInfoIndex]);
+                if (currentButtonIndex < worldInformation.length) {
+                    informationLabel.setText(worldInformation[currentButtonIndex]);
                     informationLabel.pack();
                     informationLabel.setPosition((width - informationLabel.getWidth()) / 2, (height - informationLabel.getHeight()) / 2);
-                    currentInfoIndex++;
+                    currentButtonIndex++;
                 } else {
+                	inputManager.resetKey();
                     sceneManager.set(new PlayScene(sceneManager, inputManager, outputManager, selectedWorld));
                 }
                 try { Thread.sleep(100); } catch (InterruptedException e) { e.printStackTrace(); }

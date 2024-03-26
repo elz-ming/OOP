@@ -22,6 +22,7 @@ public abstract class Scene implements Disposable{
     protected Stage stage;
     protected Skin skin;
     protected Image backgroundImage;
+    protected String audioPath;
     
     protected TextButton[] menuButtons;
     protected int currentButtonIndex = 0;

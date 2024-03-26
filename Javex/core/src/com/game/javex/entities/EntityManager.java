@@ -331,11 +331,9 @@ public class EntityManager {
 	}
 	 
 	public int getScore() {
-	    return enemiesKilled + coinsCollected;
+	    return enemiesKilled*20 + coinsCollected*10;
 	}
 
-
-	
 	public int getCoinsCollected() {
 	    return coinsCollected;
 	}

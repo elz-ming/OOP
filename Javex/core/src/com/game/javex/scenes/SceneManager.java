@@ -21,7 +21,6 @@ public class SceneManager {
 	public void pop() {
 		if (!scenes.isEmpty()) {
 	        scenes.pop().dispose();
-	        
 		}
 	}
 	

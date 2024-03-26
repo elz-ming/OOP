@@ -13,11 +13,8 @@ import com.game.javex.inouts.*;
 
 public class WinScene extends Scene {
 	private TextButton homeButton;
-	private String audioPath;
     private float inputDelayTimer = 0f;
-    private final float INPUT_DELAY = 0.2f; // 0.2 seconds
     private Label winLabel; // Add this line
-
 
     public WinScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
@@ -39,9 +36,7 @@ public class WinScene extends Scene {
         winLabel = new Label("YOU WIN", skin); // Add this line
         winLabel.setFontScale(2.0f); // Adjust the font scale as needed
         winLabel.setPosition(width / 2 - winLabel.getWidth() / 2, height - winLabel.getHeight() - 50); // Position the label at the top of the screen
-
-       
-
+        
         // Create buttons
         homeButton = new TextButton("Home", skin);
 
@@ -69,10 +64,6 @@ public class WinScene extends Scene {
         updateButtonStyles();
     }
     
-    
-    
-    
-    
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
@@ -97,25 +88,20 @@ public class WinScene extends Scene {
         homeButton.setPosition((width - homeButton.getWidth()) / 2, (height - homeButton.getHeight()) / 2);
         
     }
-
     
     @Override
     protected void handleInput() {
         // Update the input delay timer
         inputDelayTimer += Gdx.graphics.getDeltaTime();
 
-        if (inputDelayTimer < INPUT_DELAY) {
+        if (inputDelayTimer < Constants.INPUT_DELAY) {
             return; // Input delay not reached yet
         }
 
-        if (inputManager.isEnterPressed()) {
+        if (inputManager.isEnterPressed() || inputManager.isReturnPressed()) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
+            inputManager.resetKey();
             sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
-            updateButtonStyles();
-            inputDelayTimer = 0f; // Reset the input delay timer
-        
-            
-  
         }
     }
 

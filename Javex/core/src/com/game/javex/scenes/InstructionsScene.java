@@ -14,69 +14,69 @@ import com.game.javex.inouts.*;
 
 
 
-    public class InstructionsScene extends Scene {
-        private TextButton backButton;
+public class InstructionsScene extends Scene {
+    private TextButton backButton;
 
-        public InstructionsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
-            super(sceneManager, inputManager, outputManager);
-            width = Gdx.graphics.getWidth();
-            height = Gdx.graphics.getHeight();
-            backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
-            backgroundImage.setSize(width, height);
-            backgroundImage.setZIndex(0);
-            stage = new Stage(new ScreenViewport());
-            stage.addActor(backgroundImage);
-            skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
+    public InstructionsScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
+        super(sceneManager, inputManager, outputManager);
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
+        backgroundImage.setSize(width, height);
+        backgroundImage.setZIndex(0);
+        stage = new Stage(new ScreenViewport());
+        stage.addActor(backgroundImage);
+        skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
-            backButton = new TextButton("Back", skin);
-            backButton.getLabel().setFontScale(0.5f);
-            backButton.setSize(200, 80);
+        backButton = new TextButton("Back", skin);
+        backButton.getLabel().setFontScale(0.5f);
+        backButton.setSize(200, 80);
 
-            float spaceBetweenButtons = 20;
-            float totalButtonsHeight = backButton.getHeight() + spaceBetweenButtons;
-            float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; // Adjusted startY value
+        float spaceBetweenButtons = 20;
+        float totalButtonsHeight = backButton.getHeight() + spaceBetweenButtons;
+        float startY = (Gdx.graphics.getHeight() - totalButtonsHeight) / 4; // Adjusted startY value
 
-            backButton.setPosition((Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2), startY - backButton.getHeight() - 10); // Adjusted button position
+        backButton.setPosition((Gdx.graphics.getWidth() / 2 - backButton.getWidth() / 2), startY - backButton.getHeight() - 10); // Adjusted button position
 
-            stage.addActor(backButton);
+        stage.addActor(backButton);
 
-            menuButtons = new TextButton[]{backButton};
+        menuButtons = new TextButton[]{backButton};
 
-            // Add instructions labels encapsulated in a box
-            Table instructionsTable = new Table();
-            instructionsTable.center();
-            instructionsTable.padTop(20); // Adjusted padding to make the box smaller
+        // Add instructions labels encapsulated in a box
+        Table instructionsTable = new Table();
+        instructionsTable.center();
+        instructionsTable.padTop(20); // Adjusted padding to make the box smaller
 
-            // Set the background image for the box
-            Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
-            instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
+        // Set the background image for the box
+        Image backgroundImg = new Image(new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH)));
+        instructionsTable.setBackground(backgroundImg.getDrawable()); // Use the image as background
 
-            
-            
-            Label instructionLabel1 = new Label("Collect coins and kill enemies by jumping on\n" + "their heads to get a higher score", skin);
-            Label instructionLabel2 = new Label("Find the signboards for more clues to solve\n" + "the treasure chests" , skin);
-            Label instructionLabel3 = new Label("Solve all the treasure chests and collect the\n" + "flag at the end to win the game" , skin);
-            Label instructionLabel4 = new Label("Press Enter to proceed and Escape to pause", skin);
+        
+        
+        Label instructionLabel1 = new Label("Collect coins and kill enemies by jumping on\n" + "their heads to get a higher score", skin);
+        Label instructionLabel2 = new Label("Find the signboards for more clues to solve\n" + "the treasure chests" , skin);
+        Label instructionLabel3 = new Label("Solve all the treasure chests and collect the\n" + "flag at the end to win the game" , skin);
+        Label instructionLabel4 = new Label("Press Enter to proceed and Escape to pause", skin);
 
-            instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
-            instructionLabel2.setFontScale(1.5f);
-            instructionLabel3.setFontScale(1.5f);
-            instructionLabel4.setFontScale(1.5f);
+        instructionLabel1.setFontScale(1.5f); // Adjusted font scale to fit the smaller box
+        instructionLabel2.setFontScale(1.5f);
+        instructionLabel3.setFontScale(1.5f);
+        instructionLabel4.setFontScale(1.5f);
 
-            instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
-            instructionsTable.add(instructionLabel2).padBottom(5).row();
-            instructionsTable.add(instructionLabel3).padBottom(5).row();
-            instructionsTable.add(instructionLabel4).padBottom(5).row();
+        instructionsTable.add(instructionLabel1).padBottom(5).row(); // Adjusted padding between labels
+        instructionsTable.add(instructionLabel2).padBottom(5).row();
+        instructionsTable.add(instructionLabel3).padBottom(5).row();
+        instructionsTable.add(instructionLabel4).padBottom(5).row();
 
-            // Set the size of the instructions table
-            float tableWidth = width * 0.85f; // Adjust the width of the table as needed
-            float tableHeight = height * 0.4f; // Adjust the height of the table as needed
-            instructionsTable.setSize(tableWidth, tableHeight);
-            instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
+        // Set the size of the instructions table
+        float tableWidth = width * 0.85f; // Adjust the width of the table as needed
+        float tableHeight = height * 0.4f; // Adjust the height of the table as needed
+        instructionsTable.setSize(tableWidth, tableHeight);
+        instructionsTable.setPosition((width - tableWidth) / 2, (height - tableHeight) / 2); // Center the table on the screen
 
-            stage.addActor(instructionsTable);
+        stage.addActor(instructionsTable);
 
-            updateButtonStyles();
+        updateButtonStyles();
     }
 
     @Override

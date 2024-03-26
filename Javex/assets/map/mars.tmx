@@ -209,8 +209,6 @@
   <object id="138" x="2944" y="288" width="32" height="32"/>
   <object id="139" x="3040" y="288" width="32" height="32"/>
   <object id="164" x="2336" y="832" width="32" height="32"/>
-  <object id="165" x="2400" y="832" width="32" height="32"/>
-  <object id="166" x="2528" y="832" width="32" height="32"/>
   <object id="167" x="2592" y="832" width="32" height="32"/>
  </objectgroup>
 </map>

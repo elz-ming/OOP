@@ -74,6 +74,15 @@ public class InputManager implements InputProcessor {
     public boolean isRightPressed() { return rightKey; }
     public boolean isEnterPressed() { return enterKey; }
     public boolean isReturnPressed() { return returnKey; }
+    
+    public void resetKey() {
+    	upKey = false;
+        downKey = false;
+        leftKey = false;
+        rightKey = false;
+        enterKey = false;
+        returnKey = false;
+    }
 
     // ========================= //
  	// ===== EMPTY METHODS ===== //	

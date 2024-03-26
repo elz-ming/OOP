@@ -12,8 +12,6 @@ import com.game.javex.inouts.*;
 
 public class MenuScene extends Scene {
     private TextButton playButton, settingButton, instructionsButton, exitButton;
-    
-    private String audioPath;
 
     public MenuScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
@@ -22,8 +20,6 @@ public class MenuScene extends Scene {
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
         
-        
-
         // Set background
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
         backgroundImage.setSize(width, height); // Set the size to fill the screen
@@ -140,6 +136,10 @@ public class MenuScene extends Scene {
                 e.printStackTrace();
             }
         }
+        
+        if (inputManager.isReturnPressed()) {
+        	Gdx.app.exit();
+        }
 
         if (inputManager.isEnterPressed()) {
             switch (currentButtonIndex) {
@@ -162,8 +162,6 @@ public class MenuScene extends Scene {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        
-    }
-
+        }
     }
 }

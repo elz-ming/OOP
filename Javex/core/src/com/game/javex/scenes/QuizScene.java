@@ -39,9 +39,6 @@ public class QuizScene extends Scene {
     public QuizScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, TreasureChest treasureChest) {
         super(sceneManager, inputManager, outputManager);
 
-        
-        
-        
         this.treasureChest = treasureChest;
 
         this.question = treasureChest.getQuestion();
@@ -58,12 +55,8 @@ public class QuizScene extends Scene {
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.MENU_IMG_PATH)));
         backgroundImage.setSize(width, height);
         stage.addActor(backgroundImage);
-        backgroundImage.setZIndex(0);
-
-        
-        
-        
-        
+        backgroundImage.setZIndex(0); 
+      
         // Create the question label
         questionLabel = new Label(question, skin);
         questionLabel.setPosition(width / 2 - questionLabel.getWidth() / 2, height - questionLabel.getHeight() - 50);
@@ -184,21 +177,16 @@ public class QuizScene extends Scene {
 
         // Update the position of the result label to be below the question label and moved to the left
         resultLabel.setPosition(newXPosition, questionLabel.getY() - questionLabel.getHeight() - 20);
-
-       
      
         // Make the result label and background visible
         resultLabel.setVisible(true);
         resultBackground.setVisible(true);
 
-     // Update the size and position of the result background to encapsulate the result label
+        // Update the size and position of the result background to encapsulate the result label
         resultBackground.setSize(resultLabel.getPrefWidth() + 20, resultLabel.getPrefHeight() + 20);
         resultBackground.setPosition(width / 2 - resultBackground.getWidth() / 2, questionBackground.getY() - resultBackground.getHeight() - 10);
     
     }
-
-    
-    
 
     protected void updateButtonStyles() {
         for (int i = 0; i < answerButtons.length; i++) {

@@ -12,13 +12,8 @@ import com.game.javex.Constants;
 import com.game.javex.inouts.*;
 
 public class EndScene extends Scene {
-	private TextButton homeButton;
-    private TextButton retryButton;
+	private TextButton homeButton, retryButton;
     private float inputDelayTimer = 0f;
-    private final float INPUT_DELAY = 0.2f; // 0.2 seconds
-    private String audioPath;
-   
-
 
     public EndScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager) {
         super(sceneManager, inputManager, outputManager);
@@ -35,9 +30,6 @@ public class EndScene extends Scene {
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
 
-        
-        
-     
         // Create buttons
         retryButton = new TextButton("Retry", skin);
         homeButton = new TextButton("Home", skin);
@@ -67,10 +59,6 @@ public class EndScene extends Scene {
 
         updateButtonStyles();
     }
-    
-    
-    
-    
     
     @Override
     public void resize(int width, int height) {
@@ -103,7 +91,7 @@ public class EndScene extends Scene {
         // Update the input delay timer
         inputDelayTimer += Gdx.graphics.getDeltaTime();
 
-        if (inputDelayTimer < INPUT_DELAY) {
+        if (inputDelayTimer < Constants.INPUT_DELAY) {
             return; // Input delay not reached yet
         }
 
@@ -115,7 +103,11 @@ public class EndScene extends Scene {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
             inputDelayTimer = 0f; // Reset the input delay timer
-        } else if (inputManager.isEnterPressed()) {
+        } else if (inputManager.isReturnPressed()){
+        	inputManager.resetKey();
+            sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));        	
+    	} else if (inputManager.isEnterPressed()) {
+        	inputManager.resetKey();
             if (currentButtonIndex == 0) {
                 sceneManager.set(new WorldSelectionScene(sceneManager, inputManager, outputManager));
             } else if (currentButtonIndex == 1) {
