@@ -61,7 +61,7 @@ public class Enemy extends Entity {
 	}
 	
 	@Override
-	public void update(float dt) {
+	public void update(float deltat) {
 		float veloX = body.getLinearVelocity().x;
 		
 		if (veloX > -0.5 && veloX < 0.5) {

@@ -9,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class Boundary extends Entity{
-
 	public Boundary(World world, Vector2 position, int width, int height) {
     	super(world, position);
     	this.width = width;
@@ -53,7 +52,6 @@ public class Boundary extends Entity{
 //		resource management
     	shape.dispose();
     	top.dispose();
-		
 	}
 
 }

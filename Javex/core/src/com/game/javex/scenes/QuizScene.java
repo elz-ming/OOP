@@ -17,23 +17,14 @@ import com.game.javex.inouts.OutputManager;
 
 public class QuizScene extends Scene {
     private TreasureChest treasureChest;
-
     private String question;
     private String[] answers;
     private int correctAnswerIndex;
-
-    private Label questionLabel;
-    private TextButton[] answerButtons;
-    private Label resultLabel;
-    private int currentButtonIndex = 0;
+    private Label questionLabel, resultLabel;
     private boolean enterPressedAfterAnswer = false;
-    
     private float inputDelay = 0.2f; // 200 milliseconds delay
     private float timeSinceLastInput = 0f;
-
-    private Image questionBackground; // Background for the question
-    private Image resultBackground; // Background for the result
-
+    private Image questionBackground, resultBackground;
     private boolean answerSelected = false;
 
     public QuizScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, TreasureChest treasureChest) {
@@ -63,19 +54,19 @@ public class QuizScene extends Scene {
        
 
         // Create the answer buttons
-        answerButtons = new TextButton[answers.length];
+        menuButtons = new TextButton[answers.length];
         for (int i = 0; i < answers.length; i++) {
             final int index = i;
-            answerButtons[i] = new TextButton(answers[i], skin);
-            answerButtons[i].setSize(500, 80);
-            answerButtons[i].setPosition((width - answerButtons[i].getWidth()) / 2, height / 2 - (i * (answerButtons[i].getHeight() + 10)));
-            answerButtons[i].addListener(event -> {
+            menuButtons[i] = new TextButton(answers[i], skin);
+            menuButtons[i].setSize(500, 80);
+            menuButtons[i].setPosition((width - menuButtons[i].getWidth()) / 2, height / 2 - (i * (menuButtons[i].getHeight() + 10)));
+            menuButtons[i].addListener(event -> {
                 if (!answerSelected) {
                     handleAnswerSelection(index);
                 }
                 return true;
             });
-            stage.addActor(answerButtons[i]);
+            stage.addActor(menuButtons[i]);
         }
 
      // Create the result label
@@ -131,11 +122,11 @@ public class QuizScene extends Scene {
 
         if (timeSinceLastInput >= inputDelay) {
             if (inputManager.isUpPressed()) {
-                currentButtonIndex = (currentButtonIndex + answerButtons.length - 1) % answerButtons.length;
+                currentButtonIndex = (currentButtonIndex + menuButtons.length - 1) % menuButtons.length;
                 updateButtonStyles();
                 timeSinceLastInput = 0;
             } else if (inputManager.isDownPressed()) {
-                currentButtonIndex = (currentButtonIndex + 1) % answerButtons.length;
+                currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
                 updateButtonStyles();
                 timeSinceLastInput = 0;
             } else if (inputManager.isEnterPressed()) {
@@ -147,8 +138,8 @@ public class QuizScene extends Scene {
 
     private void handleAnswerSelection(int index) {
         answerSelected = true;
-        for (int i = 0; i < answerButtons.length; i++) {
-            TextButton button = answerButtons[i];
+        for (int i = 0; i < menuButtons.length; i++) {
+            TextButton button = menuButtons[i];
             if (i == correctAnswerIndex) {
                 button.getLabel().setColor(Color.GREEN);
             } else {
@@ -156,7 +147,7 @@ public class QuizScene extends Scene {
             }
         }
 
-        TextButton selectedButton = answerButtons[index];
+        TextButton selectedButton = menuButtons[index];
         selectedButton.getLabel().setColor(index == correctAnswerIndex ? Color.GREEN : Color.FIREBRICK);
 
         if (index == correctAnswerIndex) {
@@ -187,10 +178,11 @@ public class QuizScene extends Scene {
         resultBackground.setPosition(width / 2 - resultBackground.getWidth() / 2, questionBackground.getY() - resultBackground.getHeight() - 10);
     
     }
-
+    
+    @Override
     protected void updateButtonStyles() {
-        for (int i = 0; i < answerButtons.length; i++) {
-            TextButton button = answerButtons[i];
+        for (int i = 0; i < menuButtons.length; i++) {
+            TextButton button = menuButtons[i];
             if (i == currentButtonIndex) {
                 button.getLabel().setColor(Color.YELLOW);
             } else {
@@ -200,24 +192,11 @@ public class QuizScene extends Scene {
     }
 
     @Override
-    public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
-        stage.draw();
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
-    }
-
-    @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
         questionLabel.setPosition(width / 2 - questionLabel.getWidth() / 2, height - questionLabel.getHeight() - 50);
-        for (int i = 0; i < answerButtons.length; i++) {
-            answerButtons[i].setPosition((width - answerButtons[i].getWidth()) / 2, height / 2 - (i * (answerButtons[i].getHeight() + 10)));
+        for (int i = 0; i < menuButtons.length; i++) {
+        	menuButtons[i].setPosition((width - menuButtons[i].getWidth()) / 2, height / 2 - (i * (menuButtons[i].getHeight() + 10)));
         }
     }
 }

@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class FlagBorder extends Entity{
-
 	public FlagBorder(World world, Vector2 position, int width, int height) {
 		super(world, position);
     	this.width = width;

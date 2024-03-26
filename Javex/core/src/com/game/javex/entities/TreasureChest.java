@@ -12,18 +12,17 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.game.javex.Constants;
 
 public class TreasureChest extends Entity {
-	
-    private Texture[] chestTextures;
-    private int currentTextureIndex;
-    private float animationTimer;
-    private final float ANIMATION_DURATION = 0.5f; // Adjust as needed
     private int identifier;
     private String question;
     private String[] answers;
     private int correctAnswerIndex;
+    
     private boolean solving = false;
     private boolean resetSolving = true;
     private boolean solved = false;
+    
+    private Texture[] chestTextures;
+    private int currentTextureIndex;
 
     public TreasureChest(World world, Vector2 position, int width, int height, String selectedWorld, int identifier) {
         super(world, position);
@@ -32,7 +31,7 @@ public class TreasureChest extends Entity {
         this.chestTextures = new Texture[3]; // Assuming you have 3 textures
         loadTextures();
         this.currentTextureIndex = 0; // Start with the first texture
-        this.animationTimer = 0;
+        this.stateTime = 0;
         this.identifier = identifier;
         createBody();
         createAnimatedSprite();
@@ -48,10 +47,10 @@ public class TreasureChest extends Entity {
     @Override
     public void update(float delta) {
     	super.update(delta);
-        animationTimer += delta;
-        if (animationTimer >= ANIMATION_DURATION) {
+        stateTime += delta;
+        if (stateTime >= Constants.ANIMATION_DURATION) {
             currentTextureIndex = (currentTextureIndex + 1) % 3; // Cycle through textures
-            animationTimer = 0;
+            stateTime = 0;
             updateAnimatedSpriteTexture();
         }
         // Update sprite position based on body position
@@ -72,11 +71,6 @@ public class TreasureChest extends Entity {
         if (this.sprite != null) {
             this.sprite.draw(spriteBatch);
         }
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose(); // Dispose of textures and Box2D body
     }
 
     @Override
@@ -203,10 +197,6 @@ public class TreasureChest extends Entity {
     public int getCorrectAnswerIndex() {
         return correctAnswerIndex;
     }
-    
-    public int getIdentifier() {
-		return identifier;
-	}
     
     public void setSolving(boolean solving) {
     	this.solving = solving;

@@ -19,10 +19,6 @@ public class Player extends Entity{
 	private boolean canJump;
 	private boolean killed = false;
 	private boolean won = false;
-	private boolean reading = false;
-	private boolean solving = false;
-	private boolean resetSolving = true;
-	private boolean engagedWithChest = false;
 	
 	// Store textures for different animations
 	private List<Texture> moveRightTextures = new ArrayList<>();
@@ -32,11 +28,9 @@ public class Player extends Entity{
     // Reference to InputManager
     private InputManager inputManager;
     
- // Animation state
+    // Animation state
     private int currentFrameIndex = 0;
-    
     private float animationTimer = 0;
-    private final float FRAME_DURATION = 0.1f; // Adjust this value as needed
 	
     public Player(World world, Vector2 position, InputManager inputManager) {
 		super(world, position);
@@ -78,13 +72,13 @@ public class Player extends Entity{
         }
         
         // Reset animation timer if needed
-        if (animationTimer >= FRAME_DURATION) {
+        if (animationTimer >= Constants.FRAME_DURATION) {
             animationTimer = 0;
         }
     }
     
     private void updateAnimation(List<Texture> textures, float delta) {
-        if (animationTimer >= FRAME_DURATION) {
+        if (animationTimer >= Constants.FRAME_DURATION) {
             currentFrameIndex = (currentFrameIndex + 1) % textures.size();
             sprite.setTexture(textures.get(currentFrameIndex));
         }
@@ -159,38 +153,6 @@ public class Player extends Entity{
 		return won;
 	}
 	
-	public void setReading(boolean reading) {
-		this.reading = reading;
-	}
-	
-	public boolean getReading() {
-		return reading;
-	}
-	
-	public void setSolving(boolean solving) {
-		this.solving = solving;
-	}
-	
-	public boolean getSolving() {
-		return solving;
-	}
-	
-	public void setResetSolving(boolean resetSolving) {
-		this.resetSolving = resetSolving;
-	}
-	
-	public boolean getResetSolving() {
-		return resetSolving;
-	}
-	
-	
-	 public void setEngagedWithChest(boolean engaged) {
-	        engagedWithChest = engaged;
-	    }
-
-	    public boolean isEngagedWithChest() {
-	        return engagedWithChest;
-	    }
 
 	public void setCanJump(boolean canJump) {
 		this.canJump = canJump;

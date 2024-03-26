@@ -16,6 +16,8 @@ public class Constants {
 	public static final float WORLD_HEIGHT_METER = WORLD_HEIGHT /PPM;
 	
     public static final float INPUT_DELAY = 0.2f; // 0.2 seconds
+    public static final float FRAME_DURATION = 0.1f;
+    public static final float ANIMATION_DURATION = 0.5f;
 	
 	public static final short PLAYER_BIT = 1;
 //	public static final short PLAYER_BOTTOM_BIT = 2; 

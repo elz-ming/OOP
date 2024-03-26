@@ -23,7 +23,7 @@ public abstract class Entity {
 	protected String imgPath;
 	
 	protected Animation<TextureRegion> animation;
-	protected float stateTime = 0;
+	protected float stateTime = 0f;
 	protected boolean isAnimated = false;
 
 	public Entity(World world, Vector2 position) {

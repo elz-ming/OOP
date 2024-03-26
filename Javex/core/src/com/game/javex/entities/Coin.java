@@ -13,8 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Coin extends Entity {
-    private Animation<TextureRegion> animation;
-    private float stateTime;
     private boolean collected = false;
     private Texture[] coinTextures = new Texture[5];
     

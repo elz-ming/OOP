@@ -121,13 +121,8 @@ public class Signboard extends Entity{
 	    }
 	}
 
-	
 	public String getContent() {
 		return content;
-	}
-	
-	public int getIdentifier() {
-        return identifier;
 	}
 	
 	public void setVisible(boolean visible) {

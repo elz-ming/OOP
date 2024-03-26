@@ -13,9 +13,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 public class Flag extends Entity{
-	private Animation<TextureRegion> animation;
-	private float stateTime;
-	
 	public Flag(World world, Vector2 position, int width, int height) {
         super(world, position);
         this.width = width; 
@@ -64,5 +61,5 @@ public class Flag extends Entity{
             spriteBatch.draw(currentFrame, body.getPosition().x * Constants.PPM - (width / 2),
                     body.getPosition().y * Constants.PPM - (height / 2), width, height);
         }
-}
+	}
 }
