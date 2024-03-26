@@ -28,7 +28,7 @@ public class TreasureChest extends Entity {
         super(world, position);
         this.width = width;
         this.height = height;
-        this.chestTextures = new Texture[3]; // Assuming you have 3 textures
+        this.chestTextures = new Texture[3];
         loadTextures();
         this.currentTextureIndex = 0; // Start with the first texture
         this.stateTime = 0;

@@ -91,14 +91,14 @@ public class InstructionsScene extends Scene {
         float buttonHeight = height * 0.15f;
         float spaceBetweenButtons = height * 0.06f;
         float totalButtonsHeight = buttonHeight + spaceBetweenButtons;
-        float startY = (height - totalButtonsHeight) / 4; // Adjusted startY value
+        float startY = (height - totalButtonsHeight) / 4; 
         
         backButton.setSize(buttonWidth, buttonHeight);
 
         float fontScale = buttonHeight / 120f;
         backButton.getLabel().setFontScale(fontScale);
 
-        backButton.setPosition((width - backButton.getWidth()) / 2, startY - backButton.getHeight() - 10); // Adjusted button position
+        backButton.setPosition((width - backButton.getWidth()) / 2, startY - backButton.getHeight() - 10); 
     }
 
     @Override

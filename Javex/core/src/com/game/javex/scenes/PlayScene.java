@@ -62,7 +62,7 @@ public class PlayScene extends Scene {
 	private Player player;
 	
 	public PlayScene(SceneManager sceneManager, InputManager inputManager, OutputManager outputManager, String selectedWorld) {
-		// Using universal attribute across all scenes
+		
 		super(sceneManager, inputManager, outputManager);
 
 		width = Gdx.graphics.getWidth();
@@ -108,15 +108,15 @@ public class PlayScene extends Scene {
     	
     	// Set background
     	backgroundImage = new Image(new Texture(Gdx.files.internal(backgroundImagePath)));
-    	backgroundImage.setSize(width, height); // Set the size to fill the screen
-    	backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+    	backgroundImage.setSize(width, height); 
+    	backgroundImage.setZIndex(0); 
     	
-    	//Initialize HUD
+    	
     	hudManager = new HUD(countdownTimer);
     	
-    	// Add buttons to stage
+    	
         stage = new Stage(new ScreenViewport());
-        stage.addActor(backgroundImage); // Add the background image to the stage
+        stage.addActor(backgroundImage); 
         
         frontStage = new Stage(new ScreenViewport());
         frontStage.addActor(hudManager.getTable());
@@ -134,7 +134,7 @@ public class PlayScene extends Scene {
 	    
 		spriteBatch = new SpriteBatch();
 		
-//		Initialize entityManager and create relevant entities in the game world
+
 		entityManager = new EntityManager(world, map, selectedWorld, inputManager);
 		initialize();
 		player = entityManager.getPlayer();
@@ -155,24 +155,24 @@ public class PlayScene extends Scene {
 		
 		
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
-		labelStyle.font = new BitmapFont(); // Use your preferred font
-		labelStyle.fontColor = Color.BLACK; // Set the font color to black
+		labelStyle.font = new BitmapFont(); 
+		labelStyle.fontColor = Color.BLACK; 
 		signboardText = new Label("", labelStyle); //
 
-		// Position the label higher on the screen
+		
 		float labelX = width / 2f;
-		float labelY = height * 0.8f; // Adjust this value to move the label higher
+		float labelY = height * 0.8f; 
 		signboardText.setPosition(labelX, labelY);
-		signboardText.setAlignment(1); // Center the text horizontally
+		signboardText.setAlignment(1); 
 
-		// Load the texture for the signboard background
+		
 		Texture signboardBackgroundTexture = new Texture(Gdx.files.internal(Constants.CHATBOX_IMG_PATH));
 		signboardBackground = new Image(signboardBackgroundTexture);
 
-		// Set the size and position of the background image based on the label size
-		signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20); // Add some padding
-		signboardBackground.setPosition(labelX - signboardBackground.getWidth() / 2, labelY - signboardBackground.getHeight() / 2); // Center the background behind the label
-		signboardBackground.setVisible(false); // Initially hide the background
+		
+		signboardBackground.setSize(signboardText.getPrefWidth() + 20, signboardText.getPrefHeight() + 20); 
+		signboardBackground.setPosition(labelX - signboardBackground.getWidth() / 2, labelY - signboardBackground.getHeight() / 2); 
+		signboardBackground.setVisible(false); 
 
 		frontStage.addActor(signboardBackground);
 		frontStage.addActor(signboardText); 
@@ -289,20 +289,20 @@ public class PlayScene extends Scene {
 	
 	@Override
 	public void resize(int width, int height) {
-	    // Update the stage's viewport to the new resolution
+	    
 	    stage.getViewport().update(width, height, true);
 	    
 	    // Update the camera's viewport
 	    camera.setToOrtho(false, width, height);
 	    
-	    // Update the position and size of elements based on the new resolution
+	    
 	    this.width = width;
 	    this.height = height;
 	    
-	    // Update the background image size
+	   
 	    backgroundImage.setSize(width, height);
 	    
-	    // Update HUD
+	   
 	    hudManager.resize(width, height);
 	}
 

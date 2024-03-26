@@ -57,7 +57,7 @@ public class Coin extends Entity {
     public void update(float delta) {
     	super.update(delta);
         stateTime += delta;
-        // Additional update logic if needed
+        
     }
 
     @Override

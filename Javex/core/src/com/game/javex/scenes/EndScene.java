@@ -25,7 +25,7 @@ public class EndScene extends Scene {
         // Set background
         backgroundImage = new Image(new Texture(Gdx.files.internal(Constants.END2_IMG_PATH)));
         backgroundImage.setSize(width, height); // Set the size to fill the screen
-        backgroundImage.setZIndex(0); // Make sure the background is drawn first (before the buttons)
+        backgroundImage.setZIndex(0); 
 
         // Set skin
         skin = new Skin(Gdx.files.internal("rainbow-ui.json"));
@@ -35,16 +35,16 @@ public class EndScene extends Scene {
         homeButton = new TextButton("Home", skin);
 
         // Set the font scale for each button's label
-        homeButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
-        retryButton.getLabel().setFontScale(0.5f); // Adjust the scale value to your preference
+        homeButton.getLabel().setFontScale(0.5f); 
+        retryButton.getLabel().setFontScale(0.5f); 
 
         // Increase the button size
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
         homeButton.setSize(buttonWidth, buttonHeight);
         retryButton.setSize(buttonWidth, buttonHeight);
 
-        // Position the buttons starting from the bottom of the screen
+        
         homeButton.setPosition((width / 2 - homeButton.getWidth() / 2), 2 * (homeButton.getHeight()));
         retryButton.setPosition((width / 2 - retryButton.getWidth() / 2), homeButton.getY() + homeButton.getHeight() + 10);
 
@@ -68,15 +68,15 @@ public class EndScene extends Scene {
 
         backgroundImage.setSize(width, height);
 
-        // Recalculate button size and position based on the new resolution
-        float buttonWidth = width * 0.4f; // Increase to 40% of the screen width
-        float buttonHeight = height * 0.15f; // Increase to 15% of the screen height
+        
+        float buttonWidth = width * 0.4f; 
+        float buttonHeight = height * 0.15f; 
 
         retryButton.setSize(buttonWidth, buttonHeight);
         homeButton.setSize(buttonWidth, buttonHeight);
 
-        // Adjust the font scale based on the button size
-        float fontScale = buttonHeight / 120f; // Adjust if needed
+      
+        float fontScale = buttonHeight / 120f; 
         retryButton.getLabel().setFontScale(fontScale);
         homeButton.getLabel().setFontScale(fontScale);
 
@@ -88,7 +88,7 @@ public class EndScene extends Scene {
     
     @Override
     protected void handleInput() {
-        // Update the input delay timer
+        
         inputDelayTimer += Gdx.graphics.getDeltaTime();
 
         if (inputDelayTimer < Constants.INPUT_DELAY) {
@@ -98,7 +98,7 @@ public class EndScene extends Scene {
         if (inputManager.isUpPressed()) {
             currentButtonIndex = (currentButtonIndex - 1 + menuButtons.length) % menuButtons.length;
             updateButtonStyles();
-            inputDelayTimer = 0f; // Reset the input delay timer
+            inputDelayTimer = 0f; 
         } else if (inputManager.isDownPressed()) {
             currentButtonIndex = (currentButtonIndex + 1) % menuButtons.length;
             updateButtonStyles();
@@ -113,7 +113,7 @@ public class EndScene extends Scene {
             } else if (currentButtonIndex == 1) {
                 sceneManager.set(new MenuScene(sceneManager, inputManager, outputManager));
             }
-            inputDelayTimer = 0f; // Reset the input delay timer
+            inputDelayTimer = 0f; 
         }
     }
 
