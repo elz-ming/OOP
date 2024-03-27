@@ -12,7 +12,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+//import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -39,8 +39,8 @@ public class PlayScene extends Scene {
 	private TiledMap map;
 	private OrthogonalTiledMapRenderer renderer;
 	
-	//	For debug purposes
-	private Box2DDebugRenderer b2dr;
+//	//	For debug purposes
+//	private Box2DDebugRenderer b2dr;
 	
 //	Managers to help structure the game
 	private EntityManager entityManager;
@@ -111,9 +111,7 @@ public class PlayScene extends Scene {
     	backgroundImage.setSize(width, height); 
     	backgroundImage.setZIndex(0); 
     	
-    	
     	hudManager = new HUD(countdownTimer);
-    	
     	
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); 
@@ -150,9 +148,8 @@ public class PlayScene extends Scene {
 		collisionManager = new CollisionManager();
 		world.setContactListener(collisionManager);
 
-//		For debug purposes
-		b2dr = new Box2DDebugRenderer();
-		
+////		For debug purposes
+//		b2dr = new Box2DDebugRenderer();
 		
 		Label.LabelStyle labelStyle = new Label.LabelStyle();
 		labelStyle.font = new BitmapFont(); 
@@ -277,9 +274,9 @@ public class PlayScene extends Scene {
 		
 	    camera = null;
 	    
-		if (b2dr != null) {
-	        b2dr.dispose();
-	    }
+//		if (b2dr != null) {
+//	        b2dr.dispose();
+//	    }
 	}
 
 	private void initialize() {
@@ -302,7 +299,6 @@ public class PlayScene extends Scene {
 	   
 	    backgroundImage.setSize(width, height);
 	    
-	   
 	    hudManager.resize(width, height);
 	}
 
