@@ -19,8 +19,8 @@ public class SteerableEntityAdapter implements Steerable<Vector2>{
         float height = entity.getHeight();
         this.boundingRadius = (float) Math.sqrt((width / 2) * (width / 2) + (height / 2) * (height / 2));
         
-        this.maxLinearSpeed = 100; // Adjust as necessary
-        this.maxLinearAcceleration = 5000; // Adjust as necessary
+        this.maxLinearSpeed = 100; 
+        this.maxLinearAcceleration = 5000; 
     }
     
     @Override 

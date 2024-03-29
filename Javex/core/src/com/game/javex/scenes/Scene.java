@@ -22,6 +22,7 @@ public abstract class Scene implements Disposable{
     protected Stage stage;
     protected Skin skin;
     protected Image backgroundImage;
+    protected String audioPath;
     
     protected TextButton[] menuButtons;
     protected int currentButtonIndex = 0;
@@ -51,6 +52,9 @@ public abstract class Scene implements Disposable{
 	        skin.dispose();
 	    }
     }
+    
+    
+    protected abstract void resize(int width, int height);
     
     protected void updateButtonStyles() {
         for (int i = 0; i < menuButtons.length; i++) {

@@ -1,3 +1,5 @@
+
+
 package com.game.javex.inouts;
 
 import com.badlogic.gdx.Gdx;
@@ -5,10 +7,12 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.Disposable;
 
 public class OutputManager implements Disposable {
-    private Music music;    private float volume;
+    private Music music;
+    private float volume;
     private boolean muted;
 
     public OutputManager() {
+        volume = 0.2f; // Set initial volume
         muted = false;
     }
 
@@ -20,15 +24,21 @@ public class OutputManager implements Disposable {
         
         music = Gdx.audio.newMusic(Gdx.files.internal(musicPath));
         music.setLooping(isLooping);
-        music.setVolume(0.2f);
+        updateVolume();
+        music.play();
+    }
+    public void pauseMusic() {
+
+        music.pause();
+    }
+    public void resumeMusic() {
+
         music.play();
     }
 
     public void setVolume(float volume) {
-    	this.volume = volume;
-        if (music != null) {
-            music.setVolume(volume);
-        }
+        this.volume = volume;
+        updateVolume();
     }
 
     public float getVolume() {
@@ -41,8 +51,12 @@ public class OutputManager implements Disposable {
 
     public void setMuted(boolean muted) {
         this.muted = muted;
+        updateVolume();
+    }
+
+    private void updateVolume() {
         if (music != null) {
-            music.setVolume(muted ? 0 : 1); // Set volume to 0 if muted, 1 otherwise
+            music.setVolume(muted ? 0 : volume); 
         }
     }
 
@@ -51,5 +65,9 @@ public class OutputManager implements Disposable {
         if (music != null) {
             music.dispose();
         }
+    }
+    public void toggleMute() {
+        muted = !muted;
+        updateVolume(); 
     }
 }

@@ -32,7 +32,7 @@ public class InputManager implements InputProcessor {
 	            rightKey = true;
 	            break;
 	        case Keys.ENTER:
-	        case Keys.SPACE: // Assuming you want SPACE to act like ENTER
+	        case Keys.SPACE: 
 	            enterKey = true;
 	            break;
 	        case Keys.ESCAPE:
@@ -58,7 +58,7 @@ public class InputManager implements InputProcessor {
 	            rightKey = false;
 	            break;
 	        case Keys.ENTER:
-	        case Keys.SPACE: // Assuming you want SPACE to act like ENTER
+	        case Keys.SPACE: 
 	            enterKey = false;
 	            break;
 	        case Keys.ESCAPE:
@@ -74,6 +74,15 @@ public class InputManager implements InputProcessor {
     public boolean isRightPressed() { return rightKey; }
     public boolean isEnterPressed() { return enterKey; }
     public boolean isReturnPressed() { return returnKey; }
+    
+    public void resetKey() {
+    	upKey = false;
+        downKey = false;
+        leftKey = false;
+        rightKey = false;
+        enterKey = false;
+        returnKey = false;
+    }
 
     // ========================= //
  	// ===== EMPTY METHODS ===== //	
