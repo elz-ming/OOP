@@ -292,7 +292,6 @@ public class PlayScene extends Scene {
 	    // Update the camera's viewport
 	    camera.setToOrtho(false, width, height);
 	    
-	    
 	    this.width = width;
 	    this.height = height;
 	    
