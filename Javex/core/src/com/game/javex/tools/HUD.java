@@ -16,10 +16,9 @@ public class HUD implements Disposable {
     private Skin skin;
 
     private long startTime;
-	private int countdownTimer;
 	private long elapsedTime;
 
-    public HUD(int countdownTimer) {
+    public HUD() {
         skin = new Skin(Gdx.files.internal("rainbow-ui.json")); 
 
         
@@ -40,16 +39,14 @@ public class HUD implements Disposable {
         table.add(treasureChestsSolvedLabel).expandX().padTop(10).padBottom(10);
         table.add(timeLabel).expandX().padTop(10).padBottom(10);
         
-        this.countdownTimer = countdownTimer;
         startTime = TimeUtils.millis() + 300000;
-        
     }
 
     public void update(int getScore, int treasureChestsSolved) {
         scoreLabel.setText("Score: " + getScore);
-        treasureChestsSolvedLabel.setText("Chests Solved: " + treasureChestsSolved);
+        treasureChestsSolvedLabel.setText("Chests Solved: " + treasureChestsSolved + "/3");
         long currentTime = TimeUtils.millis();
-        elapsedTime = (countdownTimer - (currentTime - startTime)) / 1000;
+        elapsedTime = (startTime - currentTime) / 1000;
         timeLabel.setText("Time: " + elapsedTime);
     }
 
@@ -59,7 +56,6 @@ public class HUD implements Disposable {
     }
 
     public void resize(int width, int height) {
-       
         table.invalidateHierarchy();
         table.setSize(width, height);
     }
@@ -71,10 +67,6 @@ public class HUD implements Disposable {
         }
     }
 
-	public int getCountdownTimer() {
-		
-		return countdownTimer;
-	}
     public long getElapsedTime() {
         return elapsedTime;
     }

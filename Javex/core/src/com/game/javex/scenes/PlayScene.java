@@ -51,11 +51,9 @@ public class PlayScene extends Scene {
 	
 	private Stage frontStage;
 	private Vector2 gravity;
-	private String audioPath;
 	private String backgroundImagePath;
-	private String mapString;
+	private String mapPath;
 	private float cameraZoomValue;
-	private int countdownTimer;
 	private Label signboardText;
 	private Image signboardBackground;
 	
@@ -74,7 +72,7 @@ public class PlayScene extends Scene {
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
-            mapString = Constants.EARTH_MAP_PATH;
+            mapPath = Constants.EARTH_MAP_PATH;
             break;
             
         case "Mars":
@@ -82,7 +80,7 @@ public class PlayScene extends Scene {
             audioPath = Constants.MARS_AUDIO_PATH;
             backgroundImagePath = Constants.MARS_IMG_PATH;
             cameraZoomValue = 0.6f;
-            mapString = Constants.MARS_MAP_PATH;
+            mapPath = Constants.MARS_MAP_PATH;
             break;
             
         case "Venus":
@@ -90,7 +88,7 @@ public class PlayScene extends Scene {
             audioPath = Constants.VENUS_AUDIO_PATH;
             backgroundImagePath = Constants.VENUS_IMG_PATH;
             cameraZoomValue = 0.8f;
-            mapString = Constants.VENUS_MAP_PATH;
+            mapPath = Constants.VENUS_MAP_PATH;
             break;
             
         default:
@@ -98,7 +96,7 @@ public class PlayScene extends Scene {
             audioPath = Constants.EARTH_AUDIO_PATH;
             backgroundImagePath = Constants.EARTH_IMG_PATH;
             cameraZoomValue = 0.4f;
-            mapString = Constants.EARTH_MAP_PATH;
+            mapPath = Constants.EARTH_MAP_PATH;
             break;
     	}
     	
@@ -111,7 +109,7 @@ public class PlayScene extends Scene {
     	backgroundImage.setSize(width, height); 
     	backgroundImage.setZIndex(0); 
     	
-    	hudManager = new HUD(countdownTimer);
+    	hudManager = new HUD();
     	
         stage = new Stage(new ScreenViewport());
         stage.addActor(backgroundImage); 
@@ -122,7 +120,7 @@ public class PlayScene extends Scene {
 		camera = new OrthographicCamera();
 		
 		mapLoader = new TmxMapLoader();
-		map = mapLoader.load(mapString);
+		map = mapLoader.load(mapPath);
 		renderer = new OrthogonalTiledMapRenderer(map);
 		
 		camera.position.set(Constants.VIEWPORT_WIDTH /2, Constants.VIEWPORT_HEIGHT /2, 0);
